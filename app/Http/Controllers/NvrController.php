@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Depot;
 use App\Models\Location;
 use App\Models\Combo;
+use Carbon\Carbon;
+use Intervention\Image\Facades\Image;
+
+
 
 class NvrController extends Controller
 {
@@ -21,28 +25,6 @@ class NvrController extends Controller
         return view('admin.NVRs.nvr_add', compact('depots'));
     }
 
-    public function replace(Request $request, Nvr $nvr)
-    {
-        // Validate the replacement request
-        $request->validate([
-            'model' => 'required|string|max:255',
-            'serial_number' => 'required|string|unique:nvrs,serial_number', // Ensure it's unique
-            'failure_reason' => 'required|string|max:255',
-            'purchase_date' => 'nullable|date',
-            'installation_date' => 'nullable|date',
-            'warranty_expiration' => 'nullable|date',
-        ]);
-    
-        // First, mark the existing NVR as failed (or any other logic you need)
-        $nvr->status = 'failed';
-        $nvr->failure_reason = $request->failure_reason;
-        $nvr->save();
-    
-        // Create the new NVR
-        Nvr::create($request->all());
-    
-        return redirect()->route('admin.nvrs.index')->with('success', 'NVR replaced successfully!');
-    }
     public function store(Request $request)
 {
     $request->validate([
@@ -72,7 +54,7 @@ class NvrController extends Controller
 
     public function show(Nvr $nvr)
     {
-        return view('nvrs.show', compact('nvr'));
+        return view('admin.NVRs.show', compact('nvr'));
     }
 
     public function edit(Nvr $nvr)
@@ -123,4 +105,75 @@ class NvrController extends Controller
 
         return response()->json($locations);
     }
+
+
+    /**
+    * Show the replace form for the specified NVR.
+    *
+    * @param Nvr $nvr
+    * @return \Illuminate\View\View
+    */
+    public function showReplaceForm(Nvr $nvr)
+    {
+        // Pass the selected NVR with its depot and location to the view
+        return view('admin.NVRs.nvr_replace', compact('nvr'));
+    }
+
+    /**
+    * Handle the replacement of an NVR.
+    *
+    * @param Request $request
+    * @param Nvr $nvr
+    * @return \Illuminate\Http\RedirectResponse
+    */
+    public function replace(Request $request, Nvr $nvr)
+    {
+        // Validate the replacement request
+        $request->validate([
+            'model' => 'required|string|max:255',
+            'serial_number' => 'required|string|unique:nvrs,serial_number', // Ensure it's unique
+            'failure_reason' => 'required|string|max:255',
+            'purchase_date' => 'required|date',
+            'installation_date' => 'required|date',
+            'warranty_expiration' => 'required|date',
+            'replace_image' => 'required|image|max:2048',
+        ]);
+
+         // Check if the request has a file
+        if ($request->hasFile('replace_image')) {
+            $image = $request->file('replace_image');
+
+            // Generate a unique file name for the image
+            $fileName = 'replace_' . time() . '.' . $image->getClientOriginalExtension();
+
+            // Define the path where the image will be stored
+            $destinationPath = public_path('uploads/replaceReason_images');
+
+            // Move the uploaded file to the specified directory
+            $image->move($destinationPath, $fileName);
+
+            // Set the path for the saved image in the `replace_image` attribute
+            $nvr->image_replace = 'uploads/replaceReason_images/' . $fileName;
+        }
+        
+
+        $nvr->status = 'failed';
+        $nvr->failure_reason = $request->failure_reason;
+        $nvr->save();
+
+        // Create a new NVR record with the replacement details
+        Nvr::create([
+            'model' => $request->input('model'),
+            'serial_number' => $request->input('serial_number'),
+            'status' => 'working',
+            'purchase_date' => $request->input('purchase_date'),
+            'installation_date' => $request->input('installation_date'),
+            'warranty_expiration' => $request->input('warranty_expiration'),
+            'depot_id' => $nvr->depot_id,    // Use the same depot as the old NVR
+            'location_id' => $nvr->location_id,  // Use the same location as the old NVR
+        ]);
+
+        return redirect()->route('admin.nvrs.index')->with('success', 'NVR replaced successfully!');
+    }
+
 }

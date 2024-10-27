@@ -58,8 +58,10 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/nvrs', [NvrController::class, 'index'])->name('admin.nvrs.index');
     Route::get('/admin/nvrs/create', [NvrController::class, 'create'])->name('admin.nvrs.create');
     Route::post('/admin/nvrs/store', [NvrController::class, 'store'])->name('admin.nvrs.store');
+    Route::get('admin/nvrs/{nvr}', [NvrController::class, 'show'])->name('admin.nvrs.show');
     Route::get('/admin/nvrs/{nvr}/edit', [NvrController::class, 'edit'])->name('admin.nvrs.edit');
     Route::put('/admin/nvrs/{nvr}', [NvrController::class, 'update'])->name('admin.nvrs.update');
+    Route::get('/admin/nvrs/{nvr}/replace', [NvrController::class, 'showReplaceForm'])->name('admin.nvrs.replaceForm');
     Route::post('/admin/nvrs/{nvr}/replace', [NvrController::class, 'replace'])->name('admin.nvrs.replace');
     Route::delete('/admin/nvrs/{nvr}', [NvrController::class, 'destroy'])->name('admin.nvrs.destroy');
     Route::get('/admin/locations-by-depot/{depotId}', [NvrController::class, 'getLocationsByDepot']);

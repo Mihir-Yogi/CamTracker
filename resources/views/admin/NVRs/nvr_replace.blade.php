@@ -30,9 +30,21 @@
 
         <!-- Replace NVR Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.nvrs.replace', $nvr->id) }}" method="POST">
+            <form class="form-new-product form-style-1" action="{{ route('admin.nvrs.replace', $nvr->id) }}"  enctype="multipart/form-data" method="POST">
                 @csrf
-                
+
+                <!-- Depot Field (Read-Only) -->
+                <fieldset class="name">
+                    <div class="body-title">Depot</div>
+                    <input class="flex-grow" type="text" name="depot" value="{{ $nvr->depot->name }}" disabled style="color: #6c757d;">
+                </fieldset>
+
+                <!-- Location Field (Read-Only) -->
+                <fieldset class="name">
+                    <div class="body-title">Location</div>
+                    <input class="flex-grow" type="text" name="location" value="{{ $nvr->location->name }}" disabled style="color: #6c757d;">
+                </fieldset>
+
                 <!-- Model Field -->
                 <fieldset class="name">
                     <div class="body-title">New Model <span class="tf-color-1">*</span></div>
@@ -57,6 +69,32 @@
                     <input class="flex-grow" type="text" placeholder="Enter reason for replacing" name="failure_reason" value="{{ old('failure_reason') }}" required>
                 </fieldset>
                 @error('failure_reason')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+
+                <!-- Replace Image Field with Preview -->
+                <fieldset class="name">
+                    <div class="body-title">Replacement Reason Image</div>
+                    <div class="image-preview-container" style="display: flex; gap: 20px; align-items: flex-start;">
+                        <!-- Existing Image -->
+                        @if($nvr->replace_image)
+                            <div class="existing-image">
+                                <p>Current Image:</p>
+                                <img src="{{ $nvr->replace_image }}" alt="Replacement Reason Image" style="max-width: 150px; height: auto; border: 1px solid #ccc; padding: 5px; border-radius: 5px;">
+                            </div>
+                        @endif
+
+                        <!-- New Image Preview -->
+                        <div class="new-image">
+                            <p>New Image Preview:</p>
+                            <img id="new-image-preview" src="#" alt="New Image Preview" style="max-width: 150px; height: auto; display: none; border: 1px solid #ccc; padding: 5px; border-radius: 5px;">
+                        </div>
+                    </div>
+
+                    <!-- Image Input Field -->
+                    <input type="file" name="replace_image" accept="image/*" onchange="previewNewImage(event)">
+                </fieldset>
+                @error('replace_image')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
@@ -97,4 +135,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    function previewNewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById('new-image-preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 @endsection

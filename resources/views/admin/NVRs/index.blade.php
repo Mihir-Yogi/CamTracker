@@ -42,12 +42,19 @@
                                 <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration->format('Y-m-d') : 'N/A' }}</td>
                                 <td colspan="3" >
                                     <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+                                        <a href="{{route('admin.nvrs.show',$nvr->id) }}" style="margin-left: 15px;">
+                                            <div class="list-icon-function view-icon">
+                                                <div class="item eye">
+                                                    <i class="icon-eye"></i>
+                                                </div>
+                                            </div>
+                                        </a>
                                         <a href="{{ route('admin.nvrs.edit', $nvr->id) }}" style="margin-left: 15px;">
                                             <div class="item edit">
                                                 <i class="icon-edit-3"></i>
                                             </div>
                                         </a>
-                                        <a href="{{ route('admin.nvrs.replace', $nvr) }}" style="margin-left: 15px;" >
+                                        <a href="{{ route('admin.nvrs.replaceForm', $nvr) }}" style="margin-left: 15px;" >
                                             <div class="item edit">
                                                 <i class="fa-solid fa-repeat"></i>
                                             </div>

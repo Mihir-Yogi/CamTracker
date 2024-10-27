@@ -19,6 +19,7 @@ class Nvr extends Model
         'warranty_expiration',
         'depot_id',  // New field
         'location_id',  // New field
+        'image_replace', 
     ];
 
     protected $dates = [
