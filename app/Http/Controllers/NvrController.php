@@ -77,11 +77,12 @@ class NvrController extends Controller
 
     public function edit(Nvr $nvr)
     {
-        return view('nvrs.edit', compact('nvr'));
+        return view('admin.NVRs.nvr_edit', compact('nvr'));
     }
 
     public function update(Request $request, Nvr $nvr)
     {
+        // Validate the request data
         $request->validate([
             'model' => 'required|string|max:255',
             'serial_number' => 'required|string|unique:nvrs,serial_number,' . $nvr->id . '|max:255',
@@ -90,10 +91,21 @@ class NvrController extends Controller
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
         ]);
-
-        $nvr->update($request->all());
-        return redirect()->route('admin.nvrs.index');
+    
+        // Only allow updating fields that are editable by the user
+        $nvr->update([
+            'model' => $request->input('model'),
+            'serial_number' => $request->input('serial_number'),
+            'failure_reason' => $request->input('failure_reason'),
+            'purchase_date' => $request->input('purchase_date'),
+            'installation_date' => $request->input('installation_date'),
+            'warranty_expiration' => $request->input('warranty_expiration'),
+        ]);
+    
+        // Redirect to the NVR index page with a success message
+        return redirect()->route('admin.nvrs.index')->with('status', 'NVR updated successfully!');
     }
+
 
     public function destroy(Nvr $nvr)
     {

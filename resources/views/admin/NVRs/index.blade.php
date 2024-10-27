@@ -40,9 +40,9 @@
                                 <td>{{ $nvr->purchase_date ? $nvr->purchase_date->format('Y-m-d') : 'N/A' }}</td>
                                 <td>{{ $nvr->installation_date ? $nvr->installation_date->format('Y-m-d') : 'N/A' }}</td>
                                 <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration->format('Y-m-d') : 'N/A' }}</td>
-                                <td colspan="3">
-                                    <div class="list-icon-function">
-                                        <a href="{{ route('admin.nvrs.edit', $nvr) }}" style="margin-left: 15px;">
+                                <td colspan="3" >
+                                    <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+                                        <a href="{{ route('admin.nvrs.edit', $nvr->id) }}" style="margin-left: 15px;">
                                             <div class="item edit">
                                                 <i class="icon-edit-3"></i>
                                             </div>
