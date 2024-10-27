@@ -69,16 +69,72 @@
                                 <li class="menu-item has-children">
                                     <a href="javascript:void(0);" class="menu-item-button">
                                         <div class="icon"><i class="fa-solid fa-server"></i></div>
+                                        <div class="text">Depot</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.depots.create')}}" class="">
+                                                <div class="text">Add Depot</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.depots.index')}}" class="">
+                                                <div class="text">Depots</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="fa-solid fa-server"></i></div>
+                                        <div class="text">Location</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.locations.create')}}" class="">
+                                                <div class="text">Add Location</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.locations.index')}}" class="">
+                                                <div class="text">Locations</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="fa-solid fa-server"></i></div>
+                                        <div class="text">NVR/DVR/HDD</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.combos.create')}}" class="">
+                                                <div class="text">Add NVR/DVR/HDD</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.combos.index')}}" class="">
+                                                <div class="text">View NVR/DVR/HDD</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="fa-solid fa-server"></i></div>
                                         <div class="text">NVR</div>
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="#" class="">
+                                            <a href="{{route('admin.nvrs.create')}}" class="">
                                                 <div class="text">Add NVR</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="#" class="">
+                                            <a href="{{route('admin.nvrs.index')}}" class="">
                                                 <div class="text">NVRs</div>
                                             </a>
                                         </li>

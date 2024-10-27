@@ -19,7 +19,14 @@ return new class extends Migration
             $table->string('failure_reason')->nullable();
             $table->date('purchase_date')->nullable();          // Added field
             $table->date('installation_date')->nullable();      // Added field
-            $table->date('warranty_expiration')->nullable();    // Added field
+            $table->date('warranty_expiration')->nullable();  
+            $table->unsignedBigInteger('depot_id')->nullable();
+            $table->unsignedBigInteger('location_id')->nullable();
+            
+            // Add foreign key constraints if needed
+            $table->foreign('depot_id')->references('id')->on('depots')->onDelete('set null');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('set null');
+            
             $table->timestamps();
         });
     }
@@ -27,8 +34,18 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('nvrs');
+        Schema::table('nvrs', function (Blueprint $table) {
+            if (Schema::hasColumn('nvrs', 'depot_id')) {
+                $table->dropForeign(['depot_id']);
+                $table->dropColumn('depot_id');
+            }
+
+            if (Schema::hasColumn('nvrs', 'location_id')) {
+                $table->dropForeign(['location_id']);
+                $table->dropColumn('location_id');
+            }
+        });
     }
 };
