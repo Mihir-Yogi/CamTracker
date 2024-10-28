@@ -8,8 +8,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Controllers\DepotController;
 use App\Http\Controllers\LocationController;
-use App\Http\Controllers\NvrController;
 use App\Http\Controllers\ComboController;
+use App\Http\Controllers\NvrController;
+use App\Http\Controllers\DvrController;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -53,6 +54,10 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::put('/admin/locations/{location}', [LocationController::class, 'update'])->name('admin.locations.update');
     Route::delete('/admin/locations/{location}', [LocationController::class, 'destroy'])->name('admin.locations.destroy');
 
+    // Combo routes under admin
+    Route::get('/admin/combos', [ComboController::class, 'index'])->name('admin.combos.index');
+    Route::get('/admin/combos/create', [ComboController::class, 'create'])->name('admin.combos.create');
+    Route::post('/admin/combos', [ComboController::class, 'store'])->name('admin.combos.store');
     
     // NVR routes under admin
     Route::get('/admin/nvrs', [NvrController::class, 'index'])->name('admin.nvrs.index');
@@ -66,10 +71,19 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::delete('/admin/nvrs/{nvr}', [NvrController::class, 'destroy'])->name('admin.nvrs.destroy');
     Route::get('/admin/locations-by-depot/{depotId}', [NvrController::class, 'getLocationsByDepot']);
 
-    // Combo routes under admin
-    Route::get('/admin/combos', [ComboController::class, 'index'])->name('admin.combos.index');
-    Route::get('/admin/combos/create', [ComboController::class, 'create'])->name('admin.combos.create');
-    Route::post('/admin/combos', [ComboController::class, 'store'])->name('admin.combos.store');
+    // DVR routes under admin
+    Route::get('/admin/dvrs', [DvrController::class, 'index'])->name('admin.dvrs.index');
+    Route::get('/admin/dvrs/create', [DvrController::class, 'create'])->name('admin.dvrs.create');
+    Route::post('/admin/dvrs/store', [DvrController::class, 'store'])->name('admin.dvrs.store');
+    Route::get('admin/dvrs/{dvr}', [DvrController::class, 'show'])->name('admin.dvrs.show');
+    Route::get('/admin/dvrs/{dvr}/edit', [DvrController::class, 'edit'])->name('admin.dvrs.edit');
+    Route::put('/admin/dvrs/{dvr}', [DvrController::class, 'update'])->name('admin.dvrs.update');
+    Route::get('/admin/dvrs/{dvr}/replace', [DvrController::class, 'showReplaceForm'])->name('admin.dvrs.replaceForm');
+    Route::post('/admin/dvrs/{dvr}/replace', [DvrController::class, 'replace'])->name('admin.dvrs.replace');
+    Route::delete('/admin/dvrs/{dvr}', [DvrController::class, 'destroy'])->name('admin.dvrs.destroy');
+    Route::get('/admin/locations-by-depot/{depotId}', [DvrController::class, 'getLocationsByDepot']);
+
+
 });
 
 

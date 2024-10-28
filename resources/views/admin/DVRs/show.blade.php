@@ -70,7 +70,7 @@
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-            <h3>NVR Details</h3>
+            <h3>DVR Details</h3>
             <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                 <li>
                     <a href="{{ route('admin.index') }}">
@@ -79,12 +79,12 @@
                 </li>
                 <li><i class="icon-chevron-right"></i></li>
                 <li>
-                    <a href="{{ route('admin.nvrs.index') }}">
-                        <div class="text-tiny">NVRs</div>
+                    <a href="{{ route('admin.dvrs.index') }}">
+                        <div class="text-tiny">DVRs</div>
                     </a>
                 </li>
                 <li><i class="icon-chevron-right"></i></li>
-                <li><div class="text-tiny">NVR Details</div></li>
+                <li><div class="text-tiny">DVR Details</div></li>
             </ul>
         </div>
 
@@ -93,45 +93,45 @@
                 <table class="details-table">
                     <tr>
                         <th>Model</th>
-                        <td>{{ $nvr->model }}</td>
+                        <td>{{ $dvr->model }}</td>
                     </tr>
                     <tr>
                         <th>Serial Number</th>
-                        <td>{{ $nvr->serial_number }}</td>
+                        <td>{{ $dvr->serial_number }}</td>
                     </tr>
                     <tr>
                         <th>Status</th>
-                        <td>{{ ucfirst($nvr->status) }}</td>
+                        <td>{{ ucfirst($dvr->status) }}</td>
                     </tr>
                     <tr>
                         <th>Failure Reason</th>
-                        <td>{{ $nvr->failure_reason ?? 'N/A' }}</td>
+                        <td>{{ $dvr->failure_reason ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Depot</th>
-                        <td>{{ $nvr->depot->name ?? 'N/A' }}</td>
+                        <td>{{ $dvr->depot->name ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Location</th>
-                        <td>{{ $nvr->location->name ?? 'N/A' }}</td>
+                        <td>{{ $dvr->location->name ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Purchase Date</th>
-                        <td>{{ $nvr->purchase_date ? $nvr->purchase_date->format('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ $dvr->purchase_date ? $dvr->purchase_date : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Installation Date</th>
-                        <td>{{ $nvr->installation_date ? $nvr->installation_date->format('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ $dvr->installation_date ? $dvr->installation_date : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Warranty Expiration</th>
-                        <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration->format('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ $dvr->warranty_expiration ? $dvr->warranty_expiration : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Replacement Reason Image</th>
                         <td class="image-preview">
-                            @if($nvr->image_replace)
-                                <img src="{{ asset($nvr->image_replace) }}" alt="Replacement Reason Image">
+                            @if($dvr->image_replace)
+                                <img src="{{ asset($dvr->image_replace) }}" alt="Replacement Reason Image">
                             @else
                                 N/A
                             @endif
@@ -141,10 +141,10 @@
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    <a href="{{ route('admin.nvrs.index') }}" class="tf-button">Back to List</a>
+                    <a href="{{ route('admin.dvrs.index') }}" class="tf-button">Back to List</a>
                     <!-- Only display the Edit button if the status is 'working' -->
-                    @if($nvr->status === 'working')
-                        <a href="{{ route('admin.nvrs.edit', $nvr) }}" class="tf-button">Edit NVR</a>
+                    @if($dvr->status === 'working')
+                        <a href="{{ route('admin.dvrs.edit', $dvr) }}" class="tf-button">Edit DVR</a>
                     @endif
                 </div>
             </div>

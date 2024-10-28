@@ -6,11 +6,11 @@
     <div class="main-content-wrap">
         <!-- Header and Add Button -->
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-            <h3>NVR List</h3>
-            <a href="{{ route('admin.nvrs.create') }}" class="tf-button style-1 w208">Add New NVR</a>
+            <h3>DVR List</h3>
+            <a href="{{ route('admin.dvrs.create') }}" class="tf-button style-1 w208">Add New DVR</a>
         </div>
 
-        <!-- NVR Table -->
+        <!-- DVR Table -->
         <div class="wg-box">
             <div class="table-responsive">
                 @if(Session::has('status'))
@@ -31,18 +31,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($nvrs as $nvr)
+                        @forelse($dvrs as $dvr)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $nvr->model }}</td>
-                                <td>{{ $nvr->serial_number }}</td>
-                                <td>{{ ucfirst($nvr->status) }}</td>
-                                <td>{{ $nvr->purchase_date ? $nvr->purchase_date->format('Y-m-d') : 'N/A' }}</td>
-                                <td>{{ $nvr->installation_date ? $nvr->installation_date->format('Y-m-d') : 'N/A' }}</td>
-                                <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration->format('Y-m-d') : 'N/A' }}</td>
+                                <td>{{ $dvr->model }}</td>
+                                <td>{{ $dvr->serial_number }}</td>
+                                <td>{{ ucfirst($dvr->status) }}</td>
+                                <td>{{ $dvr->purchase_date ? $dvr->purchase_date : 'N/A' }}</td>
+                                <td>{{ $dvr->installation_date ? $dvr->installation_date : 'N/A' }}</td>
+                                <td>{{ $dvr->warranty_expiration ? $dvr->warranty_expiration : 'N/A' }}</td>
                                 <td colspan="3">
                                     <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
-                                        <a href="{{ route('admin.nvrs.show', $nvr->id) }}" style="margin-left: 15px;">
+                                        <a href="{{ route('admin.dvrs.show', $dvr->id) }}" style="margin-left: 15px;">
                                             <div class="list-icon-function view-icon">
                                                 <div class="item eye">
                                                     <i class="icon-eye"></i>
@@ -51,13 +51,13 @@
                                         </a>
 
                                         <!-- Only show the edit and replace buttons if status is 'working' -->
-                                        @if($nvr->status === 'working')
-                                            <a href="{{ route('admin.nvrs.edit', $nvr->id) }}" style="margin-left: 15px;">
+                                        @if($dvr->status === 'working')
+                                            <a href="{{ route('admin.dvrs.edit', $dvr->id) }}" style="margin-left: 15px;">
                                                 <div class="item edit">
                                                     <i class="icon-edit-3"></i>
                                                 </div>
                                             </a>
-                                            <a href="{{ route('admin.nvrs.replaceForm', $nvr) }}" style="margin-left: 15px;">
+                                            <a href="{{ route('admin.dvrs.replaceForm', $dvr) }}" style="margin-left: 15px;">
                                                 <div class="item edit">
                                                     <i class="fa-solid fa-repeat"></i>
                                                 </div>
@@ -65,7 +65,7 @@
                                         @endif
 
                                         <!-- Delete button (available for all statuses) -->
-                                        <form action="{{ route('admin.nvrs.destroy', $nvr) }}" method="POST" style="display:inline;">
+                                        <form action="{{ route('admin.dvrs.destroy', $dvr) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" class="item text-danger delete">
@@ -77,7 +77,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center">No NVRs found.</td>
+                                <td colspan="8" class="text-center">No DVRs found.</td>
                             </tr>
                         @endforelse
                     </tbody>

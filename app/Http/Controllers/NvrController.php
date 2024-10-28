@@ -147,13 +147,13 @@ class NvrController extends Controller
             $fileName = 'replace_' . time() . '.' . $image->getClientOriginalExtension();
 
             // Define the path where the image will be stored
-            $destinationPath = public_path('uploads/replaceReason_images');
+            $destinationPath = public_path('uploads/nvrReplace_images');
 
             // Move the uploaded file to the specified directory
             $image->move($destinationPath, $fileName);
 
             // Set the path for the saved image in the `replace_image` attribute
-            $nvr->image_replace = 'uploads/replaceReason_images/' . $fileName;
+            $nvr->image_replace = 'uploads/nvrReplace_images/' . $fileName;
         }
         
 

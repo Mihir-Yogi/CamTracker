@@ -148,12 +148,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="#" class="">
+                                            <a href="{{route('admin.dvrs.create')}}" class="">
                                                 <div class="text">New DVR</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="#" class="">
+                                            <a href="{{route('admin.dvrs.index')}}" class="">
                                                 <div class="text">DVRs</div>
                                             </a>
                                         </li>
