@@ -14,12 +14,12 @@
         width: 100%;
         border-collapse: collapse;
         margin: 15px 0;
-        font-size: 16px; /* Increase font size */
+        font-size: 16px;
     }
 
     .details-table th,
     .details-table td {
-        padding: 14px 20px; /* Increased padding */
+        padding: 14px 20px;
         border: 1px solid #ddd;
     }
 
@@ -28,7 +28,7 @@
         font-weight: bold;
         color: #333;
         text-align: left;
-        font-size: 18px; /* Larger font for headers */
+        font-size: 18px;
     }
 
     .details-table td {
@@ -53,8 +53,8 @@
 
     .action-buttons .tf-button {
         display: inline-block;
-        padding: 12px 24px; /* Increased padding */
-        font-size: 16px; /* Larger font for buttons */
+        padding: 12px 24px;
+        font-size: 16px;
         color: #fff;
         background-color: #007bff;
         text-decoration: none;
@@ -70,7 +70,7 @@
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-            <h3>HDD Details</h3>
+            <h3>CCTV Camera Details</h3>
             <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                 <li>
                     <a href="{{ route('admin.index') }}">
@@ -79,12 +79,12 @@
                 </li>
                 <li><i class="icon-chevron-right"></i></li>
                 <li>
-                    <a href="{{ route('admin.hdds.index') }}">
-                        <div class="text-tiny">HDDs</div>
+                    <a href="{{ route('admin.cctvs.index') }}">
+                        <div class="text-tiny">CCTVs</div>
                     </a>
                 </li>
                 <li><i class="icon-chevron-right"></i></li>
-                <li><div class="text-tiny">HDD Details</div></li>
+                <li><div class="text-tiny">CCTV Camera Details</div></li>
             </ul>
         </div>
 
@@ -93,49 +93,41 @@
                 <table class="details-table">
                     <tr>
                         <th>Model</th>
-                        <td>{{ $hdd->model }}</td>
-                    </tr>
-                    <tr>
-                        <th>Capaity</th>
-                        <td>{{ $hdd->capacity }}</td>
+                        <td>{{ $cctv->model }}</td>
                     </tr>
                     <tr>
                         <th>Serial Number</th>
-                        <td>{{ $hdd->serial_number }}</td>
+                        <td>{{ $cctv->serial_number }}</td>
                     </tr>
                     <tr>
                         <th>Status</th>
-                        <td>{{ ucfirst($hdd->status) }}</td>
+                        <td>{{ ucfirst($cctv->status) }}</td>
                     </tr>
                     <tr>
                         <th>Failure Reason</th>
-                        <td>{{ $hdd->failure_reason ?? 'N/A' }}</td>
+                        <td>{{ $cctv->failure_reason ?? 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>Depot</th>
-                        <td>{{ $hdd->depot->name ?? 'N/A' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Location</th>
-                        <td>{{ $hdd->location->name ?? 'N/A' }}</td>
+                        <th>Combo (Depot - Location)</th>
+                        <td>{{ $cctv->combo->depot->name ?? 'N/A' }} - {{ $cctv->combo->location->name ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Purchase Date</th>
-                        <td>{{ $hdd->purchase_date ? $hdd->purchase_date : 'N/A' }}</td>
+                        <td>{{ $cctv->purchase_date ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Installation Date</th>
-                        <td>{{ $hdd->installation_date ? $hdd->installation_date : 'N/A' }}</td>
+                        <td>{{ $cctv->installation_date ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Warranty Expiration</th>
-                        <td>{{ $hdd->warranty_expiration ? $hdd->warranty_expiration : 'N/A' }}</td>
+                        <td>{{ $cctv->warranty_expiration ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Replacement Reason Image</th>
                         <td class="image-preview">
-                            @if($hdd->image_replace)
-                                <img src="{{ asset($hdd->image_replace) }}" alt="Replacement Reason Image">
+                            @if($cctv->image_replace)
+                                <img src="{{ asset($cctv->image_replace) }}" alt="Replacement Reason Image">
                             @else
                                 N/A
                             @endif
@@ -145,10 +137,10 @@
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    <a href="{{ route('admin.hdds.index') }}" class="tf-button">Back to List</a>
+                    <a href="{{ route('admin.cctvs.index') }}" class="tf-button">Back to List</a>
                     <!-- Only display the Edit button if the status is 'working' -->
-                    @if($hdd->status === 'working')
-                        <a href="{{ route('admin.hdds.edit', $hdd) }}" class="tf-button">Edit hdd</a>
+                    @if($cctv->status === 'working')
+                        <a href="{{ route('admin.cctvs.edit', $cctv) }}" class="tf-button">Edit CCTV</a>
                     @endif
                 </div>
             </div>

@@ -4,26 +4,22 @@
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-            <h3>Add HDD</h3>
+            <h3>Add CCTV Camera</h3>
             <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                 <li>
                     <a href="{{ route('admin.index') }}">
                         <div class="text-tiny">Dashboard</div>
                     </a>
                 </li>
+                <li><i class="icon-chevron-right"></i></li>
                 <li>
-                    <i class="icon-chevron-right"></i>
-                </li>
-                <li>
-                    <a href="{{ route('admin.hdds.index') }}">
-                        <div class="text-tiny">HDDs</div>
+                    <a href="{{ route('admin.cctvs.index') }}">
+                        <div class="text-tiny">CCTVs</div>
                     </a>
                 </li>
+                <li><i class="icon-chevron-right"></i></li>
                 <li>
-                    <i class="icon-chevron-right"></i>
-                </li>
-                <li>
-                    <div class="text-tiny">Add New HDD</div>
+                    <div class="text-tiny">Add New CCTV Camera</div>
                 </li>
             </ul>
         </div>
@@ -38,9 +34,9 @@
             </div>
         @endif
 
-        <!-- Add HDD Form -->
+        <!-- Add CCTV Camera Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.hdds.store') }}" method="POST">
+            <form class="form-new-product form-style-1" action="{{ route('admin.cctvs.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Model Field -->
@@ -61,41 +57,22 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                <!-- Capacity Field -->
-                <fieldset class="name">
-                    <div class="body-title">Capacity (GB) <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="number" placeholder="Enter capacity in GB" name="capacity" value="{{ old('capacity') }}" required>
-                </fieldset>
-                @error('capacity')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
-                <!-- Select Depot Field -->
+                <!-- Combo Selection Field -->
                 <fieldset>
-                    <div class="body-title">Select Depot <span class="tf-color-1">*</span></div>
+                    <div class="body-title">Select Combo <span class="tf-color-1">*</span></div>
                     <div class="select flex-grow">
-                        <select name="depot_id" id="depot_id" required>
-                            <option value="">Select a depot</option>
-                            @foreach($depots as $depot)
-                                <option value="{{ $depot->id }}" @if(old('depot_id') == $depot->id) selected @endif>{{ $depot->name }} ({{ $depot->city }})</option>
+                        <select name="combo_id" required>
+                            <option value="">Select a combo (Depot - Location)</option>
+                            @foreach($combos as $combo)
+                                <option value="{{ $combo->id }}" @if(old('combo_id') == $combo->id) selected @endif>
+                                    {{ $combo->depot->name }} - {{ $combo->location->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                 </fieldset>
-                @error('depot_id')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Select Location Field -->
-                <fieldset>
-                    <div class="body-title">Select Location <span class="tf-color-1">*</span></div>
-                    <div class="select flex-grow">
-                        <select name="location_id" id="location_id" required>
-                            <option value="">Select a location</option>
-                        </select>
-                    </div>
-                </fieldset>
-                @error('location_id')
+                @error('combo_id')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
@@ -128,41 +105,11 @@
 
                 <!-- Save Button -->
                 <div class="bot">
-                    <div></div>
-                    <button class="tf-button w208" type="submit">Add HDD</button>
-                    <a href="{{ route('admin.hdds.index') }}" class="tf-button w208">Cancel</a>
+                    <button class="tf-button w208" type="submit">Add CCTV Camera</button>
+                    <a href="{{ route('admin.cctvs.index') }}" class="tf-button w208">Cancel</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<!-- JavaScript to handle depot selection -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#depot_id').change(function() {
-        var selectedDepotId = $(this).val();
-
-        // Fetch locations based on selected depot
-        if (selectedDepotId) {
-            $.ajax({
-                url: "{{ url('/admin/locations-by-depot') }}/" + selectedDepotId,
-                type: 'GET',
-                success: function(data) {
-                    $('#location_id').empty().append('<option value="">Select a location</option>');
-                    $.each(data, function(index, location) {
-                        $('#location_id').append('<option value="' + location.id + '">' + location.name + '</option>');
-                    });
-                },
-                error: function() {
-                    alert('Failed to fetch locations. Please try again.');
-                }
-            });
-        } else {
-            $('#location_id').empty().append('<option value="">Select a location</option>');
-        }
-    });
-});
-</script>
 @endsection

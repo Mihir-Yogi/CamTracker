@@ -185,12 +185,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="#" class="">
+                                            <a href="{{route('admin.cctvs.create')}}" class="">
                                                 <div class="text">New CCTV</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="#" class="">
+                                            <a href="{{route('admin.cctvs.index')}}" class="">
                                                 <div class="text">CCTVs</div>
                                             </a>
                                         </li>

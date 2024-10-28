@@ -4,7 +4,7 @@
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-            <h3>Replace HDD</h3>
+            <h3>Replace CCTV Camera</h3>
             <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                 <li>
                     <a href="{{ route('admin.index') }}">
@@ -15,37 +15,37 @@
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <a href="{{ route('admin.hdds.index') }}">
-                        <div class="text-tiny">HDDs</div>
+                    <a href="{{ route('admin.cctvs.index') }}">
+                        <div class="text-tiny">CCTV Cameras</div>
                     </a>
                 </li>
                 <li>
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <div class="text-tiny">Replace HDD</div>
+                    <div class="text-tiny">Replace CCTV Camera</div>
                 </li>
             </ul>
         </div>
 
-        <!-- Replace hdd Form -->
+        <!-- Replace CCTV Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.hdds.replace', $hdd->id) }}"  enctype="multipart/form-data" method="POST">
+            <form class="form-new-product form-style-1" action="{{ route('admin.cctvs.replace', $cctv->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
 
                 <!-- Depot Field (Read-Only) -->
                 <fieldset class="name">
                     <div class="body-title">Depot</div>
-                    <input class="flex-grow" type="text" name="depot" value="{{ $hdd->depot->name }}" disabled style="color: #6c757d;">
+                    <input class="flex-grow" type="text" name="depot" value="{{ $cctv->combo->depot->name }}" disabled style="color: #6c757d;">
                 </fieldset>
 
                 <!-- Location Field (Read-Only) -->
                 <fieldset class="name">
                     <div class="body-title">Location</div>
-                    <input class="flex-grow" type="text" name="location" value="{{ $hdd->location->name }}" disabled style="color: #6c757d;">
+                    <input class="flex-grow" type="text" name="location" value="{{ $cctv->combo->location->name }}" disabled style="color: #6c757d;">
                 </fieldset>
 
-                <!-- Model Field -->
+                <!-- New Model Field -->
                 <fieldset class="name">
                     <div class="body-title">New Model <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="text" placeholder="Enter new model" name="model" value="{{ old('model') }}" required>
@@ -54,16 +54,7 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                <!-- Capacity Field -->
-                <fieldset class="name">
-                    <div class="body-title">New Capacity <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter new Capacity" name="capacity" value="{{ old('capacity') }}" required>
-                </fieldset>
-                @error('capacity')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Serial Number Field -->
+                <!-- New Serial Number Field -->
                 <fieldset class="name">
                     <div class="body-title">New Serial Number <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="text" placeholder="Enter new serial number" name="serial_number" value="{{ old('serial_number') }}" required>
@@ -83,13 +74,13 @@
 
                 <!-- Replace Image Field with Preview -->
                 <fieldset class="name">
-                    <div class="body-title">Replacement Reason Image</div>
+                    <div class="body-title">Replacement Image</div>
                     <div class="image-preview-container" style="display: flex; gap: 20px; align-items: flex-start;">
                         <!-- Existing Image -->
-                        @if($hdd->replace_image)
+                        @if($cctv->replace_image)
                             <div class="existing-image">
                                 <p>Current Image:</p>
-                                <img src="{{ $hdd->replace_image }}" alt="Replacement Reason Image" style="max-width: 150px; height: auto; border: 1px solid #ccc; padding: 5px; border-radius: 5px;">
+                                <img src="{{ $cctv->replace_image }}" alt="Current CCTV Image" style="max-width: 150px; height: auto; border: 1px solid #ccc; padding: 5px; border-radius: 5px;">
                             </div>
                         @endif
 
@@ -119,26 +110,26 @@
                 <!-- Installation Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Installation Date</div>
-                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date') }}">
+                    <input class="flex-grow" type="date" name="installed_date" value="{{ old('installed_date') }}">
                 </fieldset>
-                @error('installation_date')
+                @error('installed_date')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
                     <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration') }}">
+                    <input class="flex-grow" type="date" name="expiry_date" value="{{ old('expiry_date') }}">
                 </fieldset>
-                @error('warranty_expiration')
+                @error('expiry_date')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
                 <!-- Save Button -->
                 <div class="bot">
                     <div></div>
-                    <button class="tf-button w208" type="submit">Replace hdd</button>
-                    <a href="{{ route('admin.hdds.index') }}" class="tf-button w208">Cancel</a>
+                    <button class="tf-button w208" type="submit">Replace CCTV</button>
+                    <a href="{{ route('admin.cctvs.index') }}" class="tf-button w208">Cancel</a>
                 </div>
             </form>
         </div>

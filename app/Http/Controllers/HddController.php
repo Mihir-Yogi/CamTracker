@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hdd;
 use Illuminate\Http\Request;
+use App\Models\Depot;
+use App\Models\Location;
+use App\Models\Combo;
+use Carbon\Carbon;
+use Intervention\Image\Facades\Image;
+use App\Models\Hdd;
 
 class HddController extends Controller
 {
@@ -15,52 +20,147 @@ class HddController extends Controller
 
     public function create()
     {
-        return view('hdds.create');
+        $depots = Depot::all(); // Fetch all depots
+        return view('admin.HDDs.hdd_add', compact('depots'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'model' => 'required|string|max:255',
-            'capacity' => 'required|integer|min:1',
+            'serial_number' => 'required|string|unique:hdds,serial_number|max:255',
+            'status' => 'required|in:working,failed',
             'purchase_date' => 'required|date',
-            'install_date' => 'required|date',
-            'expiry_date' => 'required|date',
-            'warranty_period' => 'required|integer|min:1',
+            'installation_date' => 'required|date',
+            'warranty_expiration' => 'required|date',
+            'depot_id' => 'required|exists:depots,id',
+            'location_id' => 'required|exists:locations,id',
+            'capacity' => 'required|integer|min:0',
         ]);
 
-        Hdd::create($request->all());
-        return redirect()->route('hdds.index');
+        // Create the HDD record
+        $hdd = Hdd::create($request->except(['capacity', 'current_cctv_count']));
+
+        // Associate or create the Combo record and save camera capacity
+        $combo = new Combo([
+            'capacity' => $request->capacity,
+            'current_cctv_count' => 0,
+        ]);
+        $hdd->combo()->save($combo);
+
+        return redirect()->route('admin.hdds.index')->with('success', 'HDD added successfully!');
     }
 
     public function show(Hdd $hdd)
     {
-        return view('hdds.show', compact('hdd'));
+        return view('admin.HDDs.show', compact('hdd'));
     }
 
     public function edit(Hdd $hdd)
     {
-        return view('hdds.edit', compact('hdd'));
+        return view('admin.HDDs.hdd_edit', compact('hdd'));
     }
 
     public function update(Request $request, Hdd $hdd)
     {
+        // Validate the request data
         $request->validate([
             'model' => 'required|string|max:255',
-            'capacity' => 'required|integer|min:1',
-            'purchase_date' => 'required|date',
-            'install_date' => 'required|date',
-            'expiry_date' => 'required|date',
-            'warranty_period' => 'required|integer|min:1',
+            'serial_number' => 'required|string|unique:hdds,serial_number,' . $hdd->id . '|max:255',
+            'failure_reason' => 'nullable|string|max:255',
+            'purchase_date' => 'nullable|date',
+            'installation_date' => 'nullable|date',
+            'warranty_expiration' => 'nullable|date',
+            'capacity' => 'nullable|integer|min:0'
         ]);
 
-        $hdd->update($request->all());
-        return redirect()->route('hdds.index');
+        // Only allow updating fields that are editable by the user
+        $hdd->update([
+            'model' => $request->input('model'),
+            'serial_number' => $request->input('serial_number'),
+            'failure_reason' => $request->input('failure_reason'),
+            'purchase_date' => $request->input('purchase_date'),
+            'installation_date' => $request->input('installation_date'),
+            'warranty_expiration' => $request->input('warranty_expiration'),
+            'capacity' => $request->input('capacity'),
+        ]);
+
+        return redirect()->route('admin.hdds.index')->with('status', 'HDD updated successfully!');
     }
 
     public function destroy(Hdd $hdd)
     {
         $hdd->delete();
-        return redirect()->route('hdds.index');
+        return redirect()->route('admin.hdds.index');
+    }
+
+    public function getLocationsByDepot($depotId)
+    {
+        $locations = Location::where('depot_id', $depotId)->get();
+
+        if ($locations->isEmpty()) {
+            return response()->json(['message' => 'No locations found'], 404);
+        }
+
+        return response()->json($locations);
+    }
+
+    public function showReplaceForm(Hdd $hdd)
+    {
+        // Pass the selected HDD with its depot and location to the view
+        return view('admin.HDDs.hdd_replace', compact('hdd'));
+    }
+
+    public function replace(Request $request, Hdd $hdd)
+    {
+        // Validate the replacement request
+        $request->validate([
+            'model' => 'required|string|max:255',
+            'serial_number' => 'required|string|unique:hdds,serial_number', // Ensure it's unique
+            'failure_reason' => 'required|string|max:255',
+            'purchase_date' => 'required|date',
+            'installation_date' => 'required|date',
+            'warranty_expiration' => 'required|date',
+            'replace_image' => 'required|image|max:2048',
+            'capacity' => 'required|integer|min:0'
+        ]);
+
+        // Check if the request has a file
+        if ($request->hasFile('replace_image')) {
+            $image = $request->file('replace_image');
+
+            // Generate a unique file name for the image
+            $fileName = 'replace_' . time() . '.' . $image->getClientOriginalExtension();
+
+            // Define the path where the image will be stored
+            $destinationPath = public_path('uploads/hddReplace_images');
+
+            // Move the uploaded file to the specified directory
+            $image->move($destinationPath, $fileName);
+
+            // Set the path for the saved image in the `replace_image` attribute
+            $hdd->image_replace = 'uploads/hddReplace_images/' . $fileName;
+        }
+
+        $hdd->status = 'failed';
+        $hdd->failure_reason = $request->failure_reason;
+        $hdd->save();
+
+        // Create a new HDD record with the replacement details
+        $newHdd = Hdd::create([
+            'model' => $request->input('model'),
+            'serial_number' => $request->input('serial_number'),
+            'status' => 'working',
+            'purchase_date' => $request->input('purchase_date'),
+            'installation_date' => $request->input('installation_date'),
+            'warranty_expiration' => $request->input('warranty_expiration'),
+            'depot_id' => $hdd->depot_id,    // Use the same depot as the old HDD
+            'location_id' => $hdd->location_id,  // Use the same location as the old HDD
+            'capacity' => $hdd->capacity,
+        ]);
+
+        $hdd->combo()->update(['hdd_id' => $newHdd->id]);
+
+        return redirect()->route('admin.hdds.index')->with('success', 'HDD replaced successfully!');
     }
 }

@@ -1,37 +1,31 @@
 @extends('layouts.admin')
 
 @section('content')
-
 <style>
     .depot-location-text {
-    color: #a9a9a9;
-    opacity: 0.7; 
+        color: #a9a9a9;
+        opacity: 0.7;
     }
 </style>
+
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-            <h3>Edit HDD</h3>
+            <h3>Edit CCTV Camera</h3>
             <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                 <li>
                     <a href="{{ route('admin.index') }}">
                         <div class="text-tiny">Dashboard</div>
                     </a>
                 </li>
+                <li><i class="icon-chevron-right"></i></li>
                 <li>
-                    <i class="icon-chevron-right"></i>
-                </li>
-                <li>
-                    <a href="{{ route('admin.hdds.index') }}">
-                        <div class="text-tiny">HDDs</div>
+                    <a href="{{ route('admin.cctvs.index') }}">
+                        <div class="text-tiny">CCTVs</div>
                     </a>
                 </li>
-                <li>
-                    <i class="icon-chevron-right"></i>
-                </li>
-                <li>
-                    <div class="text-tiny">Edit HDD</div>
-                </li>
+                <li><i class="icon-chevron-right"></i></li>
+                <li><div class="text-tiny">Edit CCTV Camera</div></li>
             </ul>
         </div>
 
@@ -45,56 +39,51 @@
             </div>
         @endif
         
-        <!-- Edit hdd Form -->
+        <!-- Edit CCTV Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.hdds.update', $hdd->id) }}" method="POST">
+            <form class="form-new-product form-style-1" action="{{ route('admin.cctvs.update', $cctv->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 
                 <!-- Model Field -->
                 <fieldset class="name">
                     <div class="body-title">Model <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $hdd->model) }}" required>
+                    <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $cctv->model) }}" required>
                 </fieldset>
                 @error('model')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
-                <!-- Capacity Field -->
+
+                <!-- Combo Selection (Editable) -->
                 <fieldset class="name">
-                    <div class="body-title">Capacity <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter Capacity" name="capacity" value="{{ old('capacity', $hdd->capacity) }}" required>
+                    <div class="body-title">Combo <span class="tf-color-1">*</span></div>
+                    <select class="flex-grow" id="combo_id" name="combo_id" required>
+                        <option value="">Select Combo</option>
+                        @foreach($combos as $combo)
+                            <option value="{{ $combo->id }}" {{ old('combo_id', $cctv->combo_id) == $combo->id ? 'selected' : '' }}>
+                                {{ $combo->depot->name ?? 'N/A' }} - {{ $combo->location->name ?? 'N/A' }}
+                            </option>
+                        @endforeach
+                    </select>
                 </fieldset>
-                @error('model')
+                @error('combo_id')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
                 <!-- Serial Number Field -->
                 <fieldset class="name">
-                    <div class="body-title">Serial Number <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter serial number" name="serial_number" value="{{ old('serial_number', $hdd->serial_number) }}" required>
+                    <div class="body-title">Serial Number</div>
+                    <input class="flex-grow" type="text" placeholder="Enter serial number" name="serial_number" value="{{ old('serial_number', $cctv->serial_number) }}">
                 </fieldset>
                 @error('serial_number')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                <!-- Depot Field (Non-Editable) -->
-                <fieldset>
-                    <div class="body-title">Depot</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $hdd->depot->name }} ({{ $hdd->depot->city }})" disabled>
-                    <input type="hidden" name="depot_id" value="{{ $hdd->depot_id }}">
-                </fieldset>
-
-                <!-- Location Field (Non-Editable) -->
-                <fieldset>
-                    <div class="body-title">Location</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $hdd->location->name }}" disabled>
-                    <input type="hidden" name="location_id" value="{{ $hdd->location_id }}">
-                </fieldset>
 
                 <!-- Purchase Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $hdd->purchase_date ? $hdd->purchase_date : '') }}">
+                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $cctv->purchase_date) }}">
                 </fieldset>
                 @error('purchase_date')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -103,7 +92,7 @@
                 <!-- Installation Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Installation Date</div>
-                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $hdd->installation_date ? $hdd->installation_date : '') }}">
+                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $cctv->installation_date) }}">
                 </fieldset>
                 @error('installation_date')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -112,7 +101,7 @@
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
                     <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $hdd->warranty_expiration ? $hdd->warranty_expiration : '') }}">
+                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $cctv->warranty_expiration) }}">
                 </fieldset>
                 @error('warranty_expiration')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -122,7 +111,7 @@
                 <div class="bot">
                     <div></div>
                     <button class="tf-button w208" type="submit">Save Changes</button>
-                    <a href="{{ route('admin.hdds.index') }}" class="tf-button w208">Cancel</a>
+                    <a href="{{ route('admin.cctvs.index') }}" class="tf-button w208">Cancel</a>
                 </div>
             </form>
         </div>

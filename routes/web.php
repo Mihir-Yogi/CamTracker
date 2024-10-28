@@ -12,6 +12,7 @@ use App\Http\Controllers\ComboController;
 use App\Http\Controllers\NvrController;
 use App\Http\Controllers\DvrController;
 use App\Http\Controllers\HddController;
+use App\Http\Controllers\CCTVController;
 
 
 Route::get('/', function () {
@@ -86,7 +87,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/locations-by-depot/{depotId}', [DvrController::class, 'getLocationsByDepot']);
 
     // HDD routes under admin
-    Route::get('/admin/hdds', [HddController::class, 'index'])->name('admin.hdds.index');
+    Route::get('/admin/hdds', [ HddController::class, 'index'])->name('admin.hdds.index');
     Route::get('/admin/hdds/create', [HddController::class, 'create'])->name('admin.hdds.create');
     Route::post('/admin/hdds/store', [HddController::class, 'store'])->name('admin.hdds.store');
     Route::get('/admin/hdds/{hdd}', [HddController::class, 'show'])->name('admin.hdds.show');
@@ -97,6 +98,16 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::delete('/admin/hdds/{hdd}', [HddController::class, 'destroy'])->name('admin.hdds.destroy');
     Route::get('/admin/locations-by-depot/{depotId}', [HddController::class, 'getLocationsByDepot']);
     
+    // CCTV Camera Routes under admin
+    Route::get('/admin/cctvs', [CCTVController::class, 'index'])->name('admin.cctvs.index');                  // List all CCTVs
+    Route::get('/admin/cctvs/create', [CCTVController::class, 'create'])->name('admin.cctvs.create');         // Show form to create a new CCTV
+    Route::post('/admin/cctvs/store', [CCTVController::class, 'store'])->name('admin.cctvs.store');           // Store a new CCTV
+    Route::get('/admin/cctvs/{cctv}', [CCTVController::class, 'show'])->name('admin.cctvs.show');             // Show a single CCTV
+    Route::get('/admin/cctvs/{cctv}/edit', [CCTVController::class, 'edit'])->name('admin.cctvs.edit');        // Show form to edit a CCTV
+    Route::put('/admin/cctvs/{cctv}', [CCTVController::class, 'update'])->name('admin.cctvs.update');         // Update a CCTV
+    Route::get('/admin/cctvs/{cctv}/replace', [CCTVController::class, 'showReplaceForm'])->name('admin.cctvs.replaceForm'); // Show form to replace a CCTV
+    Route::post('/admin/cctvs/{cctv}/replace', [CCTVController::class, 'replace'])->name('admin.cctvs.replace');           // Replace a CCTV
+    Route::delete('/admin/cctvs/{cctv}', [CCTVController::class, 'destroy'])->name('admin.cctvs.destroy');    // Delete a CCTV
 });
 
 
