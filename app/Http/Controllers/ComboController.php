@@ -98,6 +98,7 @@ class ComboController extends Controller
         // Create the Combo record, linking the NVR, DVR, and HDD records
         $combo = Combo::create([
             'location_id' => $request->location_id,
+            'depot_id' => $request->depot_id,
             'nvr_id' => $nvr->id,
             'dvr_id' => $dvr->id,
             'hdd_id' => $hdd->id,

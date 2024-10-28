@@ -11,6 +11,8 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ComboController;
 use App\Http\Controllers\NvrController;
 use App\Http\Controllers\DvrController;
+use App\Http\Controllers\HddController;
+
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -83,7 +85,18 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::delete('/admin/dvrs/{dvr}', [DvrController::class, 'destroy'])->name('admin.dvrs.destroy');
     Route::get('/admin/locations-by-depot/{depotId}', [DvrController::class, 'getLocationsByDepot']);
 
-
+    // HDD routes under admin
+    Route::get('/admin/hdds', [HddController::class, 'index'])->name('admin.hdds.index');
+    Route::get('/admin/hdds/create', [HddController::class, 'create'])->name('admin.hdds.create');
+    Route::post('/admin/hdds/store', [HddController::class, 'store'])->name('admin.hdds.store');
+    Route::get('/admin/hdds/{hdd}', [HddController::class, 'show'])->name('admin.hdds.show');
+    Route::get('/admin/hdds/{hdd}/edit', [HddController::class, 'edit'])->name('admin.hdds.edit');
+    Route::put('/admin/hdds/{hdd}', [HddController::class, 'update'])->name('admin.hdds.update');
+    Route::get('/admin/hdds/{hdd}/replace', [HddController::class, 'showReplaceForm'])->name('admin.hdds.replaceForm');
+    Route::post('/admin/hdds/{hdd}/replace', [HddController::class, 'replace'])->name('admin.hdds.replace');
+    Route::delete('/admin/hdds/{hdd}', [HddController::class, 'destroy'])->name('admin.hdds.destroy');
+    Route::get('/admin/locations-by-depot/{depotId}', [HddController::class, 'getLocationsByDepot']);
+    
 });
 
 

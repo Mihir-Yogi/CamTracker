@@ -162,7 +162,7 @@ class NvrController extends Controller
         $nvr->save();
 
         // Create a new NVR record with the replacement details
-        Nvr::create([
+        $newNvr= Nvr::create([
             'model' => $request->input('model'),
             'serial_number' => $request->input('serial_number'),
             'status' => 'working',
@@ -172,6 +172,8 @@ class NvrController extends Controller
             'depot_id' => $nvr->depot_id,    // Use the same depot as the old NVR
             'location_id' => $nvr->location_id,  // Use the same location as the old NVR
         ]);
+
+        $nvr->combo()->update(['dvr_id' => $newNvr->id]);
 
         return redirect()->route('admin.nvrs.index')->with('success', 'NVR replaced successfully!');
     }

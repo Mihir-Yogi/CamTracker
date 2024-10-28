@@ -172,7 +172,7 @@
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="#" class="">
+                                            <a href="{{route('admin.hdds.index')}}" class="">
                                                 <div class="text">HDDs</div>
                                             </a>
                                         </li>

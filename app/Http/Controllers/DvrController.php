@@ -144,7 +144,7 @@ class DvrController extends Controller
         $dvr->save();
 
         // Create a new DVR record with the replacement details
-        Dvr::create([
+        $newDvr = Dvr::create([
             'model' => $request->input('model'),
             'serial_number' => $request->input('serial_number'),
             'status' => 'working',
@@ -154,6 +154,8 @@ class DvrController extends Controller
             'depot_id' => $dvr->depot_id,    // Use the same depot as the old DVR
             'location_id' => $dvr->location_id,  // Use the same location as the old DVR
         ]);
+
+        $dvr->combo()->update(['dvr_id' => $newDvr->id]);
 
         return redirect()->route('admin.dvrs.index')->with('success', 'DVR replaced successfully!');
     }

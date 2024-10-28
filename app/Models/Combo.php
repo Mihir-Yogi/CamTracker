@@ -8,7 +8,7 @@ class Combo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['location_id', 'nvr_id', 'dvr_id', 'hdd_id', 'camera_capacity', 'current_cctv_count'];
+    protected $fillable = ['location_id','depot_id', 'nvr_id', 'dvr_id', 'hdd_id', 'camera_capacity', 'current_cctv_count'];
 
     // Define inverse of the one-to-one relationship with Location
     public function location()
@@ -19,7 +19,6 @@ class Combo extends Model
     protected $attributes = [
         'current_cctv_count' => 0,  // Set default to 0
     ];
-    // Define one-to-one relationships with NVR, DVR, and HDD
     public function depot()
     {
         return $this->belongsTo(depot::class);

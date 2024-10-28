@@ -11,7 +11,7 @@
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-            <h3>Edit dvr</h3>
+            <h3>Edit NVR</h3>
             <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                 <li>
                     <a href="{{ route('admin.index') }}">
@@ -22,15 +22,15 @@
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <a href="{{ route('admin.dvrs.index') }}">
-                        <div class="text-tiny">dvrs</div>
+                    <a href="{{ route('admin.nvrs.index') }}">
+                        <div class="text-tiny">NVRs</div>
                     </a>
                 </li>
                 <li>
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <div class="text-tiny">Edit dvr</div>
+                    <div class="text-tiny">Edit NVR</div>
                 </li>
             </ul>
         </div>
@@ -45,16 +45,16 @@
             </div>
         @endif
         
-        <!-- Edit dvr Form -->
+        <!-- Edit NVR Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.dvrs.update', $dvr->id) }}" method="POST">
+            <form class="form-new-product form-style-1" action="{{ route('admin.nvrs.update', $nvr->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 
                 <!-- Model Field -->
                 <fieldset class="name">
                     <div class="body-title">Model <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $dvr->model) }}" required>
+                    <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $nvr->model) }}" required>
                 </fieldset>
                 @error('model')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -63,7 +63,7 @@
                 <!-- Serial Number Field -->
                 <fieldset class="name">
                     <div class="body-title">Serial Number <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter serial number" name="serial_number" value="{{ old('serial_number', $dvr->serial_number) }}" required>
+                    <input class="flex-grow" type="text" placeholder="Enter serial number" name="serial_number" value="{{ old('serial_number', $nvr->serial_number) }}" required>
                 </fieldset>
                 @error('serial_number')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -72,21 +72,21 @@
                 <!-- Depot Field (Non-Editable) -->
                 <fieldset>
                     <div class="body-title">Depot</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $dvr->depot->name }} ({{ $dvr->depot->city }})" disabled>
-                    <input type="hidden" name="depot_id" value="{{ $dvr->depot_id }}">
+                    <input class="flex-grow depot-location-text" type="text" value="{{ $nvr->depot->name }} ({{ $nvr->depot->city }})" disabled>
+                    <input type="hidden" name="depot_id" value="{{ $nvr->depot_id }}">
                 </fieldset>
 
                 <!-- Location Field (Non-Editable) -->
                 <fieldset>
                     <div class="body-title">Location</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $dvr->location->name }}" disabled>
-                    <input type="hidden" name="location_id" value="{{ $dvr->location_id }}">
+                    <input class="flex-grow depot-location-text" type="text" value="{{ $nvr->location->name }}" disabled>
+                    <input type="hidden" name="location_id" value="{{ $nvr->location_id }}">
                 </fieldset>
 
                 <!-- Purchase Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $dvr->purchase_date ? $dvr->purchase_date : '') }}">
+                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $nvr->purchase_date ? $nvr->purchase_date->format('Y-m-d') : '') }}">
                 </fieldset>
                 @error('purchase_date')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -95,7 +95,7 @@
                 <!-- Installation Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Installation Date</div>
-                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $dvr->installation_date ? $dvr->installation_date: '') }}">
+                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $nvr->installation_date ? $nvr->installation_date->format('Y-m-d') : '') }}">
                 </fieldset>
                 @error('installation_date')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -104,7 +104,7 @@
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
                     <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $dvr->warranty_expiration ? $dvr->warranty_expiration : '') }}">
+                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $nvr->warranty_expiration ? $nvr->warranty_expiration->format('Y-m-d') : '') }}">
                 </fieldset>
                 @error('warranty_expiration')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -114,7 +114,7 @@
                 <div class="bot">
                     <div></div>
                     <button class="tf-button w208" type="submit">Save Changes</button>
-                    <a href="{{ route('admin.dvrs.index') }}" class="tf-button w208">Cancel</a>
+                    <a href="{{ route('admin.nvrs.index') }}" class="tf-button w208">Cancel</a>
                 </div>
             </form>
         </div>
