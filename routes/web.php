@@ -61,6 +61,10 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/combos', [ComboController::class, 'index'])->name('admin.combos.index');
     Route::get('/admin/combos/create', [ComboController::class, 'create'])->name('admin.combos.create');
     Route::post('/admin/combos', [ComboController::class, 'store'])->name('admin.combos.store');
+    Route::get('admin/combos/{id}', [ComboController::class, 'show'])->name('admin.combos.show');
+    Route::get('/combos/{id}/edit', [ComboController::class, 'edit'])->name('admin.combos.edit'); // Show edit form (GET method)
+    Route::put('/combos/{id}', [ComboController::class, 'update'])->name('admin.combos.update'); // Update combo (PUT method)
+    Route::delete('/combos/{id}', [ComboController::class, 'destroy'])->name('admin.combos.destroy'); // Delete combo
     
     // NVR routes under admin
     Route::get('/admin/nvrs', [NvrController::class, 'index'])->name('admin.nvrs.index');
@@ -99,15 +103,15 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/locations-by-depot/{depotId}', [HddController::class, 'getLocationsByDepot']);
     
     // CCTV Camera Routes under admin
-    Route::get('/admin/cctvs', [CCTVController::class, 'index'])->name('admin.cctvs.index');                  // List all CCTVs
-    Route::get('/admin/cctvs/create', [CCTVController::class, 'create'])->name('admin.cctvs.create');         // Show form to create a new CCTV
-    Route::post('/admin/cctvs/store', [CCTVController::class, 'store'])->name('admin.cctvs.store');           // Store a new CCTV
-    Route::get('/admin/cctvs/{cctv}', [CCTVController::class, 'show'])->name('admin.cctvs.show');             // Show a single CCTV
-    Route::get('/admin/cctvs/{cctv}/edit', [CCTVController::class, 'edit'])->name('admin.cctvs.edit');        // Show form to edit a CCTV
-    Route::put('/admin/cctvs/{cctv}', [CCTVController::class, 'update'])->name('admin.cctvs.update');         // Update a CCTV
-    Route::get('/admin/cctvs/{cctv}/replace', [CCTVController::class, 'showReplaceForm'])->name('admin.cctvs.replaceForm'); // Show form to replace a CCTV
-    Route::post('/admin/cctvs/{cctv}/replace', [CCTVController::class, 'replace'])->name('admin.cctvs.replace');           // Replace a CCTV
-    Route::delete('/admin/cctvs/{cctv}', [CCTVController::class, 'destroy'])->name('admin.cctvs.destroy');    // Delete a CCTV
+    Route::get('/admin/cctvs', [CCTVController::class, 'index'])->name('admin.cctvs.index');                  
+    Route::get('/admin/cctvs/create', [CCTVController::class, 'create'])->name('admin.cctvs.create');    
+    Route::post('/admin/cctvs/store', [CCTVController::class, 'store'])->name('admin.cctvs.store');           
+    Route::get('/admin/cctvs/{cctv}', [CCTVController::class, 'show'])->name('admin.cctvs.show');           
+    Route::get('/admin/cctvs/{cctv}/edit', [CCTVController::class, 'edit'])->name('admin.cctvs.edit');       
+    Route::put('/admin/cctvs/{cctv}', [CCTVController::class, 'update'])->name('admin.cctvs.update');         
+    Route::get('/admin/cctvs/{cctv}/replace', [CCTVController::class, 'showReplaceForm'])->name('admin.cctvs.replaceForm'); 
+    Route::post('/admin/cctvs/{cctv}/replace', [CCTVController::class, 'replace'])->name('admin.cctvs.replace');          
+    Route::delete('/admin/cctvs/{cctv}', [CCTVController::class, 'destroy'])->name('admin.cctvs.destroy');    
 });
 
 

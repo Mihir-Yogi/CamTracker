@@ -22,17 +22,6 @@ class Nvr extends Model
         'image_replace', 
     ];
 
-    protected $dates = [
-        'purchase_date',
-        'installation_date',
-        'warranty_expiration',
-    ];
-
-    protected $casts = [
-        'purchase_date' => 'datetime',
-        'installation_date' => 'datetime',
-        'warranty_expiration' => 'datetime',
-    ];  
 
     public function depot()
     {

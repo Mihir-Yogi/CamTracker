@@ -26,6 +26,13 @@ class ComboController extends Controller
         $depots = Depot::all(); 
         return view('admin.combo.combo_add', compact('depots'));
     }
+
+    public function show($id)
+    {
+        $combo = Combo::with(['depot', 'location'])->findOrFail($id);
+        return view('admin.combo.show', compact('combo'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -107,5 +114,103 @@ class ComboController extends Controller
         ]);
 
         return redirect()->route('admin.combos.index')->with('success', 'Combo with NVR, DVR, and HDD created successfully!');
+    }
+
+    public function edit($id)
+{
+    $combo = Combo::with(['nvr', 'dvr', 'hdd'])->findOrFail($id);
+    $depots = Depot::all();
+    $locations = Location::all();
+
+    return view('admin.combo.combo_edit', compact('combo', 'depots', 'locations'));
+}
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            // Validation rules as in the store method
+            'nvr_model' => 'required|string|max:255',
+            'nvr_serial_number' => 'required|string|max:255',
+            'nvr_purchase_date' => 'nullable|date',
+            'nvr_installation_date' => 'nullable|date',
+            'nvr_warranty_expiration' => 'nullable|date',
+
+            'dvr_model' => 'required|string|max:255',
+            'dvr_serial_number' => 'required|string|max:255',
+            'dvr_purchase_date' => 'nullable|date',
+            'dvr_installation_date' => 'nullable|date',
+            'dvr_warranty_expiration' => 'nullable|date',
+
+            'hdd_model' => 'required|string|max:255',
+            'hdd_serial_number' => 'required|string|max:255',
+            'hdd_capacity' => 'required|numeric',
+            'hdd_purchase_date' => 'nullable|date',
+            'hdd_installation_date' => 'nullable|date',
+            'hdd_warranty_expiration' => 'nullable|date',
+
+            'camera_capacity' => 'required|integer|min:1',
+            'depot_id' => 'required|exists:depots,id',
+            'location_id' => 'required|exists:locations,id',
+        ]);
+
+        $combo = Combo::findOrFail($id);
+
+        // Update related NVR, DVR, and HDD records
+        $combo->nvr->update([
+            'model' => $request->nvr_model,
+            'serial_number' => $request->nvr_serial_number,
+            'purchase_date' => $request->nvr_purchase_date,
+            'installation_date' => $request->nvr_installation_date,
+            'warranty_expiration' => $request->nvr_warranty_expiration,
+            'depot_id' => $request->depot_id,
+            'location_id' => $request->location_id,
+        ]);
+
+        $combo->dvr->update([
+            'model' => $request->dvr_model,
+            'serial_number' => $request->dvr_serial_number,
+            'purchase_date' => $request->dvr_purchase_date,
+            'installation_date' => $request->dvr_installation_date,
+            'warranty_expiration' => $request->dvr_warranty_expiration,
+            'depot_id' => $request->depot_id,
+            'location_id' => $request->location_id,
+        ]);
+
+        $combo->hdd->update([
+            'model' => $request->hdd_model,
+            'serial_number' => $request->hdd_serial_number,
+            'capacity' => $request->hdd_capacity,
+            'purchase_date' => $request->hdd_purchase_date,
+            'installation_date' => $request->hdd_installation_date,
+            'warranty_expiration' => $request->hdd_warranty_expiration,
+            'depot_id' => $request->depot_id,
+            'location_id' => $request->location_id,
+        ]);
+
+        // Update Combo record
+        $combo->update([
+            'depot_id' => $request->depot_id,
+            'location_id' => $request->location_id,
+            'camera_capacity' => $request->camera_capacity,
+            'current_cctv_count' => $request->current_cctv_count ?? 0,
+        ]);
+
+        return redirect()->route('admin.combos.index')->with('success', 'Combo updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        // Find the combo record with related NVR, DVR, and HDD
+        $combo = Combo::with(['nvr', 'dvr', 'hdd'])->findOrFail($id);
+
+        // Delete related records
+        $combo->nvr->delete(); // Delete NVR
+        $combo->dvr->delete(); // Delete DVR
+        $combo->hdd->delete(); // Delete HDD
+
+        // Delete the Combo record
+        $combo->delete();
+
+        return redirect()->route('admin.combos.index')->with('success', 'Combo and its related records deleted successfully!');
     }
 }

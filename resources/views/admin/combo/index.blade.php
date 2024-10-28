@@ -57,7 +57,7 @@
                                 <th>HDD Model</th>
                                 <th>Camera Capacity</th>
                                 <th>Current CCTV Count</th>
-                                <th>Actions</th>
+                                <th colspan="2"  style="text-align:center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,14 +71,21 @@
                                     <td>{{ optional($combo->hdd)->model ?? 'N/A' }}</td>
                                     <td>{{ $combo->camera_capacity }}</td>
                                     <td>{{ $combo->current_cctv_count }}</td>
-                                    <td>
-                                        <div class="list-icon-function">
-                                            <a href="#">
+                                    <td colspan="2">
+                                        <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+                                            <a href="{{ route('admin.combos.show', ['id' => $combo->id]) }}" style="margin-left: 15px;">
+                                                <div class="list-icon-function view-icon">
+                                                    <div class="item eye">
+                                                        <i class="icon-eye"></i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="{{ route('admin.combos.edit', ['id' => $combo->id]) }}" style="margin-left: 15px;">
                                                 <div class="item edit">
                                                     <i class="icon-edit-3"></i>
                                                 </div>
                                             </a>
-                                            <form action="#" method="POST" style="display:inline;">
+                                            <form action="{{route('admin.combos.destroy',['id' => $combo->id])}}" method="POST" style="display:inline;" >
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="item text-danger delete">
