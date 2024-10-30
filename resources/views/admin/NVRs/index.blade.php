@@ -37,9 +37,9 @@
                                 <td>{{ $nvr->model }}</td>
                                 <td>{{ $nvr->serial_number }}</td>
                                 <td>{{ ucfirst($nvr->status) }}</td>
-                                <td>{{ $nvr->purchase_date ? $nvr->purchase_date->format('Y-m-d') : 'N/A' }}</td>
-                                <td>{{ $nvr->installation_date ? $nvr->installation_date->format('Y-m-d') : 'N/A' }}</td>
-                                <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration->format('Y-m-d') : 'N/A' }}</td>
+                                <td>{{ $nvr->purchase_date ? $nvr->purchase_date : 'N/A' }}</td>
+                                <td>{{ $nvr->installation_date ? $nvr->installation_date : 'N/A' }}</td>
+                                <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration : 'N/A' }}</td>
                                 <td colspan="3">
                                     <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
                                         <a href="{{ route('admin.nvrs.show', $nvr->id) }}" style="margin-left: 15px;">

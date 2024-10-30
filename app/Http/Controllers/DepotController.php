@@ -50,8 +50,35 @@ class DepotController extends Controller
     }
 
     public function destroy(Depot $depot)
-    {
-        $depot->delete();
-        return redirect()->route('admin.depots.index')->with('status', 'Depot deleted successfully!');
+{
+    // Delete all related NVRs
+    foreach ($depot->nvrs as $nvr) {
+        $nvr->delete();
     }
+
+    // Delete all related DVRs
+    foreach ($depot->dvrs as $dvr) {
+        $dvr->delete();
+    }
+
+    // Delete all related HDDs
+    foreach ($depot->hdds as $hdd) {
+        $hdd->delete();
+    }
+
+    // Delete all related Combos
+    foreach ($depot->combos as $combo) {
+        $combo->delete();
+    }
+
+    // Delete all related CCTVs if applicable (you may need to adjust if 'cctvs' is the correct name of the relationship)
+    foreach ($depot->cctvs as $cctv) {
+        $cctv->delete();
+    }
+
+    // Finally, delete the Depot
+    $depot->delete();
+
+    return redirect()->route('admin.depots.index')->with('status', 'Depot and its related records deleted successfully!');
+}
 }

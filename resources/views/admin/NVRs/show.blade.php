@@ -117,15 +117,15 @@
                     </tr>
                     <tr>
                         <th>Purchase Date</th>
-                        <td>{{ $nvr->purchase_date ? $nvr->purchase_date->format('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ $nvr->purchase_date ? $nvr->purchase_date : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Installation Date</th>
-                        <td>{{ $nvr->installation_date ? $nvr->installation_date->format('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ $nvr->installation_date ? $nvr->installation_date : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Warranty Expiration</th>
-                        <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration->format('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Replacement Reason Image</th>

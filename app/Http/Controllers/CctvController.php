@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cctv;
 use App\Models\Combo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CctvController extends Controller
 {
@@ -22,26 +24,38 @@ class CctvController extends Controller
 
     public function store(Request $request)
     {
+        // Validate incoming request data
         $request->validate([
             'model' => 'required|string|max:255',
             'combo_id' => 'required|exists:combos,id',
             'serial_number' => 'required|string|max:255',
+            'megapixel' => 'required|numeric',
             'purchase_date' => 'required|date',
             'installation_date' => 'required|date',
             'warranty_expiration' => 'required|date',
         ]);
-
-         // Find the combo and check its camera capacity
+    
+        // Find the combo and check its camera capacity
         $combo = Combo::findOrFail($request->combo_id);
-
+    
         if ($combo->current_cctv_count >= $combo->camera_capacity) {
-            return redirect()->back()->withErrors(['combo_id' => 'This combo has reached its camera capacity.']);
+            return redirect()->back()->withErrors(['combo_id' => 'This depot location has reached its camera capacity.']);
         }
-
-        Cctv::create($request->all());
-
+    
+        // Prepare the data for the CCTV record
+        $cctvData = $request->all();
+    
+        // Retrieve depot_id and location_id from the combo
+        $cctvData['depot_id'] = $combo->location->depot_id; // Assuming location is a relationship on combo
+        $cctvData['location_id'] = $combo->location_id;     // Directly accessing the location_id
+    
+        // Create the CCTV record
+        Cctv::create($cctvData);
+    
+        // Increment the current CCTV count for the combo
         $combo->increment('current_cctv_count');
-
+    
+        // Redirect back with success message
         return redirect()->route('admin.cctvs.index')->with('success', 'CCTV camera added successfully.');
     }
 
@@ -64,6 +78,7 @@ class CctvController extends Controller
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
+            'megapixel' => 'required|numeric',
         ]);
 
         $cctv->update($request->all());
@@ -83,53 +98,49 @@ class CctvController extends Controller
     }
 
     public function replace(Request $request, Cctv $cctv)
-    {
-        // Validate the replacement request
-        $request->validate([
-            'model' => 'required|string|max:255',
-            'serial_number' => 'required|string|unique:cctvs,serial_number', // Ensure it's unique
-            'failure_reason' => 'required|string|max:255',
-            'purchase_date' => 'required|date',
-            'installed_date' => 'required|date',
-            'expiry_date' => 'required|date',
-            'replace_image' => 'required|image|max:2048',
-        ]);
-    
-        // Check if the request has a file
-        if ($request->hasFile('replace_image')) {
-            $image = $request->file('replace_image');
-    
-            // Generate a unique file name for the image
-            $fileName = 'replace_' . time() . '.' . $image->getClientOriginalExtension();
-    
-            // Define the path where the image will be stored
-            $destinationPath = public_path('uploads/cctvReplace_images');
-    
-            // Move the uploaded file to the specified directory
-            $image->move($destinationPath, $fileName);
-    
-            // Set the path for the saved image in the `replace_image` attribute
-            $cctv->image_replace = 'uploads/cctvReplace_images/' . $fileName;
-        }
-    
-        // Update the status and failure reason for the old CCTV
-        $cctv->status = 'failed';
-        $cctv->failure_reason = $request->failure_reason;
-        $cctv->save();
-    
-        // Create a new CCTV record with the replacement details
-        $newCctv = Cctv::create([
-            'model' => $request->input('model'),
-            'serial_number' => $request->input('serial_number'),
-            'status' => 'working',
-            'purchase_date' => $request->input('purchase_date'),
-            'installation_date' => $request->input('installed_date'), // Match with your column name
-            'warranty_expiration' => $request->input('expiry_date'), // Match with your column name
-            'combo_id' => $cctv->combo_id, // Use the same combo_id as the old CCTV
-        ]); 
-    
-        return redirect()->route('admin.cctvs.index')->with('success', 'CCTV camera replaced successfully!');
+{
+
+    // Validate the replacement request
+    $request->validate([
+        'model' => 'required|string|max:255',
+        'serial_number' => 'required|string|unique:cctvs,serial_number',
+        'failure_reason' => 'required|string|max:255',
+        'purchase_date' => 'required|date',
+        'installed_date' => 'required|date',
+        'expiry_date' => 'required|date',
+        'replace_image' => 'required|image|max:2048',
+        'megapixel' => 'required|numeric',
+    ]);
+
+    // Handle the replacement image
+    if ($request->hasFile('replace_image')) {
+        $image = $request->file('replace_image');
+        $fileName = 'replace_' . time() . '.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('uploads/cctvReplace_images');
+        $image->move($destinationPath, $fileName);
+        $cctv->image_replace = 'uploads/cctvReplace_images/' . $fileName;
     }
+
+    // Update the old CCTV status and failure reason
+    $cctv->status = 'failed';
+    $cctv->failure_reason = $request->failure_reason;
+    $cctv->replaced_by = Auth::user()->id;
+    $cctv->save();
+
+    // Create a new CCTV record with the replacement details
+    $newCctv = Cctv::create([
+        'model' => $request->input('model'),
+        'serial_number' => $request->input('serial_number'),
+        'status' => 'working',
+        'purchase_date' => $request->input('purchase_date'),
+        'installation_date' => $request->input('installed_date'),
+        'warranty_expiration' => $request->input('expiry_date'),
+        'combo_id' => $cctv->combo_id,
+        'megapixel' => $request->input('megapixel'),
+    ]);
+
+    return redirect()->route('admin.cctvs.index')->with('success', 'CCTV camera replaced successfully!');
+}
     
 
 }

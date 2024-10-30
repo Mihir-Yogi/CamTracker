@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('failure_reason')->nullable();
             $table->date('purchase_date')->nullable();          // Added field
             $table->date('installation_date')->nullable();      // Added field
-            $table->date('warranty_expiration')->nullable();    // Added field
+            $table->date('warranty_expiration')->nullable(); 
+            $table->unsignedBigInteger('replaced_by')->nullable()->after('failure_reason'); // Add this after failure_reason
+            $table->foreign('replaced_by')->references('id')->on('users')->onDelete('set null'); // Assuming 'users' table   // Added field
             $table->timestamps();
         });
     }
@@ -30,6 +32,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cctvs');
+        Schema::table('cctvs', function (Blueprint $table) {
+            $table->dropForeign(['replaced_by']);
+            $table->dropColumn('replaced_by');
+        });
     }
 };

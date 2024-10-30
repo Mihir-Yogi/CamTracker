@@ -79,6 +79,15 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
+                <!-- megapixel Field -->
+                <fieldset class="name">
+                    <div class="body-title">Megapixel<span class="tf-color-1">*</span></div>
+                    <input class="flex-grow" type="number" placeholder="Enter Megapixel" name="megapixel" value="{{ old('megapixel', $cctv->megapixel) }}" required>
+                </fieldset>
+                @error('megapixel')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+
 
                 <!-- Purchase Date Field -->
                 <fieldset class="name">

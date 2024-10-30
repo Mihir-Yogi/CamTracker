@@ -99,56 +99,59 @@
                         <td>{{ $combo->location->name ?? 'N/A' }}</td>
                     </tr>
                 </table>
-
-                <div class="section-heading">NVR Details</div>
-                <table class="details-table">
                     <!-- NVR Details -->
-                    <tr>
-                        <th>NVR Model</th>
-                        <td>{{ $combo->nvr->model }}</td>
-                    </tr>
-                    <tr>
-                        <th>NVR Serial Number</th>
-                        <td>{{ $combo->nvr->serial_number }}</td>
-                    </tr>
-                    <tr>
-                        <th>NVR Purchase Date</th>
-                        <td>{{ $combo->nvr->purchase_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>NVR Installation Date</th>
-                        <td>{{ $combo->nvr->installation_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>NVR Warranty Expiration</th>
-                        <td>{{ $combo->nvr->warranty_expiration }}</td>
-                    </tr>
-                </table>
+                    @if($combo->nvr)
+                        <div class="section-heading">NVR Details</div>
+                        <table class="details-table">
+                            <tr>
+                                <th>NVR Model</th>
+                                <td>{{ $combo->nvr->model }}</td>
+                            </tr>
+                            <tr>
+                                <th>NVR Serial Number</th>
+                                <td>{{ $combo->nvr->serial_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>NVR Purchase Date</th>
+                                <td>{{ $combo->nvr->purchase_date }}</td>
+                            </tr>
+                            <tr>
+                                <th>NVR Installation Date</th>
+                                <td>{{ $combo->nvr->installation_date }}</td>
+                            </tr>
+                            <tr>
+                                <th>NVR Warranty Expiration</th>
+                                <td>{{ $combo->nvr->warranty_expiration }}</td>
+                            </tr>
+                        </table>
+                    @endif
 
-                <div class="section-heading">DVR Details</div>
-                <table class="details-table">
                     <!-- DVR Details -->
-                    <tr>
-                        <th>DVR Model</th>
-                        <td>{{ $combo->dvr->model }}</td>
-                    </tr>
-                    <tr>
-                        <th>DVR Serial Number</th>
-                        <td>{{ $combo->dvr->serial_number }}</td>
-                    </tr>
-                    <tr>
-                        <th>DVR Purchase Date</th>
-                        <td>{{ $combo->dvr->purchase_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>DVR Installation Date</th>
-                        <td>{{ $combo->dvr->installation_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>DVR Warranty Expiration</th>
-                        <td>{{ $combo->dvr->warranty_expiration }}</td>
-                    </tr>
-                </table>
+                    @if($combo->dvr)
+                        <div class="section-heading">DVR Details</div>
+                        <table class="details-table">
+                            <tr>
+                                <th>DVR Model</th>
+                                <td>{{ $combo->dvr->model }}</td>
+                            </tr>
+                            <tr>
+                                <th>DVR Serial Number</th>
+                                <td>{{ $combo->dvr->serial_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>DVR Purchase Date</th>
+                                <td>{{ $combo->dvr->purchase_date }}</td>
+                            </tr>
+                            <tr>
+                                <th>DVR Installation Date</th>
+                                <td>{{ $combo->dvr->installation_date }}</td>
+                            </tr>
+                            <tr>
+                                <th>DVR Warranty Expiration</th>
+                                <td>{{ $combo->dvr->warranty_expiration }}</td>
+                            </tr>
+                        </table>
+                    @endif
 
                 <div class="section-heading">HDD Details</div>
                 <table class="details-table">

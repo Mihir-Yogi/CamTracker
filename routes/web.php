@@ -13,6 +13,7 @@ use App\Http\Controllers\NvrController;
 use App\Http\Controllers\DvrController;
 use App\Http\Controllers\HddController;
 use App\Http\Controllers\CCTVController;
+use App\Http\Controllers\StatusReportController;
 
 
 Route::get('/', function () {
@@ -34,7 +35,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin-settings', [AdminController::class, 'settings'])->name('admin.settings');
     Route::post('/admin/update', [AdminController::class, 'updateSetting'])->name('admin.update');
 
-    Route::get('/admin/users', [AdminController::class, 'users_details'])->name(name: 'admin.users');
+    Route::get('/admin/users', [AdminController::class, 'users_details'])->name('admin.users');
     Route::get('/admin/users/{id}/edit', [AdminController::class, 'edit'])->name('admin.user.edit'); // Edit user form
     Route::put('/admin/users/{id}', [AdminController::class, 'update'])->name('admin.user.update');
     Route::delete('/admin/users/{id}/delete', [AdminController::class, 'users_delete'])->name('admin.user.delete');
@@ -112,6 +113,13 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/cctvs/{cctv}/replace', [CCTVController::class, 'showReplaceForm'])->name('admin.cctvs.replaceForm'); 
     Route::post('/admin/cctvs/{cctv}/replace', [CCTVController::class, 'replace'])->name('admin.cctvs.replace');          
     Route::delete('/admin/cctvs/{cctv}', [CCTVController::class, 'destroy'])->name('admin.cctvs.destroy');    
+
+    // REPORT ROUTES
+    Route::get('/admin/reports', [StatusReportController::class, 'index'])->name('status_reports.index');
+    Route::get('/admin/reports/create', [StatusReportController::class, 'create'])->name('status_reports.create');
+    Route::post('/admin/reports/store', [StatusReportController::class, 'store'])->name('status_reports.store');
+    Route::post('/devices-by-depot-location', [StatusReportController::class, 'getDevices'])->name('status_report.devices');
+
 });
 
 

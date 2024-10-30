@@ -63,6 +63,16 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
+                
+                <!-- New megapixel Field -->
+                <fieldset class="name">
+                    <div class="body-title">New Megapixel<span class="tf-color-1">*</span></div>
+                    <input class="flex-grow" type="number" placeholder="Enter Megapixel" name="megapixel" value="{{ old('megapixel') }}" required>
+                </fieldset>
+                @error('megapixel')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+
                 <!-- Reason for Replacement Field -->
                 <fieldset class="name">
                     <div class="body-title">Reason for Replacement <span class="tf-color-1">*</span></div>

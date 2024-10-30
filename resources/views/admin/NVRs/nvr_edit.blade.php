@@ -86,7 +86,7 @@
                 <!-- Purchase Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $nvr->purchase_date ? $nvr->purchase_date->format('Y-m-d') : '') }}">
+                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $nvr->purchase_date ? $nvr->purchase_date : '') }}">
                 </fieldset>
                 @error('purchase_date')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -95,7 +95,7 @@
                 <!-- Installation Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Installation Date</div>
-                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $nvr->installation_date ? $nvr->installation_date->format('Y-m-d') : '') }}">
+                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $nvr->installation_date ? $nvr->installation_date : '') }}">
                 </fieldset>
                 @error('installation_date')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -104,7 +104,7 @@
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
                     <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $nvr->warranty_expiration ? $nvr->warranty_expiration->format('Y-m-d') : '') }}">
+                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $nvr->warranty_expiration ? $nvr->warranty_expiration : '') }}">
                 </fieldset>
                 @error('warranty_expiration')
                     <span class="alert alert-danger">{{ $message }}</span>

@@ -197,7 +197,7 @@
                                     </ul>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#" class="">
+                                    <a href="{{route('status_reports.create')}}" class="">
                                         <div class="icon"><i class="fa-solid fa-circle-exclamation"></i></div>
                                         <div class="text">Reports</div>
                                     </a>

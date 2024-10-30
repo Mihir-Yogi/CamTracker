@@ -100,12 +100,20 @@
                         <td>{{ $cctv->serial_number }}</td>
                     </tr>
                     <tr>
+                        <th>Megapixel</th>
+                        <td>{{ $cctv->megapixel }}</td>
+                    </tr>
+                    <tr>
                         <th>Status</th>
                         <td>{{ ucfirst($cctv->status) }}</td>
                     </tr>
                     <tr>
                         <th>Failure Reason</th>
                         <td>{{ $cctv->failure_reason ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Replaced By</th>
+                        <td>{{ $cctv->replacedby->name ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Combo (Depot - Location)</th>

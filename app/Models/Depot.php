@@ -16,4 +16,28 @@ class Depot extends Model
     {
         return $this->hasMany(Location::class);
     }
+
+    public function nvrs() {
+        return $this->hasMany(Nvr::class);
+    }
+
+    public function dvr()
+    {
+        return $this->belongsTo(Dvr::class);
+    }
+
+    public function hdd()
+    {
+        return $this->belongsTo(Hdd::class);
+    }
+
+    public function cctvs()
+    {
+        return $this->hasMany(Cctv::class);
+    }
+
+    public function combo()
+    {
+        return $this->belongsTo(Combo::class);
+    }
 }
