@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <h3>Add Status Report</h3>
@@ -14,7 +15,7 @@
             </div>
         @endif
         
-        <form action="{{ route('status_reports.store') }}" method="POST">
+        <form action="{{ route('status_reports.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <fieldset>
                 <div class="body-title">Select Depot <span class="tf-color-1">*</span></div>
@@ -45,18 +46,59 @@
 
             <button type="button" id="searchButton">Search</button>
 
-            <div id="devicesContainer">
-                <!-- Device options will be populated here -->
+            <div id="devicesContainer" class="table-responsive">
             </div>
+            <fieldset>
+            <!-- Replace Image Field with Preview -->
+            <fieldset class="name">
+                    <div class="body-title">Replacement Image</div>
+                    <div class="image-preview-container" style="display: flex; gap: 20px; align-items: flex-start;">
+                        <!-- New Image Preview -->
+                        <div class="new-image">
+                            <p> Image Preview:</p>
+                            <img id="new-image-preview" src="#" alt="Image Preview" style="max-width: 150px; height: auto; display: none; border: 1px solid #ccc; padding: 5px; border-radius: 5px;margin-top: 20px; ">
+                        </div>
+                    </div>
 
-            <button type="submit">Submit</button>
+                    <!-- Image Input Field -->
+                    <input type="file" name="remark_image" accept="image/*" onchange="previewNewImage(event)">
+                </fieldset>
+                @error('remark_image')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+
+            <button style="background-color: #ccc; top: 20px; width: 100%;"  type="submit">Submit</button>
         </form>
     </div>
 </div>
+<style>
+    /* Custom responsive styling */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+}
+.table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
+.table-responsive th, .table-responsive td {
+    white-space: nowrap; /* Prevents content from wrapping */
+}
+
+/* Optional: Improve usability on smaller screens */
+@media (max-width: 600px) {
+    .table-responsive th, .table-responsive td {
+        font-size: 14px; /* Adjust font size */
+        padding: 8px; /* Adjust padding for smaller screens */
+    }
+}
+
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
+    
     $('#searchButton').click(function() {
         let depotId = $('#depot_id').val();
         let locationId = $('#location_id').val();
@@ -72,7 +114,7 @@ $(document).ready(function() {
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(data) {
-                    let devicesHTML = '<table class="table table-striped table-bordered"><thead><tr><th>Type</th><th>Model</th><th>Serial Number</th><th>Status</th><th>Off Reason</th></tr></thead><tbody>';
+                    let devicesHTML = `<div class="table-responsive"><table class="table table-striped table-bordered"><thead><tr><th>Type</th><th>Model</th><th>Serial Number</th><th>Status</th><th>Off Reason</th></tr></thead><tbody>`;
 
                     // Process NVRs
                     data.nvrs.forEach(nvr => {
@@ -82,15 +124,17 @@ $(document).ready(function() {
                                 <td>${nvr.model}</td>
                                 <td>${nvr.serial_number}</td>
                                 <td>
-                                    <select name="nvr_id" required>
+                                    <select name="nvr_status" class="status-select" required>
                                         <option value="ON">ON</option>
                                         <option value="OFF">OFF</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <textarea name="off_reason[nvr_${nvr.id}]" class="remarks" placeholder="Reason for OFF (if applicable)" style="display:none;"></textarea>
+                                    <textarea name="off_reason[nvr_${nvr.id}]" class="remarks" placeholder="Reason for OFF" style="display:none;"></textarea>
                                 </td>
                             </tr>`;
+                            devicesHTML += `<input type="hidden" name="nvr_id" value="${nvr.id}">`;
+
                     });
 
                     // Process DVRs
@@ -101,15 +145,16 @@ $(document).ready(function() {
                                 <td>${dvr.model}</td>
                                 <td>${dvr.serial_number}</td>
                                 <td>
-                                    <select name="dvr_id" required>
+                                    <select name="dvr_status" class="status-select" required>
                                         <option value="ON">ON</option>
                                         <option value="OFF">OFF</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <textarea name="off_reason[dvr_${dvr.id}]" class="remarks" placeholder="Reason for OFF (if applicable)" style="display:none;"></textarea>
+                                    <textarea name="off_reason[dvr_${dvr.id}]" class="remarks" placeholder="Reason for OFF" style="display:none;"></textarea>
                                 </td>
                             </tr>`;
+                            devicesHTML += `<input type="hidden" name="dvr_id" value="${dvr.id}">`;
                     });
 
                     // Process HDDs
@@ -120,15 +165,17 @@ $(document).ready(function() {
                                 <td>${hdd.model}</td>
                                 <td>${hdd.serial_number}</td>
                                 <td>
-                                    <select name="hdd_id" required>
+                                    <select name="hdd_status" class="status-select" required>
                                         <option value="ON">ON</option>
                                         <option value="OFF">OFF</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <textarea name="off_reason[hdd_${hdd.id}]" class="remarks" placeholder="Reason for OFF (if applicable)" style="display:none;"></textarea>
+                                    <textarea name="off_reason[hdd_${hdd.id}]" class="remarks" placeholder="Reason for OFF" style="display:none;"></textarea>
                                 </td>
                             </tr>`;
+                            devicesHTML += `<input type="hidden" name="hdd_id" value="${hdd.id}">`;
+
                     });
 
                     // Process CCTVs
@@ -139,13 +186,13 @@ $(document).ready(function() {
                                 <td>${cctv.model}</td>
                                 <td>${cctv.serial_number}</td>
                                 <td>
-                                    <select name="cctv_id" required>
+                                    <select name="cctv_status[${cctv.id}]" class="status-select" required>
                                         <option value="ON">ON</option>
                                         <option value="OFF">OFF</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <textarea name="off_reason[cctv_${cctv.id}]" class="remarks" placeholder="Reason for OFF (if applicable)" style="display:none;"></textarea>
+                                    <textarea name="cctv_reason[${cctv.id}]" class="remarks" placeholder="Reason for OFF" style="display:none;"></textarea>
                                 </td>
                             </tr>`;
                     });
@@ -198,5 +245,15 @@ $(document).ready(function() {
         }
     });
 });
+
+function previewNewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById('new-image-preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
 </script>
 @endsection

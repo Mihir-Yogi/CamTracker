@@ -20,6 +20,7 @@ class Nvr extends Model
         'depot_id',  // New field
         'location_id',  // New field
         'image_replace', 
+        'sublocation'
     ];
 
 

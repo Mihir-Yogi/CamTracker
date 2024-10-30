@@ -70,6 +70,20 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
+                <fieldset>
+                    <div class="body-title">CCTV Sub-Location <span class="tf-color-1">*</span></div>
+                    <div class="select flex-grow">
+                        <select name="sublocation" id="sublocation" >
+                            <option value="">Select a Sub-location</option>
+                            <option value="Deasal Station" {{ (old('hdd_sublocation', $combo->hdd->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
+                            <option value="Washing Station" {{ (old('hdd_sublocation', $combo->hdd->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                        </select>
+                    </div>
+                    @error('sublocation')
+                        <span class="alert alert-danger">{{ $message }}</span>
+                    @enderror
+                </fieldset>
+
                 <!-- Serial Number Field -->
                 <fieldset class="name">
                     <div class="body-title">Serial Number</div>

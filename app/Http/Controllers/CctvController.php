@@ -28,6 +28,7 @@ class CctvController extends Controller
         $request->validate([
             'model' => 'required|string|max:255',
             'combo_id' => 'required|exists:combos,id',
+            'sublocation' => 'required|string|max:255',
             'serial_number' => 'required|string|max:255',
             'megapixel' => 'required|numeric',
             'purchase_date' => 'required|date',
@@ -75,6 +76,7 @@ class CctvController extends Controller
         $request->validate([
             'model' => 'required|string|max:255',
             'combo_id' => 'required|exists:combos,id',
+            'sublocation' => 'required|string|max:255',
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
@@ -104,6 +106,7 @@ class CctvController extends Controller
     $request->validate([
         'model' => 'required|string|max:255',
         'serial_number' => 'required|string|unique:cctvs,serial_number',
+        'sublocation' => 'required|string|max:255',
         'failure_reason' => 'required|string|max:255',
         'purchase_date' => 'required|date',
         'installed_date' => 'required|date',
@@ -131,6 +134,7 @@ class CctvController extends Controller
     $newCctv = Cctv::create([
         'model' => $request->input('model'),
         'serial_number' => $request->input('serial_number'),
+        'sublocation' => 'required|string|max:255',
         'status' => 'working',
         'purchase_date' => $request->input('purchase_date'),
         'installation_date' => $request->input('installed_date'),

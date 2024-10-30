@@ -108,6 +108,10 @@
                                 <td>{{ $combo->nvr->model }}</td>
                             </tr>
                             <tr>
+                                <th>Sub-Location</th>
+                                <td>{{ $combo->nvr->sublocation }}</td>
+                            </tr>
+                            <tr>
                                 <th>NVR Serial Number</th>
                                 <td>{{ $combo->nvr->serial_number }}</td>
                             </tr>
@@ -135,6 +139,10 @@
                                 <td>{{ $combo->dvr->model }}</td>
                             </tr>
                             <tr>
+                                <th>Sub-Location</th>
+                                <td>{{ $combo->dvr->sublocation }}</td>
+                            </tr>
+                            <tr>
                                 <th>DVR Serial Number</th>
                                 <td>{{ $combo->dvr->serial_number }}</td>
                             </tr>
@@ -159,6 +167,10 @@
                     <tr>
                         <th>HDD Model</th>
                         <td>{{ $combo->hdd->model }}</td>
+                    </tr>
+                    <tr>
+                        <th>Sub-Location</th>
+                        <td>{{ $combo->hdd->sublocation }}</td>
                     </tr>
                     <tr>
                         <th>HDD Serial Number</th>

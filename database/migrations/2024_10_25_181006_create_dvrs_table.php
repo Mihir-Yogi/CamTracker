@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('failure_reason')->nullable();
             $table->date('purchase_date')->nullable();          // Added field
             $table->date('installation_date')->nullable();      // Added field
-            $table->date('warranty_expiration')->nullable();    // Added field
+            $table->date('warranty_expiration')->nullable(); 
+            $table->string('sublocation');   // Added field
             $table->timestamps();
         });
     }

@@ -59,6 +59,20 @@
                 @error('model')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
+
+                <fieldset>
+                    <div class="body-title">HDD Sub-Location <span class="tf-color-1">*</span></div>
+                    <div class="select flex-grow">
+                        <select name="hdd_sublocation" id="hdd_sublocation" >
+                            <option value="">Select a Sub-location</option>
+                            <option value="Deasal Station" {{ (old('hdd_sublocation', $hdd->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
+                            <option value="Washing Station" {{ (old('hdd_sublocation', $hdd->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                        </select>
+                    </div>
+                    @error('dvr_sublocation')
+                        <span class="alert alert-danger">{{ $message }}</span>
+                    @enderror
+                </fieldset>
                 <!-- Capacity Field -->
                 <fieldset class="name">
                     <div class="body-title">Capacity <span class="tf-color-1">*</span></div>

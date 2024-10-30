@@ -96,6 +96,20 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </fieldset>
+                    <!-- Select sub-Location Field -->
+                    <fieldset>
+                        <div class="body-title">Select Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="nvr_sublocation" id="nvr_sublocation" >
+                                <option value="">Select a Sub-location</option>
+                                <option value="Deasal Station">DEASAL STATION</option>
+                                <option value="Washing Station">WASHING STATION</option>
+                            </select>
+                        </div>
+                        @error('nvr_sublocation')
+                        <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </fieldset>
                 </div>
 
                 <!-- DVR Fields -->
@@ -134,6 +148,20 @@
                         <input type="date" name="dvr_warranty_expiration" value="{{ old('dvr_warranty_expiration') }}">
                         @error('dvr_warranty_expiration')
                             <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </fieldset>
+                    <!-- Select sub-Location Field -->
+                    <fieldset>
+                        <div class="body-title">Select Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="dvr_sublocation" id="dvr_sublocation" >
+                                <option value="">Select a Sub-location</option>
+                                <option value="Deasal Station">DEASAL STATION</option>
+                                <option value="Washing Station">WASHING STATION</option>
+                            </select>
+                        </div>
+                        @error('dvr_sublocation')
+                        <span class="alert alert-danger">{{ $message }}</span>
                         @enderror
                     </fieldset>
                 </div>
@@ -183,6 +211,22 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </fieldset>
+
+                    <!-- Select sub-Location Field -->
+                    <fieldset>
+                        <div class="body-title">Select Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="hdd_sublocation" id="hdd_sublocation" required>
+                                <option value="">Select a Sub-location</option>
+                                <option value="Deasal Station">DEASAL STATION</option>
+                                <option value="Washing Station">WASHING STATION</option>
+                            </select>
+                        </div>
+                        @error('hdd_sublocation')
+                        <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </fieldset>
+                    
 
                 <!-- Combo Fields -->
                 <h4>Combo Details</h4>

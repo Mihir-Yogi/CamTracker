@@ -119,6 +119,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/reports/create', [StatusReportController::class, 'create'])->name('status_reports.create');
     Route::post('/admin/reports/store', [StatusReportController::class, 'store'])->name('status_reports.store');
     Route::post('/devices-by-depot-location', [StatusReportController::class, 'getDevices'])->name('status_report.devices');
+    Route::get('/status_reports/{id}/edit', [StatusReportController::class, 'edit'])->name('admin.status_reports.edit');
+    Route::put('/status_reports/{id}', [StatusReportController::class, 'update'])->name('status_reports.update');
 
 });
 

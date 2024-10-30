@@ -71,6 +71,7 @@ class DvrController extends Controller
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
+            'dvr_sublocation' => 'required|string|max:255'
         ]);
 
         // Only allow updating fields that are editable by the user
@@ -81,6 +82,7 @@ class DvrController extends Controller
             'purchase_date' => $request->input('purchase_date'),
             'installation_date' => $request->input('installation_date'),
             'warranty_expiration' => $request->input('warranty_expiration'),
+            'sublocation' => $request->input('dvr_sublocation')
         ]);
 
         return redirect()->route('admin.dvrs.index')->with('status', 'DVR updated successfully!');
@@ -120,6 +122,7 @@ class DvrController extends Controller
             'installation_date' => 'required|date',
             'warranty_expiration' => 'required|date',
             'replace_image' => 'required|image|max:2048',
+            'sublocation' => 'required|string|max:255',
         ]);
 
         // Check if the request has a file
@@ -152,7 +155,8 @@ class DvrController extends Controller
             'installation_date' => $request->input('installation_date'),
             'warranty_expiration' => $request->input('warranty_expiration'),
             'depot_id' => $dvr->depot_id,    // Use the same depot as the old DVR
-            'location_id' => $dvr->location_id,  // Use the same location as the old DVR
+            'location_id' => $dvr->location_id,
+            'sublocation' => $dvr->sublocation,
         ]);
 
         $dvr->combo()->update(['dvr_id' => $newDvr->id]);

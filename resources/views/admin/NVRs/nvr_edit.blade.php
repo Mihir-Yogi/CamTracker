@@ -60,6 +60,20 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
+                <fieldset>
+                    <div class="body-title">nvr Sub-Location <span class="tf-color-1">*</span></div>
+                    <div class="select flex-grow">
+                        <select name="nvr_sublocation" id="nvr_sublocation" >
+                            <option value="">Select a Sub-location</option>
+                            <option value="Deasal Station" {{ (old('nvr_sublocation', $nvr->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
+                            <option value="Washing Station" {{ (old('nvr_sublocation', $nvr->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                        </select>
+                    </div>
+                    @error('nvr_sublocation')
+                        <span class="alert alert-danger">{{ $message }}</span>
+                    @enderror
+                </fieldset>
+
                 <!-- Serial Number Field -->
                 <fieldset class="name">
                     <div class="body-title">Serial Number <span class="tf-color-1">*</span></div>

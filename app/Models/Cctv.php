@@ -21,6 +21,7 @@ class Cctv extends Model
         'megapixel',
         'depot_id',
         'location_id',
+        'sublocation',
     ];
         public function combo()
     {

@@ -74,6 +74,19 @@
                 <div id="nvr-fields" style="display: {{ $combo->nvr ? 'block' : 'none' }};">
                     <h4>NVR Details</h4>
                     <fieldset><div class="body-title">NVR Model <span class="tf-color-1">*</span></div><input type="text" name="nvr_model" value="{{ old('nvr_model', $combo->nvr->model ?? '') }}"></fieldset>
+                    <fieldset>
+                        <div class="body-title">NVR Sub-Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="nvr_sublocation" id="nvr_sublocation" >
+                                <option value="">Select a Sub-location</option>
+                                <option value="Deasal Station" {{ (old('nvr_sublocation', $combo->nvr->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
+                                <option value="Washing Station" {{ (old('nvr_sublocation', $combo->nvr->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                            </select>
+                        </div>
+                        @error('nvr_sublocation')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </fieldset>
                     <fieldset><div class="body-title">NVR Serial Number <span class="tf-color-1">*</span></div><input type="text" name="nvr_serial_number" value="{{ old('nvr_serial_number', $combo->nvr->serial_number ?? '') }}"></fieldset>
                     <fieldset><div class="body-title">NVR Purchase Date</div><input type="date" name="nvr_purchase_date" value="{{ old('nvr_purchase_date', $combo->nvr->purchase_date ?? '') }}"></fieldset>
                     <fieldset><div class="body-title">NVR Installation Date</div><input type="date" name="nvr_installation_date" value="{{ old('nvr_installation_date', $combo->nvr->installation_date ?? '') }}"></fieldset>
@@ -84,6 +97,19 @@
                 <div id="dvr-fields" style="display: {{ $combo->dvr ? 'block' : 'none' }};">
                     <h4>DVR Details</h4>
                     <fieldset><div class="body-title">DVR Model <span class="tf-color-1">*</span></div><input type="text" name="dvr_model" value="{{ old('dvr_model', $combo->dvr->model ?? '') }}"></fieldset>
+                    <fieldset>
+                        <div class="body-title">DVR Sub-Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="dvr_sublocation" id="dvr_sublocation" >
+                                <option value="">Select a Sub-location</option>
+                                <option value="Deasal Station" {{ (old('dvr_sublocation', $combo->dvr->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
+                                <option value="Washing Station" {{ (old('dvr_sublocation', $combo->dvr->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                            </select>
+                        </div>
+                        @error('dvr_sublocation')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </fieldset>
                     <fieldset><div class="body-title">DVR Serial Number <span class="tf-color-1">*</span></div><input type="text" name="dvr_serial_number" value="{{ old('dvr_serial_number', $combo->dvr->serial_number ?? '') }}"></fieldset>
                     <fieldset><div class="body-title">DVR Purchase Date</div><input type="date" name="dvr_purchase_date" value="{{ old('dvr_purchase_date', $combo->dvr->purchase_date ?? '') }}"></fieldset>
                     <fieldset><div class="body-title">DVR Installation Date</div><input type="date" name="dvr_installation_date" value="{{ old('dvr_installation_date', $combo->dvr->installation_date ?? '') }}"></fieldset>
@@ -93,6 +119,19 @@
                 <!-- HDD Fields -->
                 <h4>HDD Details</h4>
                 <fieldset><div class="body-title">HDD Model <span class="tf-color-1">*</span></div><input type="text" name="hdd_model" value="{{ old('hdd_model', $combo->hdd->model) }}" required></fieldset>
+                <fieldset>
+                        <div class="body-title">HDD Sub-Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="hdd_sublocation" id="hdd_sublocation" >
+                                <option value="">Select a Sub-location</option>
+                                <option value="Deasal Station" {{ (old('hdd_sublocation', $combo->hdd->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
+                                <option value="Washing Station" {{ (old('hdd_sublocation', $combo->hdd->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                            </select>
+                        </div>
+                        @error('hdd_sublocation')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </fieldset>
                 <fieldset><div class="body-title">HDD Serial Number <span class="tf-color-1">*</span></div><input type="text" name="hdd_serial_number" value="{{ old('hdd_serial_number', $combo->hdd->serial_number) }}" required></fieldset>
                 <fieldset><div class="body-title">HDD Capacity (GB) <span class="tf-color-1">*</span></div><input type="number" name="hdd_capacity" value="{{ old('hdd_capacity', $combo->hdd->capacity) }}" required></fieldset>
 

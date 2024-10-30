@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('warranty_expiration')->nullable();  
             $table->unsignedBigInteger('depot_id')->nullable();
             $table->unsignedBigInteger('location_id')->nullable();
+            $table->string('sublocation');
             
             // Add foreign key constraints if needed
             $table->foreign('depot_id')->references('id')->on('depots')->onDelete('set null');

@@ -1,10 +1,13 @@
 @extends('layouts.admin')
 
 @section('content')
+
+
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <h3>Status Reports</h3>
-        
+
+        <!-- Error Messages -->
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -15,7 +18,8 @@
             </div>
         @endif
 
-        <form action="{{ route('status_reports.index') }}" method="GET">
+        <!-- Filter Form -->
+        <form action="#" method="GET">
             <fieldset>
                 <div class="body-title">Select Depot</div>
                 <div class="select flex-grow">
@@ -29,7 +33,6 @@
                     </select>
                 </div>
             </fieldset>
-
             <fieldset>
                 <div class="body-title">Select Location</div>
                 <div class="select flex-grow">
@@ -45,10 +48,10 @@
                     </select>
                 </div>
             </fieldset>
-
-            <button type="submit">Filter</button>
+            <button type="submit" class="btn btn-primary">Filter</button>
         </form>
 
+        <!-- Status Reports Table -->
         <div class="wg-table table-all-user">
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
@@ -65,6 +68,7 @@
                             <th>Off Reason</th>
                             <th>Comments</th>
                             <th>Created At</th>
+                            <th colspan="2" style="text-align: center;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,10 +85,24 @@
                                 <td>{{ $report->off_reason }}</td>
                                 <td>{{ $report->comments }}</td>
                                 <td>{{ $report->created_at->format('Y-m-d H:i:s') }}</td>
+                                <td style="text-align: center;">
+                                    <a href="{{ route('admin.status_reports.edit', $report->id) }}" class="item edit">
+                                        <i class="icon-edit-3"></i> Edit
+                                    </a>
+                                </td>
+                                <td style="text-align: center;">
+                                    <form action="#" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="item text-danger delete">
+                                            <i class="icon-trash-2"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="11" class="text-center">No reports found.</td>
+                                <td colspan="13" class="text-center">No reports found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -94,32 +112,48 @@
     </div>
 </div>
 
+<!-- Script for Delete Confirmation -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('#depot_id').change(function() {
-        var selectedDepotId = $(this).val();
+    $(document).ready(function() {
+        $('#depot_id').change(function() {
+            var selectedDepotId = $(this).val();
+            if (selectedDepotId) {
+                $.ajax({
+                    url: "{{ url('/admin/locations-by-depot') }}/" + selectedDepotId,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#location_id').empty().append('<option value="">Select a location</option>');
+                        $.each(data, function(index, location) {
+                            $('#location_id').append('<option value="' + location.id + '">' + location.name + '</option>');
+                        });
+                    },
+                    error: function() {
+                        alert('Failed to fetch locations. Please try again.');
+                    }
+                });
+            } else {
+                $('#location_id').empty().append('<option value="">Select a location</option>');
+            }
+        });
 
-        // Fetch locations based on selected depot
-        if (selectedDepotId) {
-            $.ajax({
-                url: "{{ url('/admin/locations-by-depot') }}/" + selectedDepotId,
-                type: 'GET',
-                success: function(data) {
-                    $('#location_id').empty().append('<option value="">Select a location</option>');
-                    $.each(data, function(index, location) {
-                        $('#location_id').append('<option value="' + location.id + '">' + location.name + '</option>');
-                    });
-                },
-                error: function() {
-                    alert('Failed to fetch locations. Please try again.');
+        // Delete button confirmation
+        $('.delete-button').on('click', function(e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, this record cannot be recovered!",
+                icon: "warning",
+                buttons: ["Cancel", "Delete"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
                 }
             });
-        } else {
-            $('#location_id').empty().append('<option value="">Select a location</option>');
-        }
+        });
     });
-});
 </script>
-
 @endsection

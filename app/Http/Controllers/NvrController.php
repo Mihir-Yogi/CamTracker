@@ -72,6 +72,7 @@ class NvrController extends Controller
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
+            'nvr_sublocation' => 'required|string|max:255'
         ]);
     
         // Only allow updating fields that are editable by the user
@@ -82,6 +83,7 @@ class NvrController extends Controller
             'purchase_date' => $request->input('purchase_date'),
             'installation_date' => $request->input('installation_date'),
             'warranty_expiration' => $request->input('warranty_expiration'),
+            'sublocation' => $request->input('nvr_sublocation')
         ]);
     
         // Redirect to the NVR index page with a success message
@@ -137,6 +139,7 @@ class NvrController extends Controller
             'installation_date' => 'required|date',
             'warranty_expiration' => 'required|date',
             'replace_image' => 'required|image|max:2048',
+            'sublocation' => 'required|string|max:255'
         ]);
 
          // Check if the request has a file
@@ -171,11 +174,12 @@ class NvrController extends Controller
             'warranty_expiration' => $request->input('warranty_expiration'),
             'depot_id' => $nvr->depot_id,    // Use the same depot as the old NVR
             'location_id' => $nvr->location_id,  // Use the same location as the old NVR
+            'sublocation' => $nvr->sublocation,
         ]);
 
-        $nvr->combo()->update(['dvr_id' => $newNvr->id]);
+        $nvr->combo()->update(['nvr_id' => $newNvr->id]);
 
-        return redirect()->route('admin.nvrs.index')->with('success', 'NVR replaced successfully!');
+        return redirect()->route('admin.nvrs.index')->with( 'success', 'NVR replaced successfully!');
     }
 
 }

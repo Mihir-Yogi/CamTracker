@@ -71,7 +71,8 @@ class HddController extends Controller
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
-            'capacity' => 'nullable|integer|min:0'
+            'capacity' => 'nullable|integer|min:0',
+            'hdd_sublocation' => 'reuired|string|max:255'
         ]);
 
         // Only allow updating fields that are editable by the user
@@ -83,6 +84,7 @@ class HddController extends Controller
             'installation_date' => $request->input('installation_date'),
             'warranty_expiration' => $request->input('warranty_expiration'),
             'capacity' => $request->input('capacity'),
+            'sublocation' => $request->input('hdd_sublocation')            
         ]);
 
         return redirect()->route('admin.hdds.index')->with('status', 'HDD updated successfully!');
@@ -122,7 +124,8 @@ class HddController extends Controller
             'installation_date' => 'required|date',
             'warranty_expiration' => 'required|date',
             'replace_image' => 'required|image|max:2048',
-            'capacity' => 'required|integer|min:0'
+            'capacity' => 'required|integer|min:0',
+            'sublocation' => 'required|string|max:255',
         ]);
 
         // Check if the request has a file
@@ -157,6 +160,7 @@ class HddController extends Controller
             'depot_id' => $hdd->depot_id,    // Use the same depot as the old HDD
             'location_id' => $hdd->location_id,  // Use the same location as the old HDD
             'capacity' => $hdd->capacity,
+            'sublocation' => $hdd->sublocation,
         ]);
 
         $hdd->combo()->update(['hdd_id' => $newHdd->id]);

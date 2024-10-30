@@ -54,6 +54,20 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
+                <fieldset>
+                    <div class="body-title">Select Location <span class="tf-color-1">*</span></div>
+                    <div class="select flex-grow">
+                        <select name="sublocation" id="sublocation" >
+                            <option value="">Select a Sub-location</option>
+                            <option value="Deasal Station">DEASAL STATION</option>
+                            <option value="Washing Station">WASHING STATION</option>
+                        </select>
+                    </div>
+                    @error('sublocation')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                    @enderror
+                </fieldset>
+
                 <!-- Capacity Field -->
                 <fieldset class="name">
                     <div class="body-title">New Capacity <span class="tf-color-1">*</span></div>

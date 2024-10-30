@@ -42,6 +42,7 @@ class ComboController extends Controller
             'nvr_purchase_date' => 'nullable|date',
             'nvr_installation_date' => 'nullable|date',
             'nvr_warranty_expiration' => 'nullable|date',
+            'nvr_sublocation' => 'nullable|required_without:dvr_sublocation|string|max:255',
     
             // DVR validations
             'dvr_model' => 'nullable|required_without:nvr_model|string|max:255',
@@ -49,6 +50,7 @@ class ComboController extends Controller
             'dvr_purchase_date' => 'nullable|date',
             'dvr_installation_date' => 'nullable|date',
             'dvr_warranty_expiration' => 'nullable|date',
+            'dvr_sublocation' => 'nullable|required_without:nvr_sublocation|string|max:255',
     
             // HDD validations
             'hdd_model' => 'required|string|max:255',
@@ -57,6 +59,7 @@ class ComboController extends Controller
             'hdd_purchase_date' => 'nullable|date',
             'hdd_installation_date' => 'nullable|date',
             'hdd_warranty_expiration' => 'nullable|date',
+            'hdd_sublocation' => 'required|string|max:255',
     
             // Combo validations
             'camera_capacity' => 'required|integer|min:1',
@@ -75,6 +78,7 @@ class ComboController extends Controller
                 'warranty_expiration' => $request->nvr_warranty_expiration,
                 'depot_id' => $request->depot_id,
                 'location_id' => $request->location_id,
+                'sublocation' => $request->nvr_sublocation
             ]);
         }
     
@@ -89,6 +93,7 @@ class ComboController extends Controller
                 'warranty_expiration' => $request->dvr_warranty_expiration,
                 'depot_id' => $request->depot_id,
                 'location_id' => $request->location_id,
+                'sublocation' => $request->dvr_sublocation
             ]);
         }
     
@@ -107,6 +112,7 @@ class ComboController extends Controller
             'warranty_expiration' => $request->hdd_warranty_expiration,
             'depot_id' => $request->depot_id,
             'location_id' => $request->location_id,
+            'sublocation' => $request->hdd_sublocation
         ]);
     
         // Create the Combo record, linking the NVR, DVR, and HDD records
@@ -141,12 +147,14 @@ public function update(Request $request, $id)
         'nvr_purchase_date' => 'nullable|date',
         'nvr_installation_date' => 'nullable|date',
         'nvr_warranty_expiration' => 'nullable|date',
+        'nvr_sublocation' => 'nullable|string|max:255',
 
         'dvr_model' => 'nullable|string|max:255',
         'dvr_serial_number' => 'nullable|string|max:255',
         'dvr_purchase_date' => 'nullable|date',
         'dvr_installation_date' => 'nullable|date',
         'dvr_warranty_expiration' => 'nullable|date',
+        'dvr_sublocation' => 'nullable|string|max:255',
 
         'hdd_model' => 'required|string|max:255',
         'hdd_serial_number' => 'required|string|max:255',
@@ -154,6 +162,7 @@ public function update(Request $request, $id)
         'hdd_purchase_date' => 'nullable|date',
         'hdd_installation_date' => 'nullable|date',
         'hdd_warranty_expiration' => 'nullable|date',
+        'hdd_sublocation' => 'nullable|string|max:255',
 
         'camera_capacity' => 'required|integer|min:1',
         'depot_id' => 'required|exists:depots,id',
@@ -178,6 +187,7 @@ public function update(Request $request, $id)
             'warranty_expiration' => $request->nvr_warranty_expiration,
             'location_id' => $request->location_id,
             'depot_id' => $request->depot_id,
+            'sublocation' => $request->nvr_sublocation, 
         ]);
         $nvrId = $nvr->id; // Store NVR ID
     } elseif ($request->dvr_model && !$request->nvr_model) {
@@ -191,6 +201,7 @@ public function update(Request $request, $id)
             'warranty_expiration' => $request->dvr_warranty_expiration,
             'location_id' => $request->location_id,
             'depot_id' => $request->depot_id,
+            'sublocation' => $request->dvr_sublocation, 
         ]);
         $dvrId = $dvr->id; // Store DVR ID
     } else {
@@ -203,7 +214,9 @@ public function update(Request $request, $id)
                 'installation_date' => $request->nvr_installation_date,
                 'warranty_expiration' => $request->nvr_warranty_expiration,
                 'location_id' => $request->location_id,
+                'sublocation' => $request->sublocation,
                 'depot_id' => $request->depot_id,
+        
             ]);
             $nvrId = $nvr->id; // Store NVR ID
         }
@@ -216,6 +229,7 @@ public function update(Request $request, $id)
                 'installation_date' => $request->dvr_installation_date,
                 'warranty_expiration' => $request->dvr_warranty_expiration,
                 'location_id' => $request->location_id,
+                'sublocation' => $request->dvr_sublocation,
                 'depot_id' => $request->depot_id,
             ]);
             $dvrId = $dvr->id; // Store DVR ID
@@ -231,6 +245,7 @@ public function update(Request $request, $id)
         'installation_date' => $request->hdd_installation_date,
         'warranty_expiration' => $request->hdd_warranty_expiration,
         'location_id' => $request->location_id,
+        'sublocation' => $request->hdd_sublocation,
         'depot_id' => $request->depot_id,
     ]);
 

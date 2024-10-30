@@ -120,6 +120,10 @@
                         <td>{{ $cctv->combo->depot->name ?? 'N/A' }} - {{ $cctv->combo->location->name ?? 'N/A' }}</td>
                     </tr>
                     <tr>
+                        <th>Sub-Location</th>
+                        <td>{{ $cctv->sublocation ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
                         <th>Purchase Date</th>
                         <td>{{ $cctv->purchase_date ?? 'N/A' }}</td>
                     </tr>

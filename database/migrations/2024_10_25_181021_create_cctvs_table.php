@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('model');
             $table->string('serial_number')->unique();
             $table->enum('status', ['working', 'failed'])->default('working');
+            $table->string('sublocation');
             $table->string('failure_reason')->nullable();
             $table->date('purchase_date')->nullable();          // Added field
             $table->date('installation_date')->nullable();      // Added field

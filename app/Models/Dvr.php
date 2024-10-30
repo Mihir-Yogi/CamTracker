@@ -19,11 +19,7 @@ class Dvr extends Model
         'depot_id',  // New field
         'location_id',  // New field
         'image_replace', 
-    ];
-    protected $dates = [
-        'purchase_date',
-        'installation_date',
-        'warranty_expiration',
+        'sublocation'
     ];
 
     public function depot()
