@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FailureController;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Controllers\DepotController;
 use App\Http\Controllers\LocationController;
@@ -117,10 +117,14 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     // REPORT ROUTES
     Route::get('/admin/reports', [StatusReportController::class, 'index'])->name('status_reports.index');
     Route::get('/admin/reports/create', [StatusReportController::class, 'create'])->name('status_reports.create');
+    Route::get('/admin/reports/{id}', [StatusReportController::class, 'show'])->name('status_reports.show'); // Moved to before PUT
+    Route::get('/admin/reports/{id}/edit', [StatusReportController::class, 'edit'])->name('status_reports.edit');
+    
     Route::post('/admin/reports/store', [StatusReportController::class, 'store'])->name('status_reports.store');
+    Route::put('/admin/reports/{id}', [StatusReportController::class, 'update'])->name('status_reports.update');
     Route::post('/devices-by-depot-location', [StatusReportController::class, 'getDevices'])->name('status_report.devices');
-    Route::get('/status_reports/{id}/edit', [StatusReportController::class, 'edit'])->name('admin.status_reports.edit');
-    Route::put('/status_reports/{id}', [StatusReportController::class, 'update'])->name('status_reports.update');
+
+    Route::get('/admin/failed-devices', [FailureController::class, 'index'])->name('failed.devices');
 
 });
 

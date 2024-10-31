@@ -10,10 +10,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Response;
+use App\Exports\ReportExport;
 use App\Models\Nvr;
 use App\Models\Dvr;
 use App\Models\Hdd;
 use App\Models\Cctv;
+
 
 class StatusReportController extends Controller
 {
@@ -132,9 +137,10 @@ class StatusReportController extends Controller
     foreach ($request->input('cctv_status', []) as $cameraId => $status) {
         $offReason = $status === 'OFF' ? ($request->input("cctv_reason.{$cameraId}") ?? '') : null;
     
-        DB::table('cctv_status')->updateOrInsert(
-            ['cctv_id' => $cameraId, 'report_id' => $StatusReport->id],
+        DB::table('cctv_status')->insert(
             [
+                'cctv_id' => $cameraId,
+                'report_id' => $StatusReport->id,
                 'status' => $status,
                 'off_reason' => $offReason,
                 'depot_id' => $request->depot_id,
@@ -212,10 +218,8 @@ public function edit($id)
     
 public function update(Request $request, $id)
 {
-    // Validate the request
+    // Validate the request but exclude depot_id and location_id from validation
     $request->validate([
-        'depot_id' => 'required|exists:depots,id',
-        'location_id' => 'required|exists:locations,id',
         'nvr_status' => 'nullable|in:ON,OFF',
         'dvr_status' => 'nullable|in:ON,OFF',
         'hdd_status' => 'required|in:ON,OFF',
@@ -225,37 +229,31 @@ public function update(Request $request, $id)
     // Find the status report
     $report = StatusReport::findOrFail($id);
 
-    // Update NVR status and reason
-    $report->nvr_status = $request->input('nvr_status') ?? null;
-    $report->nvr_reason = $request->input('off_reason.nvr') ?? null;
+    // Update NVR, DVR, and HDD status and reasons
+    $report->nvr_status = $request->input('nvr_status') ?? $report->nvr_status; // Keep old value if not provided
+    $report->nvr_reason = $request->input('off_reason.nvr') ?? $report->nvr_reason; // Keep old value
 
-    // Update DVR status and reason
-    $report->dvr_status = $request->input('dvr_status') ?? null;
-    $report->dvr_reason = $request->input('off_reason.dvr') ?? null;
+    $report->dvr_status = $request->input('dvr_status') ?? $report->dvr_status; // Keep old value
+    $report->dvr_reason = $request->input('off_reason.dvr') ?? $report->dvr_reason; // Keep old value
 
-    // Update HDD status and reason
-    $report->hdd_status = $request->input('hdd_status');
-    $report->hdd_reason = $request->input('off_reason.hdd') ?? null;
+    $report->hdd_status = $request->input('hdd_status') ?? $report->hdd_status; // Keep old value
+    $report->hdd_reason = $request->input('off_reason.hdd') ?? $report->hdd_reason; // Keep old value
 
-    // Handle replacement image upload
+    // Handle image upload
     if ($request->hasFile('remark_image')) {
-        // Delete the old image if it exists
         if ($report->remark_image) {
             Storage::delete($report->remark_image);
         }
-        // Store the new image
         $image = $request->file('remark_image');
         $fileName = 'remark_' . time() . '.' . $image->getClientOriginalExtension();
         $destinationPath = public_path('uploads/remark_images');
         $image->move($destinationPath, $fileName);
-        $report->remark_image = 'uploads/remark_images/' . $fileName; // Save the path
+        $report->remark_image = 'uploads/remark_images/' . $fileName;
     }
 
-
-    // Save the status report
-    $report->save();
-
-    // Update CCTV statuses
+    // Count CCTV statuses
+    $cctvOnCount = 0;
+    $cctvOffCount = 0;
     foreach ($request->input('cctv_status', []) as $cameraId => $status) {
         $offReason = $status === 'OFF' ? ($request->input("cctv_reason.{$cameraId}") ?? '') : null;
 
@@ -264,15 +262,38 @@ public function update(Request $request, $id)
             [
                 'status' => $status,
                 'off_reason' => $offReason,
-                'depot_id' => $request->depot_id,
-                'location_id' => $request->location_id,
+                'depot_id' => $report->depot_id, // Keep the current depot_id
+                'location_id' => $report->location_id, // Keep the current location_id
                 'updated_at' => now(),
             ]
         );
+
+        // Count ON and OFF statuses
+        if ($status === 'ON') {
+            $cctvOnCount++;
+        } elseif ($status === 'OFF') {
+            $cctvOffCount++;
+        }
     }
+
+    // Update the counts in the report
+    $report->cctv_on_count = $cctvOnCount;
+    $report->cctv_off_count = $cctvOffCount;
+
+    // Save the status report
+    $report->save();
 
     return redirect()->route('status_reports.index')->with('success', 'Status report updated successfully.');
 }
+
+
+
+public function show($id)
+{
+    $report = StatusReport::with(['depot', 'location', 'nvr', 'dvr', 'hdd', 'cctv', 'cctvStatuses'])->findOrFail($id);
+    return view('admin.REPORTS.show', compact('report'));
+}
+
 
 
 }

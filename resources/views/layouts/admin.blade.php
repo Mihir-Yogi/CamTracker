@@ -44,6 +44,7 @@
 
                 <div class="section-menu-left">
                     <div class="box-logo">
+                        <div class="icon"><i class="fa-solid fa-bus" style="margin-left: 15px;font-size: 50px;"></i></div>
                         <a href="{{route('admin.index')}}" id="site-logo-inner">
                             <img class="" id="logo_header" alt="" src="{{asset('images/logo/logo.png')}}"
                                 data-light="{{asset('images/logo/logo.png')}}" data-dark="{{asset('images/logo/logo.png')}}">
@@ -66,144 +67,119 @@
                         </div>
                         <div class="center-item">
                             <ul class="menu-list">
-                                <li class="menu-item has-children">
+
+                            <li class="menu-item has-children">
                                     <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="fa-solid fa-server"></i></div>
-                                        <div class="text">Depot</div>
+                                        <div class="icon"><i class="fa-solid fa-plus"></i></div>
+                                        <div class="text">CREATE</div>
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
                                             <a href="{{route('admin.depots.create')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
                                                 <div class="text">Add Depot</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.depots.index')}}" class="">
-                                                <div class="text">Depots</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item has-children">
-                                    <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="fa-solid fa-server"></i></div>
-                                        <div class="text">Location</div>
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li class="sub-menu-item">
                                             <a href="{{route('admin.locations.create')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
                                                 <div class="text">Add Location</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.locations.index')}}" class="">
-                                                <div class="text">Locations</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="menu-item has-children">
-                                    <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="fa-solid fa-server"></i></div>
-                                        <div class="text">NVR/DVR/HDD</div>
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li class="sub-menu-item">
                                             <a href="{{route('admin.combos.create')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
                                                 <div class="text">Add NVR/DVR/HDD</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.combos.index')}}" class="">
-                                                <div class="text">View NVR/DVR/HDD</div>
+                                            <a href="{{route('admin.nvrs.create')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
+                                                <div class="text">Add NVR</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.dvrs.create')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
+                                                <div class="text">Add DVR</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.hdds.create')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
+                                                <div class="text">Add HDD</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('status_reports.create')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
+                                                <div class="text">Add Ṣtatus</div>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
 
+
+                                
                                 <li class="menu-item has-children">
                                     <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="fa-solid fa-server"></i></div>
-                                        <div class="text">NVR</div>
+                                        <div class="icon"><i class="fa-solid fa-eye"></i></div>
+                                        <div class="text">VIEW/UPDATE</div>
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.nvrs.create')}}" class="">
-                                                <div class="text">Add NVR</div>
+                                            <a href="{{route('admin.depots.index')}}" class="">
+                                                <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                                                <div class="text">Depots</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.locations.index')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                                                <div class="text">Locations</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.combos.index')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                                                <div class="text">View NVR/DVR/HDD</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
                                             <a href="{{route('admin.nvrs.index')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
                                                 <div class="text">NVRs</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.dvrs.index')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                                                <div class="text">DVRs</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.hdds.index')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                                                <div class="text">HDDs</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('admin.cctvs.index')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                                                <div class="text">CCTVs</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="{{route('status_reports.index')}}" class="">
+                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                                                <div class="text">REPORTS</div>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 
-                                <li class="menu-item has-children">
-                                    <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="fa-solid fa-server"></i></div>
-                                        <div class="text">DVR</div>
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.dvrs.create')}}" class="">
-                                                <div class="text">New DVR</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.dvrs.index')}}" class="">
-                                                <div class="text">DVRs</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="menu-item has-children">
-                                    <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="fa-solid fa-hard-drive"></i></div>
-                                        <div class="text">HDD</div>
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li class="sub-menu-item">
-                                            <a href="#" class="">
-                                                <div class="text">New HDD</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.hdds.index')}}" class="">
-                                                <div class="text">HDDs</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item has-children">
-                                    <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="fa-solid fa-eye"></i></div>
-                                        <div class="text">CCTV</div>
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.cctvs.create')}}" class="">
-                                                <div class="text">New CCTV</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.cctvs.index')}}" class="">
-                                                <div class="text">CCTVs</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
                                 <li class="menu-item">
-                                    <a href="{{route('status_reports.create')}}" class="">
-                                        <div class="icon"><i class="fa-solid fa-circle-exclamation"></i></div>
-                                        <div class="text">Reports</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#" class="">
+                                    <a href="{{route('failed.devices')}}" class="">
                                         <div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
                                         <div class="text">Replacment History</div>
                                     </a>
@@ -270,132 +246,36 @@
                             </div>
                             <div class="header-grid">
 
-                                <div class="popup-wrap message type-header">
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button"
-                                            id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="header-item">
-                                                <span class="text-tiny">1</span>
-                                                <i class="icon-bell"></i>
-                                            </span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end has-content"
-                                            aria-labelledby="dropdownMenuButton2">
-                                            <li>
-                                                <h6>Notifications</h6>
-                                            </li>
-                                            <li>
-                                                <div class="message-item item-1">
-                                                    <div class="image">
-                                                        <i class="icon-noti-1"></i>
-                                                    </div>
-                                                    <div>
-                                                        <div class="body-title-2">Discount available</div>
-                                                        <div class="text-tiny">Morbi sapien massa, ultricies at rhoncus
-                                                            at, ullamcorper nec diam</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="message-item item-2">
-                                                    <div class="image">
-                                                        <i class="icon-noti-2"></i>
-                                                    </div>
-                                                    <div>
-                                                        <div class="body-title-2">Account has been verified</div>
-                                                        <div class="text-tiny">Mauris libero ex, iaculis vitae rhoncus
-                                                            et</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="message-item item-3">
-                                                    <div class="image">
-                                                        <i class="icon-noti-3"></i>
-                                                    </div>
-                                                    <div>
-                                                        <div class="body-title-2">Order shipped successfully</div>
-                                                        <div class="text-tiny">Integer aliquam eros nec sollicitudin
-                                                            sollicitudin</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="message-item item-4">
-                                                    <div class="image">
-                                                        <i class="icon-noti-4"></i>
-                                                    </div>
-                                                    <div>
-                                                        <div class="body-title-2">Order pending: <span>ID 305830</span>
-                                                        </div>
-                                                        <div class="text-tiny">Ultricies at rhoncus at ullamcorper</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li><a href="#" class="tf-button w-full">View all</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-
-
-
-                                <div class="popup-wrap user type-header">
+                            <div class="popup-wrap user type-header">
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="header-user wg-user">
-                                                <span class="image">
-                                                    <img src="images/avatar/user-1.png" alt="">
-                                                </span>
-                                                <span class="flex flex-column">
-                                                    <span class="body-title mb-2">Kristin Watson</span>
-                                                    <span class="text-tiny">Admin</span>
-                                                </span>
+                                                @php
+                                                    use Illuminate\Support\Facades\Auth;
+
+                                                    // Get the authenticated user
+                                                    $user = Auth::user();
+                                                @endphp
+                                                
+                                                <div class="flex flex-column">
+                                                    <span class="body-title mb-2"><i class="fa-solid fa-user" style="margin-right: 15px;"></i>  {{ $user->name }} <i class="fa-solid fa-caret-down"></i></span>
+                                                    <span class="text-tiny" style="margin-left: 35px;">{{ $user->utype === 'ADM' ? 'Admin' : 'User' }}</span>
+                                                </div>
                                             </span>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end has-content"
                                             aria-labelledby="dropdownMenuButton3">
                                             <li>
-                                                <a href="#" class="user-item">
-                                                    <div class="icon">
-                                                        <i class="icon-user"></i>
-                                                    </div>
-                                                    <div class="body-title-2">Account</div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="user-item">
-                                                    <div class="icon">
-                                                        <i class="icon-mail"></i>
-                                                    </div>
-                                                    <div class="body-title-2">Inbox</div>
-                                                    <div class="number">27</div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="user-item">
-                                                    <div class="icon">
-                                                        <i class="icon-file-text"></i>
-                                                    </div>
-                                                    <div class="body-title-2">Taskboard</div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="user-item">
-                                                    <div class="icon">
-                                                        <i class="icon-headphones"></i>
-                                                    </div>
-                                                    <div class="body-title-2">Support</div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="login.html" class="user-item">
+                                                <form method="POST" action="{{route('logout')}}" id="logout-form">
+                                                    @csrf
+                                                    <a href="{{route('logout')}}" class="user-item" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                                     <div class="icon">
                                                         <i class="icon-log-out"></i>
                                                     </div>
                                                     <div class="body-title-2">Log out</div>
-                                                </a>
+                                                    </a>
+                                                </form>
                                             </li>
                                         </ul>
                                     </div>

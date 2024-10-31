@@ -6,12 +6,50 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-
+use App\Models\Nvr; // Import your Nvr model
+use App\Models\Dvr; // Import your Dvr model
+use App\Models\Hdd; // Import your Hdd model
+use App\Models\Cctv; // Import your Cctv model
+use App\Models\StatusReport; // Import your StatusReport model
 
 class AdminController extends Controller
 {
-    public function index(){
-        return view('admin.index');
+    public function index()
+    {
+        // Get total counts for each device type
+        $totalNVR = Nvr::count();
+        $totalDVR = Dvr::count();
+        $totalHDD = Hdd::count();
+        $totalCCTV = Cctv::count();
+
+        // Get counts of failed devices
+        $totalFailedNVR = Nvr::where('status', 'failed')->count();
+        $totalFailedDVR = Dvr::where('status', 'failed')->count();
+        $totalFailedHDD = Hdd::where('status', 'failed')->count();
+        $totalFailedCCTV = Cctv::where('status', 'failed')->count();
+
+        // Get monthly operational data
+        $monthlyData = StatusReport::selectRaw('MONTH(created_at) as month, 
+                            SUM(CASE WHEN nvr_status = "on" THEN 1 ELSE 0 END) as nvr_on,
+                            SUM(CASE WHEN dvr_status = "on" THEN 1 ELSE 0 END) as dvr_on,
+                            SUM(CASE WHEN hdd_status = "on" THEN 1 ELSE 0 END) as hdd_on,
+                            SUM(CASE WHEN cctv_on_count > 0 THEN 1 ELSE 0 END) as cctv_on
+                            ')
+                            ->groupBy('month')
+                            ->orderBy('month')
+                            ->get();
+
+        // Prepare data for view
+        $NVRsOnM = $monthlyData->pluck('nvr_on')->toArray();
+        $DVRsOnM = $monthlyData->pluck('dvr_on')->toArray();
+        $HDDsOnM = $monthlyData->pluck('hdd_on')->toArray();
+        $CCTVsOnM = $monthlyData->pluck('cctv_on')->toArray();
+
+        return view('admin.index', compact(
+            'totalNVR', 'totalDVR', 'totalHDD', 'totalCCTV',
+            'totalFailedNVR', 'totalFailedDVR', 'totalFailedHDD', 'totalFailedCCTV',
+            'NVRsOnM', 'DVRsOnM', 'HDDsOnM', 'CCTVsOnM'
+        ));
     }
 
     public function settings()

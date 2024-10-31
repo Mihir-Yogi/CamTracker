@@ -2,6 +2,62 @@
 
 @section('content')
 
+<style>
+    /* Stronger border styling for inputs, selects, and textareas */
+select, input[type="file"], textarea {
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+/* Hover and focus effect for inputs and selects */
+select:focus, input[type="file"]:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Style for the file input preview container */
+.image-preview-container img {
+    border: 1px solid #333;
+    padding: 5px;
+    border-radius: 4px;
+    max-width: 100%;
+}
+
+/* Center-aligned submit button with enhanced styling */
+button[type="submit"]{
+    color: #fff;
+    font-size: 16px;
+    padding: 12px;
+    border: 1px solid #04AA6D;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Hover effect for buttons */
+button[type="submit"]:hover{
+    background-color: #038a5d;
+    border-color: #038a5d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .table-responsive th, .table-responsive td {
+        font-size: 14px;
+        padding: 8px;
+    }
+    select, input[type="file"], textarea, button[type="submit"]{
+        font-size: 14px;
+    }
+}
+
+</style>
+
 <div class="main-content-inner">
     <div class="main-content-wrap">
         <h3>Add Status Report</h3>
@@ -56,7 +112,7 @@
                         <!-- New Image Preview -->
                         <div class="new-image">
                             <p> Image Preview:</p>
-                            <img id="new-image-preview" src="#" alt="Image Preview" style="max-width: 150px; height: auto; display: none; border: 1px solid #ccc; padding: 5px; border-radius: 5px;margin-top: 20px; ">
+                            <img id="new-image-preview" src="#" alt="Image Preview" style="max-width: 500px; height: auto; display: none; border: 1px solid #ccc; padding: 5px; border-radius: 5px;margin-top: 20px; ">
                         </div>
                     </div>
 
@@ -67,7 +123,7 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-            <button style="background-color: #ccc; top: 20px; width: 100%;"  type="submit">Submit</button>
+            <button style="background-color: #04AA6D; top: 20px; width: 500px;  "  type="submit">Submit</button>
         </form>
     </div>
 </div>

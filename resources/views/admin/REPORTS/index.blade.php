@@ -1,7 +1,81 @@
 @extends('layouts.admin')
 
 @section('content')
+<style>
+    /* General container styling */
+    .details-view {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
 
+    /* Table Styling */
+    .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        font-size: 16px;
+    }
+
+    .details-table th,
+    .details-table td {
+        padding: 14px 20px;
+        border: 1px solid #ddd;
+    }
+
+    .details-table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+        color: #333;
+        text-align: left;
+        font-size: 18px;
+    }
+
+    .details-table td {
+        color: #333;
+    }
+
+    /* Action buttons styling */
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .action-buttons .tf-button {
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        text-decoration: none;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .action-buttons .tf-button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Section Heading Style */
+    .section-heading {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 20px 0 10px;
+    }
+
+    #downloadImageBtn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        display: inline-block;
+    }
+</style>
 
 <div class="main-content-inner">
     <div class="main-content-wrap">
@@ -17,7 +91,7 @@
                 </ul>
             </div>
         @endif
-
+    <div class="flex items-center flex-wrap justify-between gap20 mb-27">
         <!-- Filter Form -->
         <form action="#" method="GET">
             <fieldset>
@@ -48,8 +122,10 @@
                     </select>
                 </div>
             </fieldset>
-            <button type="submit" class="btn btn-primary">Filter</button>
+            <button type="submit" class="tf-button style-1 w208">Filter</button>
         </form>
+        <a href="{{ route('status_reports.create') }}" class="tf-button style-1 w208">Create New Status</a>
+        </div>
 
         <!-- Status Reports Table -->
         <div class="wg-table table-all-user">
@@ -63,12 +139,8 @@
                             <th>NVR</th>
                             <th>DVR</th>
                             <th>HDD</th>
-                            <th>CCTV</th>
-                            <th>Status</th>
-                            <th>Off Reason</th>
-                            <th>Comments</th>
                             <th>Created At</th>
-                            <th colspan="2" style="text-align: center;">Actions</th>
+                            <th colspan="3" style="text-align: center;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,16 +149,21 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ optional($report->depot)->name }}</td>
                                 <td>{{ optional($report->location)->name }}</td>
-                                <td>{{ optional($report->nvr)->model }}</td>
-                                <td>{{ optional($report->dvr)->model }}</td>
-                                <td>{{ optional($report->hdd)->model }}</td>
-                                <td>{{ optional($report->cctv)->model }}</td>
-                                <td>{{ $report->status }}</td>
-                                <td>{{ $report->off_reason }}</td>
-                                <td>{{ $report->comments }}</td>
+                                <td>{{ optional($report->nvr)->model ?? 'N/A'}}</td>
+                                <td>{{ optional($report->dvr)->model ?? 'N/A'}}</td>
+                                <td>{{ optional($report->hdd)->model ?? 'N/A'}}</td>
                                 <td>{{ $report->created_at->format('Y-m-d H:i:s') }}</td>
                                 <td style="text-align: center;">
-                                    <a href="{{ route('admin.status_reports.edit', $report->id) }}" class="item edit">
+                                    <a href="{{ route('status_reports.show', ['id' => $report->id]) }}" class="item edit">
+                                        <div class="list-icon-function view-icon">
+                                            <div class="item eye">
+                                                <i class="icon-eye"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="{{ route('status_reports.edit', $report->id) }}" class="item edit">
                                         <i class="icon-edit-3"></i> Edit
                                     </a>
                                 </td>

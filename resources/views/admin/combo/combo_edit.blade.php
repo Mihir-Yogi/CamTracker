@@ -117,6 +117,7 @@
                 </div>
 
                 <!-- HDD Fields -->
+                
                 <h4>HDD Details</h4>
                 <fieldset><div class="body-title">HDD Model <span class="tf-color-1">*</span></div><input type="text" name="hdd_model" value="{{ old('hdd_model', $combo->hdd->model) }}" required></fieldset>
                 <fieldset>
