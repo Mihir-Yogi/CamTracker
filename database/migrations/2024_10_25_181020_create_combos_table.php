@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('combos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('location_id')->constrained()->onDelete('cascade'); 
+            $table->foreignId('depot_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('nvr_id')->nullable();
             $table->unsignedBigInteger('dvr_id')->nullable();
             $table->unsignedBigInteger('hdd_id')->nullable();
@@ -25,6 +26,8 @@ return new class extends Migration
             $table->foreign('nvr_id')->references('id')->on('nvrs')->onDelete('set null');
             $table->foreign('dvr_id')->references('id')->on('dvrs')->onDelete('set null');
             $table->foreign('hdd_id')->references('id')->on('hdds')->onDelete('set null');
+            $table->foreign('depot_id')->references('id')->on('depots')->onDelete('set null');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('set null');
         });
     }
 
@@ -33,6 +36,16 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('combos');
+        Schema::table('combos', function (Blueprint $table) {
+            if (Schema::hasColumn('combos', 'combos')) {
+                $table->dropForeign(['depot_id']);
+                $table->dropColumn('depot_id');
+            }
+
+            if (Schema::hasColumn('combos', 'location_id')) {
+                $table->dropForeign(['location_id']);
+                $table->dropColumn('location_id');
+            }
+        });
     }
 };

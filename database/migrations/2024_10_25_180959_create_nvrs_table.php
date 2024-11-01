@@ -17,11 +17,12 @@ return new class extends Migration
             $table->string('serial_number')->unique();
             $table->enum('status', ['working', 'failed'])->default('working');
             $table->string('failure_reason')->nullable();
+            $table->text('image_replace')->nullable();
+            $table->foreignId('location_id')->constrained()->onDelete('cascade'); 
+            $table->foreignId('depot_id')->constrained()->onDelete('cascade');
             $table->date('purchase_date')->nullable();          // Added field
             $table->date('installation_date')->nullable();      // Added field
             $table->date('warranty_expiration')->nullable();  
-            $table->unsignedBigInteger('depot_id')->nullable();
-            $table->unsignedBigInteger('location_id')->nullable();
             $table->string('sublocation');
             
             // Add foreign key constraints if needed

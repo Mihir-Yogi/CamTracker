@@ -44,7 +44,7 @@
 
                 <div class="section-menu-left">
                     <div class="box-logo">
-                        <div class="icon"><i class="fa-solid fa-bus" style="margin-left: 15px;font-size: 50px;"></i></div>
+                        <div class="icon"><i class="fa-solid fa-bus" style="margin-left: 15px;font-size: 50px;"></i><span style="font-size: 25px;">CIMS</span></div>
                         <a href="{{route('admin.index')}}" id="site-logo-inner">
                             <img class="" id="logo_header" alt="" src="{{asset('images/logo/logo.png')}}"
                                 data-light="{{asset('images/logo/logo.png')}}" data-dark="{{asset('images/logo/logo.png')}}">
@@ -289,7 +289,7 @@
                     @yield('content')
 
                         <div class="bottom-page">
-                            <div class="body-text">Copyright © 2024 CamTracker</div>
+                            <div class="body-text">2024 CIMS</div>
                         </div>
                     </div>
 

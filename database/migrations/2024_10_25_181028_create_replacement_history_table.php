@@ -27,6 +27,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('replacment_history', function (Blueprint $table) {
+            $table->dropForeign(['combo_id']);
+        });
+
         Schema::dropIfExists('replacement_history');
     }
 };
