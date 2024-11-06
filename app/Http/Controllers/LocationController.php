@@ -55,6 +55,19 @@ class LocationController extends Controller
         return redirect()->route('admin.locations.index')->with('status', 'Depot Updated successfully!');
     }
 
+    public function sub_update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:sublocations,id',
+            'name' => 'required|string|max:255',
+        ]);
+    
+        $sublocation = Sublocation::findOrFail($request->id);
+        $sublocation->name = $request->name;
+        $sublocation->save();
+    
+        return response()->json(['id' => $sublocation->id, 'name' => $sublocation->name]);
+    }
     public function destroy(Location $location)
     {
         $location->delete();

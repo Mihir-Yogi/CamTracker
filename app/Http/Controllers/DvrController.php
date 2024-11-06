@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\Combo;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
+use App\Models\Sublocation;
 
 class DvrController extends Controller
 {
@@ -85,7 +86,9 @@ class DvrController extends Controller
 
     public function edit(Dvr $dvr)
     {
-        return view('admin.DVRs.dvr_edit', compact('dvr'));
+        
+        $sublocations = Sublocation::all();
+        return view('admin.DVRs.dvr_edit', compact('dvr','sublocations'));
     }
 
     public function update(Request $request, Dvr $dvr)
@@ -98,7 +101,7 @@ class DvrController extends Controller
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
-            'dvr_sublocation' => 'required|string|max:255'
+            'sublocation' => 'required|string|max:255'
         ]);
 
         // Only allow updating fields that are editable by the user
@@ -109,7 +112,7 @@ class DvrController extends Controller
             'purchase_date' => $request->input('purchase_date'),
             'installation_date' => $request->input('installation_date'),
             'warranty_expiration' => $request->input('warranty_expiration'),
-            'sublocation' => $request->input('dvr_sublocation')
+            'sublocation' => $request->input('sublocation')
         ]);
 
         return redirect()->route('admin.dvrs.index')->with('status', 'DVR updated successfully!');

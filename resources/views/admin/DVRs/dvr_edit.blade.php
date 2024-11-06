@@ -61,15 +61,16 @@
                 @enderror
 
                 <fieldset>
-                    <div class="body-title">DVR Sub-Location <span class="tf-color-1">*</span></div>
+                    <div class="body-title">NVR Sub-Location <span class="tf-color-1">*</span></div>
                     <div class="select flex-grow">
-                        <select name="dvr_sublocation" id="dvr_sublocation" >
+                        <select name="sublocation" id="sublocation" >
                             <option value="">Select a Sub-location</option>
-                            <option value="Deasal Station" {{ (old('dvr_sublocation', $dvr->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
-                            <option value="Washing Station" {{ (old('dvr_sublocation', $dvr->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                            @foreach($sublocations as $sublocation)
+                                <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    @error('dvr_sublocation')
+                    @error('sublocation')
                         <span class="alert alert-danger">{{ $message }}</span>
                     @enderror
                 </fieldset>

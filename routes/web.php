@@ -59,7 +59,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::delete('/admin/locations/{location}', [LocationController::class, 'destroy'])->name('admin.locations.destroy');
 
     Route::post('/admin/locations/sublocations', [LocationController::class, 'sub_store'])->name('admin.locations.sub_store');
-
+    Route::put('/admin/sublocations/update', [LocationController::class, 'sub_update'])->name('admin.sublocations.update');
+    
     // Combo routes under admin
     Route::get('/admin/combos', [ComboController::class, 'index'])->name('admin.combos.index');
     Route::get('/admin/combos/create', [ComboController::class, 'create'])->name('admin.combos.create');

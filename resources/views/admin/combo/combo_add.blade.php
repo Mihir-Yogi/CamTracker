@@ -147,152 +147,14 @@
                 @error('hdd_warranty_expiration')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
-</div>
-<div class="block">
-
-                <!-- NVR Fields -->
-                <div id="nvr_fields" style="display: none;">
-                    <h4>NVR Details</h4>
-                    <fieldset>
-                    <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
-                    <div class="select flex-grow">
-                        <select name="sublocation_id" id="sublocation" >
-                            <option value="">Select a Sub-Location</option>
-                            @foreach($sublocations as $sublocation)
-                                <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
-                            @endforeach
-                            <option value="new" style="color: #4CAF50;">Add New Sub-Location</option>
-                        </select>
-                    </div>
-                </fieldset>
-                @error('sublocation_id')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-                    <fieldset>
-                        <div class="body-title">NVR Model <span class="tf-color-1">*</span></div>
-                        <input type="text" name="nvr_model" value="{{ old('nvr_model') }}">
-                        @error('nvr_model')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </fieldset>
-                    <fieldset>
-                        <div class="body-title">NVR Serial Number <span class="tf-color-1">*</span></div>
-                        <input type="text" name="nvr_serial_number" value="{{ old('nvr_serial_number') }}">
-                        @error('nvr_serial_number')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </fieldset>
-
-                    <fieldset>
-                        <div class="body-title">NVR Installation Date</div>
-                        <input type="date" name="nvr_installation_date" value="{{ old('nvr_installation_date') }}">
-                        @error('nvr_installation_date')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </fieldset>
-                    <!-- Purchase Date Field -->
-                <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="nvr_purchase_date" id="nvr_purchase_date" value="{{ old('nvr_purchase_date') }}">
-                </fieldset>
-                @error('nvr_purchase_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Warranty Duration Field -->
-                <fieldset class="name">
-                    <div class="body-title">Warranty Duration (Years)</div>
-                    <select class="flex-grow" name="nvr_warranty_duration" id="nvr_warranty_duration">
-                        <option value="1">1 Year</option>
-                        <option value="2">2 Years</option>
-                        <option value="3">3 Years</option>
-                    </select>
-                </fieldset>
-
-                <!-- Warranty Expiration Field -->
-                <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="nvr_warranty_expiration" id="nvr_warranty_expiration" value="{{ old('nvr_warranty_expiration') }}" readonly>
-                </fieldset>
-                @error('nvr_warranty_expiration')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-                    
-                </div>
-    </div>
-                <!-- DVR Fields -->
-                <div id="dvr_fields" style="display: none;">
-                    <h4>DVR Details</h4>
-                    <!-- Sub-Location Field -->
-    <fieldset>
-        <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
-        <div class="select flex-grow">
-            <select name="dvrsublocation_id" id="dvrsublocation">
-                <option value="">Select a Sub-Location</option>
-                @foreach($sublocations as $sublocation)
-                    <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
-                @endforeach
-                <option value="new" style="color: #4CAF50;">Add New Sub-Location</option>
-            </select>
         </div>
-        @error('dvrsublocation_id')
-            <span class="alert alert-danger">{{ $message }}</span>
-        @enderror
-    </fieldset>
-                    <fieldset>
-                        <div class="body-title">DVR Model <span class="tf-color-1">*</span></div>
-                        <input type="text" name="dvr_model" value="{{ old('dvr_model') }}">
-                        @error('dvr_model')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </fieldset>
-                    <fieldset>
-                        <div class="body-title">DVR Serial Number <span class="tf-color-1">*</span></div>
-                        <input type="text" name="dvr_serial_number" value="{{ old('dvr_serial_number') }}">
-                        @error('dvr_serial_number')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </fieldset>
-                    
-                    <fieldset>
-                        <div class="body-title">DVR Installation Date</div>
-                        <input type="date" name="dvr_installation_date" value="{{ old('dvr_installation_date') }}">
-                        @error('dvr_installation_date')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </fieldset>
-                    <!-- Purchase Date Field -->
-                <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="dvr_purchase_date" id="dvr_purchase_date" value="{{ old('dvr_purchase_date') }}">
-                </fieldset>
-                @error('dvr_purchase_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
+        <div class="block device_block">
 
-                <!-- Warranty Duration Field -->
-                <fieldset class="name">
-                    <div class="body-title">Warranty Duration (Years)</div>
-                    <select class="flex-grow" name="dvr_warranty_duration" id="dvr_warranty_duration">
-                        <option value="1">1 Year</option>
-                        <option value="2">2 Years</option>
-                        <option value="3">3 Years</option>
-                    </select>
-                </fieldset>
-
-                <!-- Warranty Expiration Field -->
-                <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="dvr_warranty_expiration" id="dvr_warranty_expiration" value="{{ old('dvr_warranty_expiration') }}" readonly>
-                </fieldset>
-                @error('dvr_warranty_expiration')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-                    
-                </div>
+                
+        </div>
+                
 
 </div>
-
                 
                 <!-- Combo Fields -->
                 <h4>Combo Details</h4>
@@ -411,30 +273,214 @@
         </div>
     </div>
 </div>
+
 <style>
     .block{
         display: inline-block;
         width: 50%;
     }
+    .common-fields {
+        margin-bottom: 15px; /* Adjust as needed */
+        padding: 10px;
+    }
+
+    select, input {
+        width: 100%; /* Ensures consistency in field width */
+    }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
+
+    $('.editSubLocationButton').on('click', function() {
+        var sublocationId = $(this).data('id');
+        var sublocationName = $(this).data('name');
+        
+        $('#edit_sublocation_id').val(sublocationId);
+        $('#edit_sub_location_name').val(sublocationName);
+        $('#editSubLocationModal').modal('show');
+    });
+    // Save changes to the sublocation name
+    $('#updateSubLocationButton').on('click', function() {
+        var sublocationId = $('#edit_sublocation_id').val();
+        var updatedName = $('#edit_sub_location_name').val();
+
+        $.ajax({
+            url: "#",
+            type: 'PUT',
+            data: {
+                id: sublocationId,
+                name: updatedName,
+                _token: '{{ csrf_token() }}' // Include CSRF token
+            },
+            success: function(data) {
+                $('#editSubLocationModal').modal('hide');
+                location.reload(); // Refresh page to show updated data
+            },
+            error: function(xhr) {
+                var errors = xhr.responseJSON.errors;
+                alert('Error: ' + errors.name[0]);
+            }
+        });
+    });
     // Toggle NVR/DVR fields based on selection
     $('#device_type').change(function() {
-        var deviceType = $(this).val();
-        if (deviceType === 'nvr') {
-            $('#nvr_fields').show();
-            $('#dvr_fields').hide();
-        } else if (deviceType === 'dvr') {
-            $('#nvr_fields').hide();
-            $('#dvr_fields').show();
-        } else {
-            $('#nvr_fields').hide();
-            $('#dvr_fields').hide();
-        }
-    }).trigger('change');
+            var deviceType = $(this).val();
+            
+            // Clear the container div before adding new content
+            $('.device_block').empty();
 
+            if (deviceType === 'nvr') {
+                // Dynamically create and append NVR fields
+                var nvrFields = `
+                    <!-- NVR Fields -->
+                <div id="nvr_fields" ">
+                    <h4>NVR Details</h4>
+                    <fieldset >
+                    <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
+                    <div class="select flex-grow">
+                        <select name="sublocation_id" id="sublocation" >
+                            <option value="">Select a Sub-Location</option>
+                            @foreach($sublocations as $sublocation)
+                                <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                            @endforeach
+                            <option value="new" style="color: #4CAF50;">Add New Sub-Location</option>
+                        </select>
+                    </div>
+                </fieldset>
+                @error('sublocation_id')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+                    <fieldset>
+                        <div class="body-title">NVR Model <span class="tf-color-1">*</span></div>
+                        <input type="text" name="nvr_model" value="{{ old('nvr_model') }}">
+                        @error('nvr_model')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </fieldset>
+                    <fieldset>
+                        <div class="body-title">NVR Serial Number <span class="tf-color-1">*</span></div>
+                        <input type="text" name="nvr_serial_number" value="{{ old('nvr_serial_number') }}">
+                        @error('nvr_serial_number')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="body-title">NVR Installation Date</div>
+                        <input type="date" name="nvr_installation_date" value="{{ old('nvr_installation_date') }}">
+                        @error('nvr_installation_date')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </fieldset>
+                    <!-- Purchase Date Field -->
+                <fieldset class="name">
+                    <div class="body-title">Purchase Date</div>
+                    <input class="flex-grow" type="date" name="nvr_purchase_date" id="nvr_purchase_date" value="{{ old('nvr_purchase_date') }}">
+                </fieldset>
+                @error('nvr_purchase_date')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+
+                <!-- Warranty Duration Field -->
+                <fieldset class="name">
+                    <div class="body-title">Warranty Duration (Years)</div>
+                    <select class="flex-grow" name="nvr_warranty_duration" id="nvr_warranty_duration">
+                        <option value="1">1 Year</option>
+                        <option value="2">2 Years</option>
+                        <option value="3">3 Years</option>
+                    </select>
+                </fieldset>
+
+                <!-- Warranty Expiration Field -->
+                <fieldset class="name">
+                    <div class="body-title">Warranty Expiration</div>
+                    <input class="flex-grow" type="date" name="nvr_warranty_expiration" id="nvr_warranty_expiration" value="{{ old('nvr_warranty_expiration') }}" readonly>
+                </fieldset>
+                @error('nvr_warranty_expiration')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+                    
+                </div>
+                `;
+                $('.device_block').append(nvrFields);
+            } else if (deviceType === 'dvr') {
+                // Dynamically create and append DVR fields
+                var dvrFields = `
+                    <!-- DVR Fields -->
+                <div id="dvr_fields" >
+                    <h4>DVR Details</h4>
+                    <!-- Sub-Location Field -->
+                    <fieldset>
+                        <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="dvrsublocation_id" id="dvrsublocation">
+                                <option value="">Select a Sub-Location</option>
+                                @foreach($sublocations as $sublocation)
+                                    <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                                @endforeach
+                                <option value="new" style="color: #4CAF50;">Add New Sub-Location</option>
+                            </select>
+                        </div>
+                        @error('dvrsublocation_id')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </fieldset>
+                    <fieldset>
+                        <div class="body-title">DVR Model <span class="tf-color-1">*</span></div>
+                        <input type="text" name="dvr_model" value="{{ old('dvr_model') }}">
+                        @error('dvr_model')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </fieldset>
+                    <fieldset>
+                        <div class="body-title">DVR Serial Number <span class="tf-color-1">*</span></div>
+                        <input type="text" name="dvr_serial_number" value="{{ old('dvr_serial_number') }}">
+                        @error('dvr_serial_number')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </fieldset>
+                    
+                    <fieldset>
+                        <div class="body-title">DVR Installation Date</div>
+                        <input type="date" name="dvr_installation_date" value="{{ old('dvr_installation_date') }}">
+                        @error('dvr_installation_date')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </fieldset>
+                    <!-- Purchase Date Field -->
+                <fieldset class="name">
+                    <div class="body-title">Purchase Date</div>
+                    <input class="flex-grow" type="date" name="dvr_purchase_date" id="dvr_purchase_date" value="{{ old('dvr_purchase_date') }}">
+                </fieldset>
+                @error('dvr_purchase_date')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+
+                <!-- Warranty Duration Field -->
+                <fieldset class="name">
+                    <div class="body-title">Warranty Duration (Years)</div>
+                    <select class="flex-grow" name="dvr_warranty_duration" id="dvr_warranty_duration">
+                        <option value="1">1 Year</option>
+                        <option value="2">2 Years</option>
+                        <option value="3">3 Years</option>
+                    </select>
+                </fieldset>
+
+                <!-- Warranty Expiration Field -->
+                <fieldset class="name">
+                    <div class="body-title">Warranty Expiration</div>
+                    <input class="flex-grow" type="date" name="dvr_warranty_expiration" id="dvr_warranty_expiration" value="{{ old('dvr_warranty_expiration') }}" readonly>
+                </fieldset>
+                @error('dvr_warranty_expiration')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+                    
+                </div>
+                `;
+                $('.device_block').append(dvrFields);
+            }
+        });
     // Load locations by depot
     $('#depot_id').change(function() {
         if (this.value === 'new') {
