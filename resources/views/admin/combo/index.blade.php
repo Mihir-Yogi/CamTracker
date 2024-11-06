@@ -23,16 +23,37 @@
         <!-- Search and Add Button -->
         <div class="wg-box">
             <div class="flex items-center justify-between gap10 flex-wrap">
-                <div class="wg-filter flex-grow">
-                    <form class="form-search" action="{{ route('admin.combos.index') }}" method="GET">
-                        <fieldset class="name">
-                            <input type="text" placeholder="Search here..." name="search" tabindex="2" aria-required="true">
-                        </fieldset>
-                        <div class="button-submit">
-                            <button type="submit"><i class="icon-search"></i></button>
-                        </div>
-                    </form>
-                </div>
+            <form action="#" method="GET">
+                <fieldset>
+                    <div class="body-title">Select Depot</div>
+                    <div class="select flex-grow" style="width: 500px;">
+                        <select name="depot_id" id="depot_id">
+                            <option value="">Select a depot</option>
+                            @foreach($depots as $depot)
+                                <option value="{{ $depot->id }}" @if($depotId == $depot->id) selected @endif>
+                                    {{ $depot->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="body-title">Select Location</div>
+                    <div class="select flex-grow">
+                        <select name="location_id" id="location_id">
+                            <option value="">Select a location</option>
+                            @if ($depotId)
+                                @foreach ($depots->find($depotId)->locations as $location)
+                                    <option value="{{ $location->id }}" @if($locationId == $location->id) selected @endif>
+                                        {{ $location->name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </fieldset>
+                <button type="submit" style="width: 120px; height: 40px; margin-top: 20px;" class="tf-button style-1">Filter</button>
+            </form>
                 <a class="tf-button style-1 w208" href="{{ route('admin.combos.create') }}">
                     <i class="icon-plus"></i>Add New Combo
                 </a>
@@ -50,8 +71,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Location</th>
                                 <th>Depot</th>
+                                <th>Location</th>
                                 <th>NVR Model</th>
                                 <th>DVR Model</th>
                                 <th>HDD Model</th>
@@ -64,8 +85,8 @@
                             @forelse($combos as $index => $combo)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ optional($combo->location)->name ?? 'N/A' }}</td>
                                     <td>{{ optional($combo->location->depot)->name ?? 'N/A' }}</td>
+                                    <td>{{ optional($combo->location)->name ?? 'N/A' }}</td>
                                     <td>{{ optional($combo->nvr)->model ?? 'N/A' }}</td>
                                     <td>{{ optional($combo->dvr)->model ?? 'N/A' }}</td>
                                     <td>{{ optional($combo->hdd)->model ?? 'N/A' }}</td>
@@ -117,7 +138,31 @@
 @endsection
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
+$(document).ready(function() {
+            
+    $('#depot_id').change(function() {
+            var selectedDepotId = $(this).val();
+            if (selectedDepotId) {
+                $.ajax({
+                    url: "{{ url('/admin/locations-by-depot') }}/" + selectedDepotId,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#location_id').empty().append('<option value="">Select a location</option>');
+                        $.each(data, function(index, location) {
+                            $('#location_id').append('<option value="' + location.id + '">' + location.name + '</option>');
+                        });
+                    },
+                    error: function() {
+                        alert('Failed to fetch locations. Please try again.');
+                    }
+                });
+            } else {
+                $('#location_id').empty().append('<option value="">Select a location</option>');
+            }
+        });
     $(function(){
         $('.delete').on('click', function(e){
             e.preventDefault();
@@ -135,5 +180,6 @@
             });
         });
     });
+});
 </script>
 @endpush

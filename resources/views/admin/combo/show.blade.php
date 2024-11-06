@@ -140,7 +140,7 @@
                             </tr>
                             <tr>
                                 <th>Sub-Location</th>
-                                <td>{{ $combo->dvr->sublocation }}</td>
+                                <td>{{ $combo->dvr->sublocation->name  }}</td>
                             </tr>
                             <tr>
                                 <th>DVR Serial Number</th>

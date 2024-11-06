@@ -11,17 +11,13 @@
                         <div class="text-tiny">Dashboard</div>
                     </a>
                 </li>
-                <li>
-                    <i class="icon-chevron-right"></i>
-                </li>
+                <li><i class="icon-chevron-right"></i></li>
                 <li>
                     <a href="{{ route('admin.hdds.index') }}">
                         <div class="text-tiny">HDDs</div>
                     </a>
                 </li>
-                <li>
-                    <i class="icon-chevron-right"></i>
-                </li>
+                <li><i class="icon-chevron-right"></i></li>
                 <li>
                     <div class="text-tiny">Add New HDD</div>
                 </li>
@@ -102,25 +98,26 @@
                 <!-- Purchase Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date') }}">
+                    <input class="flex-grow" type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date') }}">
                 </fieldset>
                 @error('purchase_date')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                <!-- Installation Date Field -->
+                <!-- Warranty Duration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Installation Date</div>
-                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date') }}">
+                    <div class="body-title">Warranty Duration (Years)</div>
+                    <select class="flex-grow" name="warranty_duration" id="warranty_duration">
+                        <option value="1">1 Year</option>
+                        <option value="2">2 Years</option>
+                        <option value="3">3 Years</option>
+                    </select>
                 </fieldset>
-                @error('installation_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
                     <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration') }}">
+                    <input class="flex-grow" type="date" name="warranty_expiration" id="warranty_expiration" value="{{ old('warranty_expiration') }}" readonly>
                 </fieldset>
                 @error('warranty_expiration')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -137,14 +134,13 @@
     </div>
 </div>
 
-<!-- JavaScript to handle depot selection -->
+<!-- JavaScript to handle depot selection and warranty calculation -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
+    // Update location list based on depot selection
     $('#depot_id').change(function() {
         var selectedDepotId = $(this).val();
-
-        // Fetch locations based on selected depot
         if (selectedDepotId) {
             $.ajax({
                 url: "{{ url('/admin/locations-by-depot') }}/" + selectedDepotId,
@@ -161,6 +157,21 @@ $(document).ready(function() {
             });
         } else {
             $('#location_id').empty().append('<option value="">Select a location</option>');
+        }
+    });
+
+    // Calculate warranty expiration date
+    $('#purchase_date, #warranty_duration').change(function() {
+        var purchaseDate = $('#purchase_date').val();
+        var warrantyDuration = parseInt($('#warranty_duration').val());
+
+        if (purchaseDate && warrantyDuration) {
+            var date = new Date(purchaseDate);
+            date.setFullYear(date.getFullYear() + warrantyDuration);
+            var expirationDate = date.toISOString().split('T')[0];
+            $('#warranty_expiration').val(expirationDate);
+        } else {
+            $('#warranty_expiration').val('');
         }
     });
 });

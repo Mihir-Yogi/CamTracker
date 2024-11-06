@@ -6,20 +6,52 @@ use App\Models\Cctv;
 use App\Models\Combo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Depot;
+use App\Models\Sublocation;
+
 
 
 class CctvController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cctvs = Cctv::with('combo')->get();
-        return view('admin.CCTV.index', compact('cctvs'));
+        // Retrieve filter parameters from the request
+        $depotId = $request->input('depot_id');
+        $locationId = $request->input('location_id');
+    
+        // Initialize the query with related combo, location, and depot data
+        $query = Cctv::with(['combo.location.depot']);
+    
+        // Apply depot filter if depot_id is provided
+        if ($depotId) {
+            $query->whereHas('combo.location.depot', function ($q) use ($depotId) {
+                $q->where('id', $depotId);
+            });
+        }
+    
+        // Apply location filter if location_id is provided
+        if ($locationId) {
+            $query->whereHas('combo.location', function ($q) use ($locationId) {
+                $q->where('id', $locationId);
+            });
+        }
+    
+        // Execute the query and get the filtered CCTV records
+        $cctvs = $query->paginate(5);
+    
+        // Retrieve all depots for the filter dropdown
+        $depots = Depot::all();
+    
+        // Pass the filtered CCTVs, depots, and selected filter parameters to the view
+        return view('admin.CCTV.index', compact('cctvs', 'depots', 'depotId', 'locationId'));
     }
+    
 
     public function create()
     {
         $combos = Combo::with('depot', 'location')->get();
-        return view('admin.CCTV.cctv_add', compact('combos'));
+        $sublocations = Sublocation::all();
+        return view('admin.CCTV.cctv_add', compact('combos','sublocations'));
     }
 
     public function store(Request $request)
@@ -57,7 +89,7 @@ class CctvController extends Controller
         $combo->increment('current_cctv_count');
     
         // Redirect back with success message
-        return redirect()->route('admin.cctvs.index')->with('success', 'CCTV camera added successfully.');
+        return redirect()->back()->with('success', 'CCTV camera added successfully.');
     }
 
     public function show(Cctv $cctv)
@@ -68,7 +100,8 @@ class CctvController extends Controller
     public function edit(Cctv $cctv)
     {
         $combos = Combo::all();
-        return view('admin.CCTV.cctv_edit', compact('cctv', 'combos'));
+        $sublocations = Sublocation::all();
+        return view('admin.CCTV.cctv_edit', compact('cctv', 'combos','sublocations'));
     }
 
     public function update(Request $request, Cctv $cctv)

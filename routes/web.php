@@ -58,6 +58,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::put('/admin/locations/{location}', [LocationController::class, 'update'])->name('admin.locations.update');
     Route::delete('/admin/locations/{location}', [LocationController::class, 'destroy'])->name('admin.locations.destroy');
 
+    Route::post('/admin/locations/sublocations', [LocationController::class, 'sub_store'])->name('admin.locations.sub_store');
+
     // Combo routes under admin
     Route::get('/admin/combos', [ComboController::class, 'index'])->name('admin.combos.index');
     Route::get('/admin/combos/create', [ComboController::class, 'create'])->name('admin.combos.create');
@@ -69,7 +71,6 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     
     // NVR routes under admin
     Route::get('/admin/nvrs', [NvrController::class, 'index'])->name('admin.nvrs.index');
-    Route::get('/admin/nvrs/create', [NvrController::class, 'create'])->name('admin.nvrs.create');
     Route::post('/admin/nvrs/store', [NvrController::class, 'store'])->name('admin.nvrs.store');
     Route::get('admin/nvrs/{nvr}', [NvrController::class, 'show'])->name('admin.nvrs.show');
     Route::get('/admin/nvrs/{nvr}/edit', [NvrController::class, 'edit'])->name('admin.nvrs.edit');
@@ -81,7 +82,6 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 
     // DVR routes under admin
     Route::get('/admin/dvrs', [DvrController::class, 'index'])->name('admin.dvrs.index');
-    Route::get('/admin/dvrs/create', [DvrController::class, 'create'])->name('admin.dvrs.create');
     Route::post('/admin/dvrs/store', [DvrController::class, 'store'])->name('admin.dvrs.store');
     Route::get('admin/dvrs/{dvr}', [DvrController::class, 'show'])->name('admin.dvrs.show');
     Route::get('/admin/dvrs/{dvr}/edit', [DvrController::class, 'edit'])->name('admin.dvrs.edit');
@@ -93,7 +93,6 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 
     // HDD routes under admin
     Route::get('/admin/hdds', [ HddController::class, 'index'])->name('admin.hdds.index');
-    Route::get('/admin/hdds/create', [HddController::class, 'create'])->name('admin.hdds.create');
     Route::post('/admin/hdds/store', [HddController::class, 'store'])->name('admin.hdds.store');
     Route::get('/admin/hdds/{hdd}', [HddController::class, 'show'])->name('admin.hdds.show');
     Route::get('/admin/hdds/{hdd}/edit', [HddController::class, 'edit'])->name('admin.hdds.edit');

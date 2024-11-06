@@ -13,11 +13,39 @@ use Intervention\Image\Facades\Image;
 
 class NvrController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $nvrs = Nvr::all();
-        return view('admin.NVRs.index', compact('nvrs'));
+        // Retrieve filter parameters from the request
+        $depotId = $request->input('depot_id');
+        $locationId = $request->input('location_id');
+    
+        // Initialize the query for NVRs
+        $query = Nvr::with('sublocation'); 
+    
+        // Apply depot filter if depot_id is provided
+        if ($depotId) {
+            $query->whereHas('location.depot', function ($q) use ($depotId) {
+                $q->where('id', $depotId);
+            });
+        }
+    
+        // Apply location filter if location_id is provided
+        if ($locationId) {
+            $query->whereHas('location', function ($q) use ($locationId) {
+                $q->where('id', $locationId);
+            });
+        }
+    
+        // Execute query and get filtered NVRs
+        $nvrs = $query->paginate(5);
+    
+        // Retrieve all depots for filter dropdown
+        $depots = Depot::all();
+    
+        // Pass the NVRs, depots, and selected filters to the view
+        return view('admin.NVRs.index', compact('nvrs', 'depots', 'depotId', 'locationId'));
     }
+    
 
     public function create()
     {
@@ -49,7 +77,7 @@ class NvrController extends Controller
     ]);
     $nvr->combo()->save($combo);
 
-    return redirect()->route('admin.nvrs.index')->with('success', 'NVR added successfully!');
+    return redirect()->back()->with('success', 'NVR added successfully!');
 }
 
     public function show(Nvr $nvr)

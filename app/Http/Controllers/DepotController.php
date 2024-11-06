@@ -23,10 +23,9 @@ class DepotController extends Controller
         $request->validate(
             [
                 'name' => 'required|string',
-                'city' => 'required|string'
             ]);
         Depot::create($request->all());
-        return redirect()->route('admin.depots.index')->with('status', 'Depot Added successfully!');
+        return redirect()->back()->with('status', 'Depot Added successfully!');
     }
 
     public function show(Depot $depot)
@@ -43,7 +42,6 @@ class DepotController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'city' => 'required|string'
         ]);
         $depot->update($request->all());
         return redirect()->route('admin.depots.index')->with('status', 'Depot Updated successfully!');

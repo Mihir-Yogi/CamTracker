@@ -44,18 +44,8 @@
             <form class="form-new-product form-style-1" action="{{ route('admin.cctvs.update', $cctv->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                
-                <!-- Model Field -->
-                <fieldset class="name">
-                    <div class="body-title">Model <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $cctv->model) }}" required>
-                </fieldset>
-                @error('model')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Combo Selection (Editable) -->
-                <fieldset class="name">
+                                <!-- Combo Selection (Editable) -->
+                                <fieldset class="name">
                     <div class="body-title">Combo <span class="tf-color-1">*</span></div>
                     <select class="flex-grow" id="combo_id" name="combo_id" required>
                         <option value="">Select Combo</option>
@@ -71,18 +61,29 @@
                 @enderror
 
                 <fieldset>
-                    <div class="body-title">CCTV Sub-Location <span class="tf-color-1">*</span></div>
-                    <div class="select flex-grow">
-                        <select name="sublocation" id="sublocation" >
-                            <option value="">Select a Sub-location</option>
-                            <option value="Deasal Station" {{ (old('hdd_sublocation', $combo->hdd->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
-                            <option value="Washing Station" {{ (old('hdd_sublocation', $combo->hdd->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
-                        </select>
-                    </div>
-                    @error('sublocation')
-                        <span class="alert alert-danger">{{ $message }}</span>
-                    @enderror
+                            <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
+                            <div class="select flex-grow">
+                                <select name="sublocation_id" id="sublocation_id" >
+                                    <option value="">Select a Sub-Location</option>
+                                    @foreach($sublocations as $sublocation)
+                                        <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </fieldset>
+                        @error('sublocation_id')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                <!-- Model Field -->
+                <fieldset class="name">
+                    <div class="body-title">Model <span class="tf-color-1">*</span></div>
+                    <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $cctv->model) }}" required>
                 </fieldset>
+                @error('model')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+
+
 
                 <!-- Serial Number Field -->
                 <fieldset class="name">
@@ -140,4 +141,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .block{
+        display: inline-block;
+        width: 50%;
+    }
+</style>
 @endsection

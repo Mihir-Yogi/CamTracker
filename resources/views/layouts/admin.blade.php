@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="surfside media" />
-    
+
     <link rel="stylesheet" type="text/css" href="{{ asset('css/animate.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/animation.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css')}}">
@@ -44,7 +44,7 @@
 
                 <div class="section-menu-left">
                     <div class="box-logo">
-                        <div class="icon"><i class="fa-solid fa-bus" style="margin-left: 15px;font-size: 50px;"></i><span style="font-size: 25px;">CIMS</span></div>
+                        <div class="icon"><i class="fa-solid fa-bus" style="margin-left: 15px;font-size: 50px;"></i><span style="font-size:30px;">CIMS</span></div>
                         <a href="{{route('admin.index')}}" id="site-logo-inner">
                             <img class="" id="logo_header" alt="" src="{{asset('images/logo/logo.png')}}"
                                 data-light="{{asset('images/logo/logo.png')}}" data-dark="{{asset('images/logo/logo.png')}}">
@@ -75,70 +75,35 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.depots.create')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
-                                                <div class="text">Add Depot</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.locations.create')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
-                                                <div class="text">Add Location</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
                                             <a href="{{route('admin.combos.create')}}" class="">
                                             <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
                                                 <div class="text">Add NVR/DVR/HDD</div>
                                             </a>
                                         </li>
+                                        
                                         <li class="sub-menu-item">
-                                            <a href="{{route('admin.nvrs.create')}}" class="">
+                                            <a href="{{ route('admin.cctvs.create') }}" class="">
                                             <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
-                                                <div class="text">Add NVR</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.dvrs.create')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
-                                                <div class="text">Add DVR</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.hdds.create')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
-                                                <div class="text">Add HDD</div>
+                                                <div class="text">Add CCTV</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
                                             <a href="{{route('status_reports.create')}}" class="">
                                             <div class="icon"><i class="fa-solid fa-plus-minus"></i></div>
-                                                <div class="text">Add Ṣtatus</div>
+                                                <div class="text">Add Transaction</div>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
 
 
-                                
+
                                 <li class="menu-item has-children">
                                     <a href="javascript:void(0);" class="menu-item-button">
                                         <div class="icon"><i class="fa-solid fa-eye"></i></div>
                                         <div class="text">VIEW/UPDATE</div>
                                     </a>
                                     <ul class="sub-menu">
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.depots.index')}}" class="">
-                                                <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">Depots</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.locations.index')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">Locations</div>
-                                            </a>
-                                        </li>
                                         <li class="sub-menu-item">
                                             <a href="{{route('admin.combos.index')}}" class="">
                                             <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
@@ -172,12 +137,12 @@
                                         <li class="sub-menu-item">
                                             <a href="{{route('status_reports.index')}}" class="">
                                             <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">REPORTS</div>
+                                                <div class="text">Transactions</div>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
-                                
+
                                 <li class="menu-item">
                                     <a href="{{route('failed.devices')}}" class="">
                                         <div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
@@ -208,7 +173,7 @@
                                 </form>
                                 </li>
 
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -253,11 +218,10 @@
                                             <span class="header-user wg-user">
                                                 @php
                                                     use Illuminate\Support\Facades\Auth;
-
                                                     // Get the authenticated user
                                                     $user = Auth::user();
                                                 @endphp
-                                                
+
                                                 <div class="flex flex-column">
                                                     <span class="body-title mb-2"><i class="fa-solid fa-user" style="margin-right: 15px;"></i>  {{ $user->name }} <i class="fa-solid fa-caret-down"></i></span>
                                                     <span class="text-tiny" style="margin-left: 35px;">{{ $user->utype === 'ADM' ? 'Admin' : 'User' }}</span>
@@ -289,7 +253,7 @@
                     @yield('content')
 
                         <div class="bottom-page">
-                            <div class="body-text">2024 CIMS</div>
+                            <div class="body-text">© 2024 CIMS</div>
                         </div>
                     </div>
 

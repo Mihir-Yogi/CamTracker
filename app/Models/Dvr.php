@@ -19,7 +19,7 @@ class Dvr extends Model
         'depot_id',  // New field
         'location_id',  // New field
         'image_replace', 
-        'sublocation'
+        'sublocation_id'
     ];
 
     public function depot()
@@ -35,5 +35,10 @@ class Dvr extends Model
     public function combo()
     {
         return $this->hasOne(Combo::class);
+    }
+
+    public function sublocation()
+    {
+        return $this->belongsTo(Sublocation::class, 'sublocation_id');
     }
 }

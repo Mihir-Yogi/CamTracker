@@ -9,6 +9,7 @@
     }
     .device-toggle-section, .device-section { 
         margin-top: 20px; 
+        font-size: 15px;
     }
     .hidden { 
         display: none; 
@@ -71,7 +72,7 @@
                 </div>
 
                 <!-- Conditional NVR Fields -->
-                <div id="nvr-fields" style="display: {{ $combo->nvr ? 'block' : 'none' }};">
+                <div id="nvr-fields" style="display: '{{ $combo->nvr ? 'block' : 'none' }}';">
                     <h4>NVR Details</h4>
                     <fieldset><div class="body-title">NVR Model <span class="tf-color-1">*</span></div><input type="text" name="nvr_model" value="{{ old('nvr_model', $combo->nvr->model ?? '') }}"></fieldset>
                     <fieldset>
@@ -79,8 +80,9 @@
                         <div class="select flex-grow">
                             <select name="nvr_sublocation" id="nvr_sublocation" >
                                 <option value="">Select a Sub-location</option>
-                                <option value="Deasal Station" {{ (old('nvr_sublocation', $combo->nvr->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
-                                <option value="Washing Station" {{ (old('nvr_sublocation', $combo->nvr->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                                @foreach($sublocations as $sublocation)
+                                    <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         @error('nvr_sublocation')
@@ -94,7 +96,7 @@
                 </div>
 
                 <!-- Conditional DVR Fields -->
-                <div id="dvr-fields" style="display: {{ $combo->dvr ? 'block' : 'none' }};">
+                <div id="dvr-fields" style="display: '{{ $combo->dvr ? 'block' : 'none' }}'">
                     <h4>DVR Details</h4>
                     <fieldset><div class="body-title">DVR Model <span class="tf-color-1">*</span></div><input type="text" name="dvr_model" value="{{ old('dvr_model', $combo->dvr->model ?? '') }}"></fieldset>
                     <fieldset>
@@ -102,8 +104,9 @@
                         <div class="select flex-grow">
                             <select name="dvr_sublocation" id="dvr_sublocation" >
                                 <option value="">Select a Sub-location</option>
-                                <option value="Deasal Station" {{ (old('dvr_sublocation', $combo->dvr->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
-                                <option value="Washing Station" {{ (old('dvr_sublocation', $combo->dvr->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                                @foreach($sublocations as $sublocation)
+                                    <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         @error('dvr_sublocation')
@@ -125,8 +128,9 @@
                         <div class="select flex-grow">
                             <select name="hdd_sublocation" id="hdd_sublocation" >
                                 <option value="">Select a Sub-location</option>
-                                <option value="Deasal Station" {{ (old('hdd_sublocation', $combo->hdd->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
-                                <option value="Washing Station" {{ (old('hdd_sublocation', $combo->hdd->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
+                                @foreach($sublocations as $sublocation)
+                                    <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         @error('hdd_sublocation')

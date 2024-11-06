@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use App\Models\Depot;
 use Illuminate\Http\Request;
+use App\Models\Sublocation; 
 
 class LocationController extends Controller
 {
@@ -24,9 +25,18 @@ class LocationController extends Controller
     {
         $request->validate(['name' => 'required|string', 'depot_id' => 'required|exists:depots,id']);
         Location::create($request->all());
-        return redirect()->route('admin.locations.index')->with('status', 'Depot Added successfully!');
+        return redirect()->back()->with('status', 'Depot Added successfully!');
     }
-
+    public function sub_store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+    
+        Sublocation::create($request->all());
+    
+        return redirect()->back()->with('status', 'Sublocation Added successfully!');
+    }
     // public function show(Location $location)
     // {
     //     return view('locations.show', compact('location'));

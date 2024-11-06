@@ -12,11 +12,38 @@ use Intervention\Image\Facades\Image;
 
 class DvrController extends Controller
 {
-    public function index()
-    {
-        $dvrs = Dvr::all();
-        return view('admin.DVRs.index', compact('dvrs'));
+    public function index(Request $request)
+{
+    // Retrieve filter parameters from the request
+    $depotId = $request->input('depot_id');
+    $locationId = $request->input('location_id');
+
+    // Initialize the query for DVRs
+    $query = Dvr::with('sublocation'); 
+
+    // Apply depot filter if depot_id is provided
+    if ($depotId) {
+        $query->whereHas('location.depot', function ($q) use ($depotId) {
+            $q->where('id', $depotId);
+        });
     }
+
+    // Apply location filter if location_id is provided
+    if ($locationId) {
+        $query->whereHas('location', function ($q) use ($locationId) {
+            $q->where('id', $locationId);
+        });
+    }
+
+    // Execute query and get all filtered DVRs
+    $dvrs = $query->paginate(5);
+
+    // Retrieve all depots for the filter dropdown
+    $depots = Depot::all();
+
+    // Pass the DVRs, depots, and selected filters to the view
+    return view('admin.DVRs.index', compact('dvrs', 'depots', 'depotId', 'locationId'));
+}
 
     public function create()
     {
@@ -48,7 +75,7 @@ class DvrController extends Controller
         ]);
         $dvr->combo()->save($combo);
 
-        return redirect()->route('admin.dvrs.index')->with('success', 'DVR added successfully!');
+        return redirect()->back()->with('success', 'DVR added successfully!');
     }
 
     public function show(Dvr $dvr)

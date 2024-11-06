@@ -9,7 +9,7 @@ class Depot extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'city'];
+    protected $fillable = ['name'];
 
     // Define one-to-many relationship with Location
     public function locations()

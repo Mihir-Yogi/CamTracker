@@ -19,8 +19,8 @@ class Hdd extends Model
         'warranty_expiration',
         'depot_id',  // New field
         'location_id',  // New field
+        'sublocation_id',  
         'image_replace', 
-        'sublocation'
     ];
 
     public function depot()
@@ -37,4 +37,8 @@ class Hdd extends Model
     {
         return $this->hasOne(Combo::class);
     }
+    public function sublocation()
+{
+    return $this->belongsTo(Sublocation::class, 'sublocation_id');
+}
 }

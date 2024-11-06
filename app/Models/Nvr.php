@@ -20,7 +20,7 @@ class Nvr extends Model
         'depot_id',  // New field
         'location_id',  // New field
         'image_replace', 
-        'sublocation'
+        'sublocation_id'
     ];
 
 
@@ -37,5 +37,9 @@ class Nvr extends Model
     public function combo()
     {
         return $this->hasOne(Combo::class);
+    }
+    public function sublocation()
+    {
+        return $this->belongsTo(Sublocation::class, 'sublocation_id');
     }
 }

@@ -43,8 +43,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
                                 <th>Depot</th>
+                                <th>Location</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -52,8 +52,8 @@
                             @foreach($locations as $location)
                             <tr>
                                 <td>{{ $location->id }}</td>
-                                <td>{{ $location->name }}</td>
                                 <td>{{ $location->depot->name ?? 'N/A' }}</td>
+                                <td>{{ $location->name }}</td>
                                 <td>
                                     <div class="list-icon-function">
                                         <a href="{{ route('admin.locations.edit', ['location' => $location->id]) }}">

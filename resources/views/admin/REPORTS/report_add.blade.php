@@ -60,7 +60,7 @@ button[type="submit"]:hover{
 
 <div class="main-content-inner">
     <div class="main-content-wrap">
-        <h3>Add Status Report</h3>
+        <h3>Add Transaction</h3>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -75,11 +75,11 @@ button[type="submit"]:hover{
             @csrf
             <fieldset>
                 <div class="body-title">Select Depot <span class="tf-color-1">*</span></div>
-                <div class="select flex-grow">
-                    <select name="depot_id" id="depot_id" required>
+                <div class="select flex-grow" style="width: 500px;">
+                    <select name="depot_id" id="depot_id"  required>
                         <option value="">Select a depot</option>
                         @foreach($depots as $depot)
-                            <option value="{{ $depot->id }}" @if(old('depot_id') == $depot->id) selected @endif>{{ $depot->name }} ({{ $depot->city }})</option>
+                            <option value="{{ $depot->id }}" @if(old('depot_id') == $depot->id) selected @endif>{{ $depot->name }} </option>
                         @endforeach
                     </select>
                 </div>
@@ -90,7 +90,7 @@ button[type="submit"]:hover{
 
             <fieldset>
                 <div class="body-title">Select Location <span class="tf-color-1">*</span></div>
-                <div class="select flex-grow">
+                <div class="select flex-grow" style="width: 500px;">
                     <select name="location_id" id="location_id" required>
                         <option value="">Select a location</option>
                     </select>
@@ -99,8 +99,6 @@ button[type="submit"]:hover{
             @error('location_id')
                 <span class="alert alert-danger">{{ $message }}</span>
             @enderror
-
-            <button type="button" id="searchButton">Search</button>
 
             <div id="devicesContainer" class="table-responsive">
             </div>
@@ -117,7 +115,7 @@ button[type="submit"]:hover{
                     </div>
 
                     <!-- Image Input Field -->
-                    <input type="file" name="remark_image" accept="image/*" onchange="previewNewImage(event)">
+                    <input type="file" name="remark_image" accept="image/*" style="width: 500px;" onchange="previewNewImage(event)">
                 </fieldset>
                 @error('remark_image')
                     <span class="alert alert-danger">{{ $message }}</span>
@@ -154,128 +152,6 @@ button[type="submit"]:hover{
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
-    
-    $('#searchButton').click(function() {
-        let depotId = $('#depot_id').val();
-        let locationId = $('#location_id').val();
-
-        if (depotId && locationId) {
-            $('#devicesContainer').html('<p>Loading devices...</p>');
-            $.ajax({
-                url: "{{ route('status_report.devices') }}",
-                type: 'POST',
-                data: {
-                    depot_id: depotId,
-                    location_id: locationId,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(data) {
-                    let devicesHTML = `<div class="table-responsive"><table class="table table-striped table-bordered"><thead><tr><th>Type</th><th>Model</th><th>Serial Number</th><th>Status</th><th>Off Reason</th></tr></thead><tbody>`;
-
-                    // Process NVRs
-                    data.nvrs.forEach(nvr => {
-                        devicesHTML += `
-                            <tr>
-                                <td>NVR</td>
-                                <td>${nvr.model}</td>
-                                <td>${nvr.serial_number}</td>
-                                <td>
-                                    <select name="nvr_status" class="status-select" required>
-                                        <option value="ON">ON</option>
-                                        <option value="OFF">OFF</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <textarea name="off_reason[nvr_${nvr.id}]" class="remarks" placeholder="Reason for OFF" style="display:none;"></textarea>
-                                </td>
-                            </tr>`;
-                            devicesHTML += `<input type="hidden" name="nvr_id" value="${nvr.id}">`;
-
-                    });
-
-                    // Process DVRs
-                    data.dvrs.forEach(dvr => {
-                        devicesHTML += `
-                            <tr>
-                                <td>DVR</td>
-                                <td>${dvr.model}</td>
-                                <td>${dvr.serial_number}</td>
-                                <td>
-                                    <select name="dvr_status" class="status-select" required>
-                                        <option value="ON">ON</option>
-                                        <option value="OFF">OFF</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <textarea name="off_reason[dvr_${dvr.id}]" class="remarks" placeholder="Reason for OFF" style="display:none;"></textarea>
-                                </td>
-                            </tr>`;
-                            devicesHTML += `<input type="hidden" name="dvr_id" value="${dvr.id}">`;
-                    });
-
-                    // Process HDDs
-                    data.hdds.forEach(hdd => {
-                        devicesHTML += `
-                            <tr>
-                                <td>HDD</td>
-                                <td>${hdd.model}</td>
-                                <td>${hdd.serial_number}</td>
-                                <td>
-                                    <select name="hdd_status" class="status-select" required>
-                                        <option value="ON">ON</option>
-                                        <option value="OFF">OFF</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <textarea name="off_reason[hdd_${hdd.id}]" class="remarks" placeholder="Reason for OFF" style="display:none;"></textarea>
-                                </td>
-                            </tr>`;
-                            devicesHTML += `<input type="hidden" name="hdd_id" value="${hdd.id}">`;
-
-                    });
-
-                    // Process CCTVs
-                    data.cctvs.forEach(cctv => {
-                        devicesHTML += `
-                            <tr>
-                                <td>CCTV</td>
-                                <td>${cctv.model}</td>
-                                <td>${cctv.serial_number}</td>
-                                <td>
-                                    <select name="cctv_status[${cctv.id}]" class="status-select" required>
-                                        <option value="ON">ON</option>
-                                        <option value="OFF">OFF</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <textarea name="cctv_reason[${cctv.id}]" class="remarks" placeholder="Reason for OFF" style="display:none;"></textarea>
-                                </td>
-                            </tr>`;
-                    });
-
-                    devicesHTML += '</tbody></table>';
-                    $('#devicesContainer').html(devicesHTML);
-
-                    // Show or hide remarks based on selected status
-                    $('.status-select').change(function() {
-                        const selectedValue = $(this).val();
-                        const remarksField = $(this).closest('tr').find('.remarks');
-                        if (selectedValue === 'OFF') {
-                            remarksField.show();
-                        } else {
-                            remarksField.hide().val(''); // Hide and clear the field
-                        }
-                    });
-                },
-                error: function(xhr) {
-                    $('#devicesContainer').html('<p>An error occurred while loading devices. Please try again.</p>');
-                    console.error(xhr.responseText);
-                }
-            });
-        } else {
-            $('#devicesContainer').empty(); // Clear devices if no depot or location is selected
-        }
-    });
 
     $('#depot_id').change(function() {
         var selectedDepotId = $(this).val();
@@ -302,6 +178,131 @@ $(document).ready(function() {
     });
 });
 
+$('#location_id').change(function() {
+        searchDevices();
+    });
+    function searchDevices() {
+        let depotId = $('#depot_id').val();
+        let locationId = $('#location_id').val();
+
+        if (depotId && locationId) {
+            $('#devicesContainer').html('<p>Loading devices...</p>');
+            $.ajax({
+                url: "{{ route('status_report.devices') }}",
+                type: 'POST',
+                data: {
+                    depot_id: depotId,
+                    location_id: locationId,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(data) {
+                    let devicesHTML = `<div class="table-responsive"><table class="table table-striped table-bordered"><thead><tr><th>Type</th><th>Model</th><th>Serial Number</th><th>Status</th><th>Off Reason</th></tr></thead><tbody>`;
+
+                    // Generate rows for NVRs, DVRs, HDDs, and CCTVs
+                    data.nvrs.forEach(nvr => {
+                        devicesHTML += `
+                            <tr>
+                                <td>NVR</td>
+                                <td>${nvr.model}</td>
+                                <td>${nvr.serial_number}</td>
+                                <td>
+                                    <select name="nvr_status" class="status-select" required>
+                                        <option value="ON" ${nvr.status === 'ON' ? 'selected' : ''}>ON</option>
+                                        <option value="OFF" ${nvr.status === 'OFF' ? 'selected' : ''}>OFF</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea name="off_reason[nvr_${nvr.id}]" class="remarks" placeholder="Reason for OFF" style="${nvr.status === 'OFF' ? 'display:block;' : 'display:none;'}">${nvr.reason}</textarea>
+                                </td>
+                            </tr>`;
+                            devicesHTML += `<input type="hidden" name="nvr_id" value="${nvr.id}">`;
+                    });
+                    
+                    
+                    // Process DVRs
+                    data.dvrs.forEach(dvr => {
+                        devicesHTML += `
+                            <tr>
+                                <td>DVR</td>
+                                <td>${dvr.model}</td>
+                                <td>${dvr.serial_number}</td>
+                                <td>
+                                    <select name="dvr_status" class="status-select" required>
+                                        <option value="ON" ${dvr.status === 'ON' ? 'selected' : ''}>ON</option>
+                                        <option value="OFF" ${dvr.status === 'OFF' ? 'selected' : ''}>OFF</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea name="off_reason[dvr_${dvr.id}]" class="remarks" placeholder="Reason for OFF" style="${dvr.status === 'OFF' ? 'display:block;' : 'display:none;'}">${dvr.reason}</textarea>
+                                </td>
+                            </tr>`;
+                            devicesHTML += `<input type="hidden" name="dvr_id" value="${dvr.id}">`;
+                    });
+
+                    // Process HDDs
+                    data.hdds.forEach(hdd => {
+                        devicesHTML += `
+                            <tr>
+                                <td>HDD</td>
+                                <td>${hdd.model}</td>
+                                <td>${hdd.serial_number}</td>
+                                <td>
+                                    <select name="hdd_status" class="status-select" required>
+                                        <option value="ON" ${hdd.status === 'ON' ? 'selected' : ''}>ON</option>
+                                        <option value="OFF" ${hdd.status === 'OFF' ? 'selected' : ''}>OFF</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea name="off_reason[hdd_${hdd.id}]" class="remarks" placeholder="Reason for OFF" style="${hdd.status === 'OFF' ? 'display:block;' : 'display:none;'}">${hdd.reason}</textarea>
+                                </td>
+                            </tr>`;
+                            devicesHTML += `<input type="hidden" name="hdd_id" value="${hdd.id}">`;
+
+                    });
+
+                    // Process CCTVs
+                    data.cctvs.forEach(cctv => {
+                        devicesHTML += `
+                            <tr>
+                                <td>CCTV</td>
+                                <td>${cctv.model}</td>
+                                <td>${cctv.serial_number}</td>
+                                <td>
+                                    <select name="cctv_status[${cctv.id}]" class="status-select" required>
+                                        <option value="ON" ${cctv.status === 'ON' ? 'selected' : ''}>ON</option>
+                                        <option value="OFF" ${cctv.status === 'OFF' ? 'selected' : ''}>OFF</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea name="cctv_reason[${cctv.id}]" class="remarks" placeholder="Reason for OFF" style="${cctv.status === 'OFF' ? 'display:block;' : 'display:none;'}">${cctv.reason}</textarea>
+                                </td>
+                            </tr>`;
+                    });
+
+                    devicesHTML += '</tbody></table>';
+                    $('#devicesContainer').html(devicesHTML);
+
+                    // Show or hide remarks based on selected status
+                    $('.status-select').change(function() {
+                        const selectedValue = $(this).val();
+                        const remarksField = $(this).closest('tr').find('.remarks');
+                        if (selectedValue === 'OFF') {
+                            remarksField.show();
+                        } else {
+                            remarksField.hide().val(''); // Hide and clear the field
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    $('#devicesContainer').html('<p>An error occurred while loading devices. Please try again.</p>');
+                    console.error(xhr.responseText);
+                }
+            });
+        } else {
+            $('#devicesContainer').empty(); // Clear devices if no depot or location is selected
+        }
+    }
+    
 function previewNewImage(event) {
         const reader = new FileReader();
         reader.onload = function() {

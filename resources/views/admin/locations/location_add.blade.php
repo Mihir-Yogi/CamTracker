@@ -32,7 +32,21 @@
         <div class="wg-box">
             <form class="form-new-product form-style-1" action="{{ route('admin.locations.store') }}" method="POST">
                 @csrf
-                
+                 <!-- Select Depot Field -->
+                 <fieldset>
+                    <div class="body-title">Select Depot <span class="tf-color-1">*</span></div>
+                    <div class="select flex-grow">
+                        <select name="depot_id" required>
+                            <option value="">Select a depot</option>
+                            @foreach($depots as $depot)
+                                <option value="{{ $depot->id }}" @if(old('depot_id') == $depot->id) selected @endif>{{ $depot->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </fieldset>
+                @error('depot_id')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
                 <!-- Location Name Field -->
                 <fieldset class="name">
                     <div class="body-title">Location Name <span class="tf-color-1">*</span></div>
@@ -42,21 +56,7 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                <!-- Select Depot Field -->
-                <fieldset>
-                    <div class="body-title">Select Depot <span class="tf-color-1">*</span></div>
-                    <div class="select flex-grow">
-                        <select name="depot_id" required>
-                            <option value="">Select a depot</option>
-                            @foreach($depots as $depot)
-                                <option value="{{ $depot->id }}" @if(old('depot_id') == $depot->id) selected @endif>{{ $depot->name }} ({{ $depot->city }})</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </fieldset>
-                @error('depot_id')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
+               
                 <!-- Save Button -->
                 <div class="bot">
                     <div></div>

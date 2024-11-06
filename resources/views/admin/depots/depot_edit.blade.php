@@ -43,14 +43,6 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                <!-- City Field -->
-                <fieldset class="name">
-                    <div class="body-title">City <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter city" name="city" value="{{ old('city', $depot->city) }}" required>
-                </fieldset>
-                @error('city')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
                 <!-- Save Button -->
                 <div class="bot">

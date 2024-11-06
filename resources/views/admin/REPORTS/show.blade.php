@@ -121,10 +121,6 @@
                             <td>{{ $report->nvr->model }}</td>
                         </tr>
                         <tr>
-                            <th>Sub-Location</th>
-                            <td>{{ $report->nvr->sublocation }}</td>
-                        </tr>
-                        <tr>
                             <th>Serial Number</th>
                             <td>{{ $report->nvr->serial_number }}</td>
                         </tr>
@@ -160,10 +156,6 @@
                             <td>{{ $report->dvr->model }}</td>
                         </tr>
                         <tr>
-                            <th>Sub-Location</th>
-                            <td>{{ $report->dvr->sublocation }}</td>
-                        </tr>
-                        <tr>
                             <th>Serial Number</th>
                             <td>{{ $report->dvr->serial_number }}</td>
                         </tr>
@@ -196,10 +188,6 @@
                     <tr>
                         <th>Model</th>
                         <td>{{ $report->hdd->model }}</td>
-                    </tr>
-                    <tr>
-                        <th>Sub-Location</th>
-                        <td>{{ $report->hdd->sublocation }}</td>
                     </tr>
                     <tr>
                         <th>Serial Number</th>

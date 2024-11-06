@@ -46,7 +46,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>City</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -55,7 +54,6 @@
                             <tr>
                                 <td>{{ $depot->id }}</td>
                                 <td>{{ $depot->name }}</td>
-                                <td>{{ $depot->city }}</td>
                                 <td>
                                     <div class="list-icon-function">
                                         <a href="{{ route('admin.depots.edit', ['depot' => $depot->id]) }}">

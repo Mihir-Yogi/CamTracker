@@ -86,7 +86,7 @@
                 <!-- Depot Field (Non-Editable) -->
                 <fieldset>
                     <div class="body-title">Depot</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $dvr->depot->name }} ({{ $dvr->depot->city }})" disabled>
+                    <input class="flex-grow depot-location-text" type="text" value="{{ $dvr->depot->name }} " disabled>
                     <input type="hidden" name="depot_id" value="{{ $dvr->depot_id }}">
                 </fieldset>
 

@@ -10,13 +10,44 @@ use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 use App\Models\Hdd;
 
+
 class HddController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $hdds = Hdd::all();
-        return view('admin.HDDs.index', compact('hdds'));
+        // Retrieve filter parameters from the request
+        $depotId = $request->input('depot_id');
+        $locationId = $request->input('location_id');
+
+        
+    
+        // Initialize the query for HDDs
+        $query = Hdd::with('sublocation'); 
+    
+        // Apply depot filter if depot_id is provided
+        if ($depotId) {
+            $query->whereHas('location.depot', function ($q) use ($depotId) {
+                $q->where('id', $depotId);
+            });
+        }
+    
+        // Apply location filter if location_id is provided
+        if ($locationId) {
+            $query->whereHas('location', function ($q) use ($locationId) {
+                $q->where('id', $locationId);
+            });
+        }
+    
+        // Execute query and get filtered HDDs
+        $hdds = $query->paginate(5);
+    
+        // Retrieve all depots for filter dropdown
+        $depots = Depot::all();
+    
+        // Pass the HDDs, depots, and selected filters to the view
+        return view('admin.HDDs.index', compact('hdds', 'depots', 'depotId', 'locationId'));
     }
+    
 
     public function create()
     {
@@ -48,7 +79,7 @@ class HddController extends Controller
         ]);
         $hdd->combo()->save($combo);
 
-        return redirect()->route('admin.hdds.index')->with('success', 'HDD added successfully!');
+        return redirect()->back()->with('success', 'HDD added successfully!');
     }
 
     public function show(Hdd $hdd)

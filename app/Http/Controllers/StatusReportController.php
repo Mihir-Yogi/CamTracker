@@ -27,23 +27,35 @@ class StatusReportController extends Controller
     // Get all depots for the dropdown
     $depots = Depot::all();
 
-    // Initialize variables for depot and location
+    // Initialize variables for depot, location, start date, and end date
     $depotId = $request->input('depot_id');
     $locationId = $request->input('location_id');
+    $startDate = $request->input('start_date');
+    $endDate = $request->input('end_date');
 
-    // Fetch the status reports based on the selected depot and location
+    // Log the received filter values for debugging
+    Log::info('Filtering reports with:', compact('depotId', 'locationId', 'startDate', 'endDate'));
+
+    // Prepare the query to fetch reports based on the selected filters
     $reports = StatusReport::when($depotId, function ($query, $depotId) {
             return $query->where('depot_id', $depotId);
         })
         ->when($locationId, function ($query, $locationId) {
             return $query->where('location_id', $locationId);
         })
+        ->when($startDate, function ($query, $startDate) {
+            return $query->where('created_at', '>=', $startDate . ' 00:00:00'); // Include start of the day
+        })
+        ->when($endDate, function ($query, $endDate) {
+            return $query->where('created_at', '<=', $endDate . ' 23:59:59'); // Include end of the day
+        })
         ->with(['depot', 'location', 'nvr', 'dvr', 'hdd', 'cctv']) // eager load relationships for display
-        ->get();
+        ->paginate(5);
 
-    return view('admin.REPORTS.index', compact('reports', 'depots', 'depotId', 'locationId'));
+    return view('admin.REPORTS.index', compact('reports', 'depots', 'depotId', 'locationId', 'startDate', 'endDate'));
 }
 
+    
     public function create()
     {
         $depots = Depot::all(); 
@@ -77,7 +89,7 @@ class StatusReportController extends Controller
         $cctvOnCount = 0;
         $cctvOffCount = 0;
 
-        foreach ($request->input('cctv_status', []) as $status) {
+        foreach ($request->input('cctv_status', []) as $cameraId => $status) {
             if ($status === 'ON') {
                 $cctvOnCount++;
             } elseif ($status === 'OFF') {
@@ -121,11 +133,11 @@ class StatusReportController extends Controller
         'dvr_id' =>  $dvrId, // Use null if $dvr is not available
         'hdd_id' => $hddId,
         'nvr_status' => $request->nvr_status, // Serialize to JSON
-        'nvr_reason' => $request->nvr_reason, // Serialize to JSON
+        'nvr_reason' =>  $request->input('off_reason')["nvr_{$nvrId}"] ?? null, // Serialize to JSON
         'dvr_status' => $request->dvr_status, // Serialize to JSON
-        'dvr_reason' => $request->dvr_reason, // Serialize to JSON
+        'dvr_reason' => $request->input('off_reason')["dvr_{$dvrId}"] ?? null,
         'hdd_status' => $request->hdd_status, // Serialize to JSON
-        'hdd_reason' => $request->hdd_reason, // Serialize to JSON
+        'hdd_reason' => $request->input('off_reason')["hdd_{$hddId}"] ?? null, // Serialize to JSON
         'cctv_off_count' => $cctvOffCount,
         'cctv_on_count' => $cctvOnCount,
         'remark_image' => $path,
@@ -150,7 +162,7 @@ class StatusReportController extends Controller
             ]
         );
     }
-    return redirect()->route('status_reports.index')->with('success', 'Status report created successfully.');
+    return redirect()->back()->with('success', 'Status report created successfully.');
 }
 
 // Helper methods to retrieve the NVR, DVR, and HDD if necessary
@@ -178,7 +190,7 @@ private function getHddById($hddId)
 
     // Get the working NVRs, DVRs, HDDs, and CCTVs based on depot and location
     $nvrs = Nvr::where('depot_id', $request->depot_id)
-                ->where('location_id', $request->location_id)
+                ->where('location_id', operator: $request->location_id)
                 ->where('status', 'working') // Assuming 'working' means not failed
                 ->get();
 
@@ -197,13 +209,42 @@ private function getHddById($hddId)
                 ->where('status', 'working')
                 ->get();
 
-    return response()->json([
-        'nvrs' => $nvrs,
-        'dvrs' => $dvrs,
-        'hdds' => $hdds,
-        'cctvs' => $cctvs,
-    ]);
+    // Retrieve last status report for each device type
+    $lastReport = StatusReport::latest()->first();
+    
+    // Create a structure with last known status and reasons, if available
+    $deviceStatuses = [
+        'nvrs' => $nvrs->map(fn($nvr) => [
+            'id' => $nvr->id,
+            'model' => $nvr->model,
+            'serial_number' => $nvr->serial_number,
+            'status' => $lastReport->nvr_status ?? 'ON',
+            'reason' => $lastReport->nvr_reason ?? '',
+        ]),
+        'dvrs' => $dvrs->map(fn($dvr) => [
+            'id' => $dvr->id,
+            'model' => $dvr->model,
+            'serial_number' => $dvr->serial_number,
+            'status' => $lastReport->dvr_status ?? 'ON',
+            'reason' => $lastReport->dvr_reason ?? '',
+        ]),
+        'hdds' => $hdds->map(fn($hdd) => [
+            'id' => $hdd->id,
+            'model' => $hdd->model,
+            'serial_number' => $hdd->serial_number,
+            'status' => $lastReport->hdd_status ?? 'ON',
+            'reason' => $lastReport->hdd_reason ?? '',
+        ]),
+        'cctvs' => $cctvs->map(fn($cctv) => [
+            'id' => $cctv->id,
+            'model' => $cctv->model,
+            'serial_number' => $cctv->serial_number,
+            'status' => $lastReport->cctv_status[$cctv->id] ?? 'ON',
+            'reason' => $lastReport->off_reason ?? '',
+        ]),
+    ];
 
+    return response()->json($deviceStatuses);
 }
 
 
