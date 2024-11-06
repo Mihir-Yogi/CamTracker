@@ -339,12 +339,12 @@ $(document).ready(function() {
                     <fieldset >
                     <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
                     <div class="select flex-grow">
-                        <select name="sublocation_id" id="sublocation" >
+                        <select name="sublocation_id" id="sublocation_id" >
                             <option value="">Select a Sub-Location</option>
                             @foreach($sublocations as $sublocation)
                                 <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
                             @endforeach
-                            <option value="new" style="color: #4CAF50;">Add New Sub-Location</option>
+                            <option value="new_nvr" style="color: #4CAF50;">Add New Sub-Location</option>
                         </select>
                     </div>
                 </fieldset>
@@ -414,7 +414,7 @@ $(document).ready(function() {
                     <fieldset>
                         <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
                         <div class="select flex-grow">
-                            <select name="dvrsublocation_id" id="dvrsublocation">
+                            <select name="dvrsublocation_id" id="dvr_sublocation">
                                 <option value="">Select a Sub-Location</option>
                                 @foreach($sublocations as $sublocation)
                                     <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
@@ -646,16 +646,15 @@ document.getElementById('saveDepotButton').addEventListener('click', function() 
             }
         });
     });
+    $(document).on('change', '#sublocation_id', function() {
+    if ($(this).val() === 'new_nvr') {
+        $('#addSubLocationModal').modal('show');
+    }
+});
 
-    $('#sublocation').on('change', function() {
-        if ($(this).val() === 'new') {
-            $('#addSubLocationModal').modal('show');
-        }
-    });
-
-    $('.dvrclose').on('click', function() {
+    $('.close').on('click', function() {
         $('#addSubLocationModal').modal('hide'); 
-        $('#dvrsublocation').val('');
+        $('#sublocation_id').val('');
     });
   // Save the new sub-location via AJAX
     $('#saveSubLocationButton').on('click', function() {
@@ -692,13 +691,13 @@ document.getElementById('saveDepotButton').addEventListener('click', function() 
     });
     
 
-    $('#dvr_sublocation').on('change', function() {
-        if ($(this).val() === 'new') {
-            $('#dvraddSubLocationModal').modal('show');
-        }
-    });
+    $(document).on('change', '#dvr_sublocation', function() {
+    if ($(this).val() === 'new') {
+        $('#dvraddSubLocationModal').modal('show');
+    }
+});
 
-    $('.close').on('click', function() {
+    $('.dvrclose').on('click', function() {
         $('#dvraddSubLocationModal').modal('hide'); 
         $('#dvr_sublocation').val('');
     });
@@ -725,6 +724,7 @@ document.getElementById('saveDepotButton').addEventListener('click', function() 
                 newOption.text = data.name;
                 select.add(newOption);
                 select.value = newOption.value; 
+                location.reload();
             },
             error: function(xhr) {
                 var errors = xhr.responseJSON.errors;
