@@ -550,9 +550,7 @@ $(document).ready(function() {
             $('#hdd_warranty_expiration').val('');
         }
     });
-
-    // Delegated event binding for dynamically created NVR and DVR fields
-    $(document).on('change', '#hdd_purchase_date, #nvr_warranty_duration', function() {
+    $(document).on('change', '#nvr_purchase_date, #nvr_warranty_duration', function() {
         calculateExpirationDate('#nvr_purchase_date', '#nvr_warranty_duration', '#nvr_warranty_expiration');
     });
 
