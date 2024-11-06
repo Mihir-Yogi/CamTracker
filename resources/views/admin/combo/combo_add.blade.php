@@ -550,37 +550,35 @@ $(document).ready(function() {
             $('#hdd_warranty_expiration').val('');
         }
     });
-        $('#nvr_purchase_date, #nvr_warranty_duration').change(function() {
-        var purchaseDate = $('#nvr_purchase_date').val();
-        var warrantyDuration = parseInt($('#nvr_warranty_duration').val());
 
-        if (purchaseDate && warrantyDuration) {
-            var date = new Date(purchaseDate);
-            date.setFullYear(date.getFullYear() + warrantyDuration);
-            var expirationDate = date.toISOString().split('T')[0];
-            $('#nvr_warranty_expiration').val(expirationDate);
-        } else {
-            $('#nvr_warranty_expiration').val('');
-        }
+    // Delegated event binding for dynamically created NVR and DVR fields
+    $(document).on('change', '#hdd_purchase_date, #nvr_warranty_duration', function() {
+        calculateExpirationDate('#nvr_purchase_date', '#nvr_warranty_duration', '#nvr_warranty_expiration');
     });
-        $('#dvr_purchase_date, #dvr_warranty_duration').change(function() {
-        var purchaseDate = $('#dvr_purchase_date').val();
-        var warrantyDuration = parseInt($('#dvr_warranty_duration').val());
 
-        if (purchaseDate && warrantyDuration) {
-            var date = new Date(purchaseDate);
-            date.setFullYear(date.getFullYear() + warrantyDuration);
-            var expirationDate = date.toISOString().split('T')[0];
-            $('#dvr_warranty_expiration').val(expirationDate);
-        } else {
-            $('#dvr_warranty_expiration').val('');
-        }
+    $(document).on('change', '#dvr_purchase_date, #dvr_warranty_duration', function() {
+        calculateExpirationDate('#dvr_purchase_date', '#dvr_warranty_duration', '#dvr_warranty_expiration');
     });
+
     $('.close').on('click', function () {
         $('#addDepotModal').modal('hide'); 
         $('#depot_id').val('');
     });
 
+
+    function calculateExpirationDate(purchaseDateId, durationId, expirationId) {
+        var purchaseDate = $(purchaseDateId).val();
+        var warrantyDuration = parseInt($(durationId).val());
+
+        if (purchaseDate && warrantyDuration) {
+            var date = new Date(purchaseDate);
+            date.setFullYear(date.getFullYear() + warrantyDuration);
+            var expirationDate = date.toISOString().split('T')[0];
+            $(expirationId).val(expirationDate);
+        } else {
+            $(expirationId).val('');
+        }
+    }
 document.getElementById('saveDepotButton').addEventListener('click', function() {
     var depotName = document.getElementById('new_depot_name').value;
 
