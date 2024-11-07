@@ -70,31 +70,18 @@
 
                         <fieldset>
                             <div class="body-title">Select Location <span class="tf-color-1">*</span></div>
-                            <select name="sublocation" id="sublocation">
-                                <option value="">Select a Sub-location</option>
-                                <option value="Deasal Station">DEASAL STATION</option>
-                                <option value="Washing Station">WASHING STATION</option>
+                            <select name="sublocation_id" id="sublocation_id">
+                                <option value="">Select a Sub-Location</option>
+                                @foreach($sublocations as $sublocation)
+                                    <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                                @endforeach
+                                <option value="new" style="color: #4CAF50;">Add New Sub-Location</option>
                             </select>
                         </fieldset>
                         @error('sublocation')
                             <span class="alert alert-danger">{{ $message }}</span>
                         @enderror
 
-                        <fieldset>
-                            <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
-                            <div class="select flex-grow">
-                                <select name="sublocation_id" id="sublocation_id" >
-                                    <option value="">Select a Sub-Location</option>
-                                    @foreach($sublocations as $sublocation)
-                                        <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
-                                    @endforeach
-                                    <option value="new" style="color: #4CAF50;">Add New Sub-Location</option>
-                                </select>
-                            </div>
-                        </fieldset>
-                        @error('sublocation_id')
-                            <span class="alert alert-danger">{{ $message }}</span>
-                        @enderror
                 </div>
                         <fieldset>
                             <div class="block">

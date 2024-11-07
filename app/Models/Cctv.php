@@ -21,7 +21,7 @@ class Cctv extends Model
         'megapixel',
         'depot_id',
         'location_id',
-        'sublocation',
+        'sublocation_id',
     ];
         public function combo()
     {
@@ -37,6 +37,11 @@ class Cctv extends Model
     {
         return $this->belongsTo(Depot::class);
     }
+    public function sublocation()
+    {
+        return $this->belongsTo(Sublocation::class, 'sublocation_id'); // Ensure foreign key is specified if needed
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class);

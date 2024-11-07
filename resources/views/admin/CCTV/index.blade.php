@@ -71,7 +71,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $cctv->location->depot->name }}</td>
                                 <td>{{ $cctv->location->name }}</td>
-                                <td>{{ $cctv->sublocation}}</td>
+                                <td>{{  $cctv->sublocation->name ?? 'N/A' }}</td>
                                 <td>{{ $cctv->model }}</td>
                                 <td>{{ ucfirst($cctv->status) }}</td>
                                 <td>{{ $cctv->combo->depot->name ?? 'N/A' }} - {{ $cctv->combo->location->name ?? 'N/A' }}</td>

@@ -103,16 +103,6 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-
-                <!-- Purchase Date Field -->
-                <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $cctv->purchase_date) }}">
-                </fieldset>
-                @error('purchase_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
                 <!-- Installation Date Field -->
                 <fieldset class="name">
                     <div class="body-title">Installation Date</div>
@@ -121,15 +111,35 @@
                 @error('installation_date')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
-
-                <!-- Warranty Expiration Field -->
-                <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $cctv->warranty_expiration) }}">
-                </fieldset>
-                @error('warranty_expiration')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
+                
+                <fieldset>
+                            
+                            <div class="block">
+                                <div class="body-title">Purchase Date</div>
+                                <input type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date') }}">
+                                @error('purchase_date')
+                                    <span class="alert alert-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="block">
+                                <div class="body-title">Warranty Duration (Years)</div>
+                                <select name="warranty_duration" id="warranty_duration">
+                                    <option value="1">1 Year</option>
+                                    <option value="2">2 Years</option>
+                                    <option value="3">3 Years</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            
+                            <div class="block">
+                                <div class="body-title">Warranty Expiration</div>
+                                <input type="date" name="warranty_expiration" id="warranty_expiration" value="{{ old('warranty_expiration') }}" readonly>
+                                @error('warranty_expiration')
+                                    <span class="alert alert-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </fieldset>
 
                 <!-- Save Button -->
                 <div class="bot">
@@ -148,4 +158,24 @@
         width: 50%;
     }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    
+
+    $('#purchase_date, #warranty_duration').change(function() {
+        var purchaseDate = $('#purchase_date').val();
+        var warrantyDuration = parseInt($('#warranty_duration').val());
+
+        if (purchaseDate && warrantyDuration) {
+            var date = new Date(purchaseDate);
+            date.setFullYear(date.getFullYear() + warrantyDuration);
+            var expirationDate = date.toISOString().split('T')[0];
+            $('#warranty_expiration').val(expirationDate);
+        } else {
+            $('#warranty_expiration').val('');
+        }
+    });
+});
+</script>
 @endsection

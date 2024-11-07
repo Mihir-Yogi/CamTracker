@@ -20,7 +20,7 @@ class CctvController extends Controller
         $locationId = $request->input('location_id');
     
         // Initialize the query with related combo, location, and depot data
-        $query = Cctv::with(['combo.location.depot']);
+        $query = Cctv::with(['combo.location.depot','sublocation']);
     
         // Apply depot filter if depot_id is provided
         if ($depotId) {
@@ -60,7 +60,7 @@ class CctvController extends Controller
         $request->validate([
             'model' => 'required|string|max:255',
             'combo_id' => 'required|exists:combos,id',
-            'sublocation' => 'required|string|max:255',
+            'sublocation_id' => 'required|string|max:255',
             'serial_number' => 'required|string|max:255',
             'megapixel' => 'required|numeric',
             'purchase_date' => 'required|date',
@@ -109,7 +109,7 @@ class CctvController extends Controller
         $request->validate([
             'model' => 'required|string|max:255',
             'combo_id' => 'required|exists:combos,id',
-            'sublocation' => 'required|string|max:255',
+            'sublocation_id' => 'required|string|max:255',
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
@@ -121,15 +121,27 @@ class CctvController extends Controller
     }
 
     public function destroy(Cctv $cctv)
-    {
-        $cctv->delete();
-        return redirect()->route('admin.cctvs.index');
+{
+    // Get the associated Combo model
+    $combo = $cctv->combo;
+
+    // Decrement the combo's current_cctv_count if it’s greater than zero
+    if ($combo && $combo->current_cctv_count > 0) {
+        $combo->decrement('current_cctv_count');
     }
+
+    // Delete the CCTV record
+    $cctv->delete();
+
+    // Redirect back with a success message
+    return redirect()->route('admin.cctvs.index')->with('success', 'CCTV camera deleted successfully.');
+}
 
     public function showReplaceForm(Cctv $cctv)
     {
+        $sublocations = Sublocation::all();
         // Pass the selected CCTV with its depot and location to the view
-        return view('admin.CCTV.cctv_replace', compact('cctv'));
+        return view('admin.CCTV.cctv_replace', compact('cctv','sublocations'));
     }
 
     public function replace(Request $request, Cctv $cctv)
@@ -139,7 +151,7 @@ class CctvController extends Controller
     $request->validate([
         'model' => 'required|string|max:255',
         'serial_number' => 'required|string|unique:cctvs,serial_number',
-        'sublocation' => 'required|string|max:255',
+        'sublocation_id' => 'required|string|max:255',
         'failure_reason' => 'required|string|max:255',
         'purchase_date' => 'required|date',
         'installed_date' => 'required|date',
@@ -167,7 +179,7 @@ class CctvController extends Controller
     $newCctv = Cctv::create([
         'model' => $request->input('model'),
         'serial_number' => $request->input('serial_number'),
-        'sublocation' => 'required|string|max:255',
+        'sublocation_id' => 'required|string|max:255',
         'status' => 'working',
         'purchase_date' => $request->input('purchase_date'),
         'installation_date' => $request->input('installed_date'),

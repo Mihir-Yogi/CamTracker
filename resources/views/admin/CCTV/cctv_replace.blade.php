@@ -30,74 +30,113 @@
 
         <!-- Replace CCTV Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.cctvs.replace', $cctv->id) }}" enctype="multipart/form-data" method="POST">
+            <form class="form-new-product form-style-2" action="{{ route('admin.cctvs.replace', $cctv->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
 
                 <!-- Depot Field (Read-Only) -->
                 <fieldset class="name">
-                    <div class="body-title">Depot</div>
-                    <input class="flex-grow" type="text" name="depot" value="{{ $cctv->combo->depot->name }}" disabled style="color: #6c757d;">
-                </fieldset>
-
-                <!-- Location Field (Read-Only) -->
-                <fieldset class="name">
-                    <div class="body-title">Location</div>
-                    <input class="flex-grow" type="text" name="location" value="{{ $cctv->combo->location->name }}" disabled style="color: #6c757d;">
+                    <div class="block">
+                        <div class="body-title">Depot</div>
+                        <input class="flex-grow" type="text" name="depot" value="{{ $cctv->combo->depot->name }}" disabled style="color: #6c757d;">
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Location</div>
+                        <input class="flex-grow" type="text" name="location" value="{{ $cctv->combo->location->name }}" disabled style="color: #6c757d;">
+                    </div>
                 </fieldset>
 
                 <!-- Select sub-Location Field -->
                 <fieldset>
-                    <div class="body-title">Select Location <span class="tf-color-1">*</span></div>
+                    <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
                     <div class="select flex-grow">
-                        <select name="sublocation" id="sublocation" >
-                            <option value="">Select a Sub-location</option>
-                            <option value="Deasal Station">DEASAL STATION</option>
-                            <option value="Washing Station">WASHING STATION</option>
+                        <select name="sublocation_id" id="sublocation_id" >
+                            <option value="">Select a Sub-Location</option>
+                            @foreach($sublocations as $sublocation)
+                                <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    @error('sublocation')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                    @enderror
                 </fieldset>
+                @error('sublocation_id')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
                 
                 <!-- New Model Field -->
                 <fieldset class="name">
-                    <div class="body-title">New Model <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter new model" name="model" value="{{ old('model') }}" required>
+                    <div class="block">
+                        <div class="body-title">New Model <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="text" placeholder="Enter new model" name="model" value="{{ old('model') }}" required>
+                    
+                        @error('model')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="block">
+                        <div class="body-title">New Serial Number <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="text" placeholder="Enter new serial number" name="serial_number" value="{{ old('serial_number') }}" required>
+                        @error('serial_number')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </fieldset>
-                @error('model')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- New Serial Number Field -->
-                <fieldset class="name">
-                    <div class="body-title">New Serial Number <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter new serial number" name="serial_number" value="{{ old('serial_number') }}" required>
-                </fieldset>
-                @error('serial_number')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
                 
                 <!-- New megapixel Field -->
                 <fieldset class="name">
-                    <div class="body-title">New Megapixel<span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="number" placeholder="Enter Megapixel" name="megapixel" value="{{ old('megapixel') }}" required>
-                </fieldset>
-                @error('megapixel')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
+                    <div class="block">
+                        <div class="body-title">New Megapixel<span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="number" placeholder="Enter Megapixel" name="megapixel" value="{{ old('megapixel') }}" required>
+                        @error('megapixel')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Installation Date</div>
+                        <input class="flex-grow" type="date" name="installed_date" value="{{ old('installed_date') }}">
+                        @error('installed_date')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    </fieldset>
+                    <fieldset>
+                            
+                            <div class="block">
+                                <div class="body-title">Purchase Date</div>
+                                <input type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date') }}">
+                                @error('purchase_date')
+                                    <span class="alert alert-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="block">
+                                <div class="body-title">Warranty Duration (Years)</div>
+                                <select name="warranty_duration" id="warranty_duration">
+                                    <option value="1">1 Year</option>
+                                    <option value="2">2 Years</option>
+                                    <option value="3">3 Years</option>
+                                </select>
+                            </div>
+                        </fieldset>
 
-                <!-- Reason for Replacement Field -->
-                <fieldset class="name">
+                        
+                        <fieldset>
+                            
+                            <div class="block">
+                                <div class="body-title">Warranty Expiration</div>
+                                <input type="date" name="warranty_expiration" id="warranty_expiration" value="{{ old('warranty_expiration') }}" readonly>
+                                @error('warranty_expiration')
+                                    <span class="alert alert-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </fieldset>
+                <fieldset>
                     <div class="body-title">Reason for Replacement <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="text" placeholder="Enter reason for replacing" name="failure_reason" value="{{ old('failure_reason') }}" required>
+                    @error('failure_reason')
+                        <span class="alert alert-danger">{{ $message }}</span>
+                    @enderror
                 </fieldset>
-                @error('failure_reason')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Replace Image Field with Preview -->
+                    
+                    <!-- Replace Image Field with Preview -->
                 <fieldset class="name">
                     <div class="body-title">Replacement Image</div>
                     <div class="image-preview-container" style="display: flex; gap: 20px; align-items: flex-start;">
@@ -123,33 +162,6 @@
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                <!-- Purchase Date Field -->
-                <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date') }}">
-                </fieldset>
-                @error('purchase_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Installation Date Field -->
-                <fieldset class="name">
-                    <div class="body-title">Installation Date</div>
-                    <input class="flex-grow" type="date" name="installed_date" value="{{ old('installed_date') }}">
-                </fieldset>
-                @error('installed_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Warranty Expiration Field -->
-                <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="expiry_date" value="{{ old('expiry_date') }}">
-                </fieldset>
-                @error('expiry_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
                 <!-- Save Button -->
                 <div class="bot">
                     <div></div>
@@ -161,6 +173,13 @@
     </div>
 </div>
 
+<style>
+    .block{
+        display: inline-block;
+        width: 50%;
+    }
+</style>
+
 <script>
     function previewNewImage(event) {
         const reader = new FileReader();
@@ -171,5 +190,19 @@
         };
         reader.readAsDataURL(event.target.files[0]);
     }
+
+    $('#purchase_date, #warranty_duration').change(function() {
+        var purchaseDate = $('#purchase_date').val();
+        var warrantyDuration = parseInt($('#warranty_duration').val());
+
+        if (purchaseDate && warrantyDuration) {
+            var date = new Date(purchaseDate);
+            date.setFullYear(date.getFullYear() + warrantyDuration);
+            var expirationDate = date.toISOString().split('T')[0];
+            $('#warranty_expiration').val(expirationDate);
+        } else {
+            $('#warranty_expiration').val('');
+        }
+    });
 </script>
 @endsection
