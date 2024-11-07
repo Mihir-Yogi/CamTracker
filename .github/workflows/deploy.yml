@@ -1,0 +1,20 @@
+name: Deploy to Laptop 2
+
+on:
+  push:
+    branches:
+      - main  # You can specify any branch here
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # GitHub runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Trigger SSH command to Laptop 2
+        run: |
+          ssh -o StrictHostKeyChecking=no user2@gmail.com 'bash -s' < ./pull_code.sh
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

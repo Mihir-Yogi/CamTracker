@@ -196,6 +196,7 @@ $('#location_id').change(function() {
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(data) {
+                    console.log(data);
                     let devicesHTML = `<div class="table-responsive"><table class="table table-striped table-bordered"><thead><tr><th>Type</th><th>Model</th><th>Serial Number</th><th>Status</th><th>Off Reason</th></tr></thead><tbody>`;
 
                     // Generate rows for NVRs, DVRs, HDDs, and CCTVs
@@ -281,6 +282,24 @@ $('#location_id').change(function() {
 
                     devicesHTML += '</tbody></table>';
                     $('#devicesContainer').html(devicesHTML);
+                    
+                    let formValid = true; // Flag to track form validity
+
+                    // Loop through each visible textarea (those with 'display:block' style)
+                    $('textarea.remarks').each(function () {
+                        if ($(this).is(':visible') && $(this).val().trim() === '') {
+                            formValid = false; // Set form as invalid if any required field is empty
+                            $(this).css('border-color', 'red'); // Highlight empty field in red
+                        } else {
+                            $(this).css('border-color', ''); // Reset the border color if filled
+                        }
+                    });
+
+                    // If any required textarea is empty, prevent form submission
+                    if (!formValid) {
+                        event.preventDefault(); // Prevent form from being submitted
+                        alert('Please fill in all required off reason fields.');
+                    }
 
                     // Show or hide remarks based on selected status
                     $('.status-select').change(function() {

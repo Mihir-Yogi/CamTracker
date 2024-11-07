@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Depot;
 use App\Models\Location;
 use App\Models\StatusReport;
+use App\Models\CctvStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -211,7 +212,14 @@ private function getHddById($hddId)
 
     // Retrieve last status report for each device type
     $lastReport = StatusReport::latest()->first();
-    
+    $cctvStatuses = CctvStatus::all()->mapWithKeys(function($cctvStatus) {
+        return [
+            $cctvStatus->cctv_id => [
+                'status' => $cctvStatus->status,
+                'off_reason' => $cctvStatus->off_reason,  // Assuming the column is 'off_reason'
+            ]
+        ];
+    })->toArray();
     // Create a structure with last known status and reasons, if available
     $deviceStatuses = [
         'nvrs' => $nvrs->map(fn($nvr) => [
@@ -239,8 +247,8 @@ private function getHddById($hddId)
             'id' => $cctv->id,
             'model' => $cctv->model,
             'serial_number' => $cctv->serial_number,
-            'status' => $lastReport->cctv_status[$cctv->id] ?? 'ON',
-            'reason' => $lastReport->off_reason ?? '',
+            'status' => $cctvStatuses[$cctv->id]['status'] ?? 'ON', // Status from CctvStatus
+            'reason' => $cctvStatuses[$cctv->id]['off_reason'] ?? $lastReport->off_reason ?? '',  // Reason from CctvStatus or StatusReport
         ]),
     ];
 

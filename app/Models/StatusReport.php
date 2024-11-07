@@ -20,6 +20,10 @@ class StatusReport  extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function CctvStatus() {
+        return $this->hasMany(CctvStatus::class);
+    }
+    
     public function depot() {
         return $this->belongsTo(Depot::class);
     }
