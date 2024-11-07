@@ -75,6 +75,22 @@
         cursor: pointer;
         display: inline-block;
     }
+
+    .dropdown-container {
+    display: flex;
+    gap: 20px; /* Adjust spacing between the dropdowns */
+    align-items: center; /* Center vertically, if needed */
+}
+
+.dropdown-item {
+    flex: 1; /* Makes each dropdown take up equal width */
+    min-width: 500px; /* Adjust minimum width for each dropdown */
+}
+
+.body-title {
+    margin-bottom: 8px; /* Space between title and select box */
+}
+
     
 </style>
 
@@ -92,45 +108,57 @@
                 </ul>
             </div>
         @endif
-
+<div class="wg-box">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
             <!-- Filter Form -->
             <form action="#" method="GET">
-                <fieldset>
-                    <div class="body-title">Select Depot</div>
-                    <div class="select flex-grow" style="width: 500px;">
-                        <select name="depot_id" id="depot_id">
-                            <option value="">Select a depot</option>
-                            @foreach($depots as $depot)
-                                <option value="{{ $depot->id }}" @if($depotId == $depot->id) selected @endif>
-                                    {{ $depot->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <div class="body-title">Select Location</div>
-                    <div class="select flex-grow">
-                        <select name="location_id" id="location_id">
-                            <option value="">Select a location</option>
-                            @if ($depotId)
-                                @foreach ($depots->find($depotId)->locations as $location)
-                                    <option value="{{ $location->id }}" @if($locationId == $location->id) selected @endif>
-                                        {{ $location->name }}
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <div class="body-title">Select Date Range</div>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="date" name="start_date" value="{{ request('start_date') }}" class="form-control" placeholder="Start Date">
-                        <input type="date" name="end_date" value="{{ request('end_date') }}" class="form-control" placeholder="End Date">
-                    </div>
-                </fieldset>
+            <fieldset>
+    <div class="dropdown-container">
+        <!-- Select Depot Section -->
+        <div class="dropdown-item">
+            <div class="body-title">Select Depot</div>
+            <div class="select flex-grow" style="width: 100%;">
+                <select name="depot_id" id="depot_id">
+                    <option value="">Select a depot</option>
+                    @foreach($depots as $depot)
+                        <option value="{{ $depot->id }}" @if($depotId == $depot->id) selected @endif>
+                            {{ $depot->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <!-- Select Location Section -->
+        <div class="dropdown-item">
+            <div class="body-title">Select Location</div>
+            <div class="select flex-grow" style="width: 100%;">
+                <select name="location_id" id="location_id">
+                    <option value="">Select a location</option>
+                    @if ($depotId)
+                        @foreach ($depots->find($depotId)->locations as $location)
+                            <option value="{{ $location->id }}" @if($locationId == $location->id) selected @endif>
+                                {{ $location->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+        </div>
+        
+    </div>
+    <div class="dropdown-container">
+        <div class="dropdown-item">
+            <div class="body-title">Start Date</div>
+            <input type="date" name="start_date" value="{{ request('start_date') }}" class="form-control" placeholder="Start Date">
+        </div>
+        <div class="dropdown-item">
+            <div class="body-title">Start Date</div>
+            <input type="date" name="end_date" value="{{ request('end_date') }}" class="form-control" placeholder="End Date">
+        </div>
+    </div>
+</fieldset>
+
                 <button type="submit" style="width: 120px; height: 40px; margin-top: 20px;" class="tf-button style-1 ">Filter</button>
             </form>
             <a href="{{ route('status_reports.create') }}" class="tf-button style-1 w208">Create New Transcation</a>
@@ -266,6 +294,7 @@
         <div class="pagination" style="font-size: 15px;">
             {{ $reports->links('vendor.pagination.bootstrap-5') }} <!-- Use Bootstrap 4 pagination -->
         </div>
+    </div>
     </div>
 </div>
 

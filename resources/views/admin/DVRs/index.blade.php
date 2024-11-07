@@ -8,7 +8,6 @@
         <h3>DVR List</h3>
         <div class="wg-box">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-
             <!-- Filter Form -->
             <form action="#" method="GET">
                 <fieldset>
@@ -23,8 +22,6 @@
                             @endforeach
                         </select>
                     </div>
-                </fieldset>
-                <fieldset>
                     <div class="body-title">Select Location</div>
                     <div class="select flex-grow">
                         <select name="location_id" id="location_id">
@@ -115,8 +112,8 @@
             </div>
         </div>
         <!-- Pagination Links -->
-        <div class="pagination">
-            {{ $dvrs->links('vendor.pagination.bootstrap-5') }} <!-- Use Bootstrap 4 pagination -->
+        <div class="pagination" style="font-size: 15px;">
+            {{ $reports->links('vendor.pagination.bootstrap-5') }} <!-- Use Bootstrap 4 pagination -->
         </div>
     </div>
 </div>

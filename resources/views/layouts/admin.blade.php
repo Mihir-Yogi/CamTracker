@@ -61,7 +61,7 @@
                                     <a href="{{route('admin.index')}}" class="">
                                         <div class="icon"><i class="icon-grid"></i></div>
                                         <div class="text">Dashboard</div>
-                                    </a>
+                                    </a>    
                                 </li>
                             </ul>
                         </div>
@@ -71,7 +71,7 @@
                             <li class="menu-item has-children">
                                     <a href="javascript:void(0);" class="menu-item-button">
                                         <div class="icon"><i class="fa-solid fa-plus"></i></div>
-                                        <div class="text">CREATE</div>
+                                        <div class="text">New Entries</div>
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
@@ -98,49 +98,11 @@
 
 
 
-                                <li class="menu-item has-children">
-                                    <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="fa-solid fa-eye"></i></div>
-                                        <div class="text">VIEW/UPDATE</div>
+                                <li class="menu-item">
+                                    <a href="{{route('admin.combos.index')}}" class="">
+                                    <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                                        <div class="text">View NVR/DVR/HDD</div>
                                     </a>
-                                    <ul class="sub-menu">
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.combos.index')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">View NVR/DVR/HDD</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.nvrs.index')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">NVRs</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.dvrs.index')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">DVRs</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.hdds.index')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">HDDs</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('admin.cctvs.index')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">CCTVs</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="{{route('status_reports.index')}}" class="">
-                                            <div class="icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                                                <div class="text">Transactions</div>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
 
                                 <li class="menu-item">
@@ -191,9 +153,67 @@
                                 <div class="button-show-hide">
                                     <i class="icon-menu-left"></i>
                                 </div>
+                                <style>
+    .top-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        font-size: 15px;
+        padding: 10px 0;
+    }
 
+    .top-list {
+        text-decoration: none;
+        color: #000;
+        margin-right: 15px;
+        padding-bottom: 5px;
+    }
 
-                                <form class="form-search flex-grow">
+    /* Style for active link */
+    .top-list.active {
+        font-weight: bold;
+        color: #007bff; /* Change color for active state */
+        border-bottom: 2px solid #007bff; /* Adds underline to active link */
+    }
+</style>
+<div class="top-nav">
+@if (in_array(Route::currentRouteName(), ['admin.combos.index', 'admin.combos.create',
+                                    'admin.nvrs.index', 
+                                    'admin.dvrs.index', 
+                                    'admin.hdds.index', ]))
+                                <a href="{{ route('admin.combos.index') }}" class="top-list {{ request()->is('admin/combos') ? 'active' : '' }}">
+
+                                    <div class="text">View NVR/DVR/HDD</div>
+                                </a>
+                                
+                                <a href="{{ route('admin.nvrs.index') }}" 
+                                    class="top-list {{ request()->is('admin/nvrs*') ? 'active' : '' }}">
+                                    <div class="text">NVRs</div>
+                                </a>
+                                <a href="{{ route('admin.dvrs.index') }}" 
+                                    class="top-list {{ request()->is('admin/dvrs*') ? 'active' : '' }}">
+                                    <div class="text">DVRs</div>
+                                </a>
+                                <a href="{{ route('admin.hdds.index') }}" 
+                                    class="top-list {{ request()->is('admin/hdds*') ? 'active' : '' }}">
+                                    <div class="text">HDDs</div>
+                                </a>
+                            @endif
+                        <!-- Top navigation shown on specific index routes except dashboard -->
+                        @if (!in_array(Route::currentRouteName(), ['admin.index']))
+
+                                <a href="{{ route('admin.cctvs.index') }}" 
+                                    class="top-list {{ request()->is('admin/cctvs*') ? 'active' : '' }}">
+                                    <div class="text">CCTVs</div>
+                                </a>
+
+                                <a href="{{route('status_reports.index')}}" class="top-list {{ request()->is('admin/reports') ? 'active' : '' }}">
+                                                <div class="text">Transactions</div>
+                                            </a>
+                        
+                        @else
+                                <form class="form-search flex-grow" style="width: 800px ;">
                                     <fieldset class="name">
                                         <input type="text" placeholder="Search here..." id="search-input" class="show-search" name="name"
                                             tabindex="2" value="" aria-required="true" required="" autocomplete="off">
@@ -207,8 +227,9 @@
                                         </ul>
                                     </div>
                                 </form>
-
-                            </div>
+                        @endif
+    </div>
+</div>
                             <div class="header-grid">
 
                             <div class="popup-wrap user type-header">
