@@ -37,7 +37,7 @@ class NvrController extends Controller
         }
     
         // Execute query and get filtered NVRs
-        $nvrs = $query->paginate(5);
+        $nvrs = $query->paginate(4);
     
         // Retrieve all depots for filter dropdown
         $depots = Depot::all();

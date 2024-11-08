@@ -115,7 +115,7 @@
         </div>
         <!-- Pagination Links -->
         <div class="pagination" style="font-size: 15px;">
-            {{ $reports->links('vendor.pagination.bootstrap-5') }} <!-- Use Bootstrap 4 pagination -->
+            {{ $nvrs->links('vendor.pagination.bootstrap-5') }} <!-- Use Bootstrap 4 pagination -->
         </div>
     </div>
 </div>

@@ -49,7 +49,7 @@
                             <img class="" id="logo_header" alt="" src="{{asset('images/logo/logo.png')}}"
                                 data-light="{{asset('images/logo/logo.png')}}" data-dark="{{asset('images/logo/logo.png')}}">
                         </a>
-                        <div class="button-show-hide">
+                        <div class="button-show-hide" id="toggleSidebar">
                             <i class="icon-menu-left"></i>
                         </div>
                     </div>
@@ -290,5 +290,13 @@
     <script src="{{ asset('js/apexcharts/apexcharts.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
         @stack("scripts")
+    <script>
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === 'l') {
+            event.preventDefault(); // Prevents default action (if any)
+            document.getElementById('toggleSidebar').click(); // Simulates click on the sidebar toggle button
+        }
+    });
+    </script>
 </body>
 </html>
