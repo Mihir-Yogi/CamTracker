@@ -1,3 +1,4 @@
+
 @extends('layouts.admin')
 
 @section('content')
@@ -7,32 +8,6 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
-    }
-
-    /* Table Styling */
-    .details-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 15px 0;
-        font-size: 16px;
-    }
-
-    .details-table th,
-    .details-table td {
-        padding: 14px 20px;
-        border: 1px solid #ddd;
-    }
-
-    .details-table th {
-        background-color: #f5f5f5;
-        font-weight: bold;
-        color: #333;
-        text-align: left;
-        font-size: 18px;
-    }
-
-    .details-table td {
-        color: #333;
     }
 
     /* Action buttons styling */
@@ -53,9 +28,6 @@
         text-align: center;
     }
 
-    .action-buttons .tf-button:hover {
-        background-color: #0056b3;
-    }
 
     /* Section Heading Style */
     .section-heading {
@@ -89,8 +61,48 @@
 
 .body-title {
     margin-bottom: 8px; /* Space between title and select box */
+}/* Table Styling */
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 16px;
+    table-layout: fixed; /* Forces cells to obey width constraints */
 }
 
+.details-table th,
+.details-table td {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    overflow: hidden; /* Hides any overflowed text */
+    white-space: normal; /* Allows text to wrap */
+    text-overflow: ellipsis; /* Adds an ellipsis to clipped text */
+    word-wrap: break-word; /* Breaks long words to fit within the cell */
+    word-wrap: break-word; /* Breaks words if too long */
+    word-break: break-all; /* Forces breaks within very long, unbroken strings */
+}
+
+.details-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+    font-size: 18px;
+}
+
+.details-table td {
+    color: #333;
+}
+
+/* Optional: Set a max-width for certain cells to prevent them from becoming too wide */
+.details-table th,
+.details-table td {
+    max-width: 300px; /* Ensures cells don’t become too wide */
+}
+
+.td-space{
+    padding: 0 !important;
+}
     
 </style>
 
@@ -170,19 +182,16 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th style="width: 40px;">#</th>
                             <th style="width: 120px;">Depot</th>
                             <th>Location</th>
                             <th>Device Type</th>
-                            <th>Model</th>
-                            <th>Serial Number</th>
+                            <th>Sub-Location</th>
                             <th>Status</th>
                             <th>Remark</th>
-                            <th>Purchase Date</th>
-                            <th>Instralled Date</th>
                             <th>Expiry Date</th>
                             <th>Created At</th>
-                            <th colspan="3" style="text-align: center;">Actions</th>
+                            <th colspan="2" style="text-align: center;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -194,41 +203,32 @@
 
                             <!-- NVR Row -->
                             <tr>
-                                <td rowspan="{{ $rowSpan }}">{{ $index + 1 }}</td>
-                                <td rowspan="{{ $rowSpan }}">{{ optional($report->depot)->name }}</td>
-                                <td rowspan="{{ $rowSpan }}">{{ optional($report->location)->name }}</td>
+                                <td class="td-space" style="text-align: center;" rowspan="{{ $rowSpan }}">{{ $index + 1 }}</td>
+                                <td class="td-space" rowspan="{{ $rowSpan }}">{{ optional($report->depot)->name }}</td>
+                                <td class="td-space" rowspan="{{ $rowSpan }}">{{ optional($report->location)->name }}</td>
                                 @if ($report->nvr)
-                                <td>NVR</td>
-                                <td>{{ $report->nvr->model ?? 'N/A' }}</td>
-                                <td>{{ $report->nvr->serial_number ?? 'N/A' }}</td>
-                                <td>{{ $report->nvr_status ?? 'N/A' }}</td>
-                                <td>{{ $report->nvr_reason ?? 'N/A' }}</td>
-                                <td>{{ $report->nvr->purchase_date ?? 'N/A' }}</td>
-                                <td>{{ $report->nvr->installation_date ?? 'N/A' }}</td>
-                                <td>{{ $report->nvr->warranty_expiration ?? 'N/A' }}</td>
+                                <td class="td-space">NVR</td>
+                                <td class="td-space">{{ $report->nvr->sublocation->name}}</td>
+                                <td class="td-space" style="background-color: '{{ $report->nvr_status == 'ON' ? '#d4edda' : ($report->nvr_status == 'OFF' ? '#f8d7da' : 'transparent') }}'">{{ $report->nvr_status ?? 'N/A' }}
+                                </td>
+                                <td class="td-space">{{ $report->nvr_reason ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $report->nvr->warranty_expiration ?? 'N/A' }}</td>
                                 @endif
                                 @if ($report->dvr)
-                                <td>DVR</td>
-                                <td>{{ $report->dvr->model ?? 'N/A' }}</td>
-                                <td>{{ $report->dvr->serial_number ?? 'N/A' }}</td>
-                                <td>{{ $report->dvr_status ?? 'N/A' }}</td>                   
-                                <td>{{ $report->dvr_reason ?? 'N/A' }}</td>
-                                <td>{{ $report->dvr->purchase_date ?? 'N/A' }}</td>
-                                <td>{{ $report->dvr->installation_date ?? 'N/A' }}</td>
-                                <td>{{ $report->dvr->warranty_expiration ?? 'N/A' }}</td>
+                                <td class="td-space">DVR</td>
+                                <td class="td-space">{{ $report->dvr->sublocation->name}}</td>
+                                <td class="td-space" style="background-color: {{ $report->dvr_status == 'ON' ? '#d4edda' : ($report->dvr_status == 'OFF' ? '#f8d7da' : 'transparent') }}">{{ $report->dvr_status ?? 'N/A' }}</td>                   
+                                <td class="td-space">{{ $report->dvr_reason ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $report->dvr->warranty_expiration ?? 'N/A' }}</td>
                                 @endif
-                                <td  rowspan="{{ $rowSpan }}">{{ $report->created_at->format('Y-m-d H:i:s') }}</td>
-                                <td  rowspan="{{ $rowSpan }}" style="text-align: center;">
-                                    <a href="{{ route('status_reports.show', ['id' => $report->id]) }}" class="item edit">
+                                <td class="td-space"  rowspan="{{ $rowSpan }}">{{ $report->created_at->format('Y-m-d H:i:s') }}</td>
+                                <td class="td-space" colspan="2"  rowspan="{{ $rowSpan }}" style="text-align: center;">
+                                    <a href="{{ route('status_reports.show', ['id' => $report->id]) }}" class="item edit" style="margin-right: 15px;" >
                                         <i class="icon-eye"></i> View
                                     </a>
-                                </td>
-                                <td  rowspan="{{ $rowSpan }}" style="text-align: center;">
                                     <a href="{{ route('status_reports.edit', $report->id) }}" class="item edit">
                                         <i class="icon-edit-3"></i> Edit
                                     </a>
-                                </td>
-                                <td  rowspan="{{ $rowSpan }}" style="text-align: center;">
                                     <form action="#" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
@@ -237,53 +237,44 @@
                                         </button>
                                     </form>
                                 </td>
+                                
                             </tr>
                             <!-- HDD Row -->
                             <tr>
-                                <td>HDD</td>
-                                <td>{{ $report->hdd->model ?? 'N/A' }}</td>
-                                <td>{{ $report->hdd->serial_number ?? 'N/A' }}</td>
-                                <td>{{ $report->hdd_status ?? 'N/A' }}</td>
-                                <td>{{ $report->hdd_reason ?? 'N/A' }}</td>
-                                <td>{{ $report->hdd->purchase_date ?? 'N/A' }}</td>
-                                <td>{{ $report->hdd->installation_date ?? 'N/A' }}</td>
-                                <td>{{ $report->hdd->warranty_expiration ?? 'N/A' }}</td>
+                                <td class="td-space">HDD</td>
+                                <td class="td-space">{{ $report->hdd->sublocation->name}}</td>
+                                <td class="td-space" style="background-color: {{ $report->hdd_status == 'ON' ? '#d4edda' : ($report->hdd_status == 'OFF' ? '#f8d7da' : 'transparent') }}">{{ $report->hdd_status ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $report->hdd_reason ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $report->hdd->warranty_expiration ?? 'N/A' }}</td>
                             </tr>
 
                             <!-- CCTV Row -->
                         @if($report->cctvStatuses->isNotEmpty())
                             @foreach($report->cctvStatuses as $cctvStatus)
                             <tr>
-                                <td>CCTV</td>
-                                <td>{{ $cctvStatus->cctv->model ?? 'N/A' }}</td>
-                                <td>{{ $cctvStatus->cctv->serial_number ?? 'N/A' }}</td>
-                                <td>{{ $cctvStatus->status  ?? 'N/A' }}</td>
-                                <td>{{ $cctvStatus->off_reason  ?? 'N/A' }}</td>
-                                <td>{{ $cctvStatus->cctv->purchase_date ?? 'N/A' }}</td>
-                                <td>{{ $cctvStatus->cctv->installation_date ?? 'N/A' }}</td>
-                                <td>{{ $cctvStatus->cctv->warranty_expiration ?? 'N/A' }}</td>
+                                <td class="td-space">CCTV</td>
+                                <td class="td-space">{{ $cctvStatus->cctv->sublocation->name ?? 'N/A' }}</td>
+                                <td class="td-space" style="background-color: {{ $cctvStatus->status  == 'ON' ? '#d4edda' : ($cctvStatus->status  == 'OFF' ? '#f8d7da' : 'transparent') }}">{{ $cctvStatus->status  ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $cctvStatus->off_reason  ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $cctvStatus->cctv->warranty_expiration ?? 'N/A' }}</td>
                             </tr>
                             @endforeach
                         @endif
 
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td colspan="2"> ON Camera</td>
-                            <td>{{ $report->cctv_on_count?? 'N/A' }}</td>
-                            <td colspan="2"> OFF Camera</td>
-                            <td>{{ $report->cctv_off_count?? 'N/A' }}</td>
-                            <td >Total</td>
-                            <td>{{ ($report->cctv_off_count)+($report->cctv_on_count)?? 'N/A' }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td class="td-space" colspan="2"> ON Camera</td>
+                            <td class="td-space">{{ $report->cctv_on_count?? 'N/A' }}</td>
+                            <td class="td-space" colspan="2"> OFF Camera</td>
+                            <td class="td-space">{{ $report->cctv_off_count?? 'N/A' }}</td>
+                            <td class="td-space" >Total</td>
+                            <td class="td-space">{{ ($report->cctv_off_count)+($report->cctv_on_count)?? 'N/A' }}</td>
+                            <td class="td-space"></td>
+                            <td class="td-space"></td>
+                            <td class="td-space"></td>
                         </tr>
                         @empty
                             <tr>
-                                <td colspan="11" class="text-center">No reports found.</td>
+                                <td class="td-space" colspan="11" class="text-center">No reports found.</td>
                             </tr>
                         @endforelse
                     </tbody>

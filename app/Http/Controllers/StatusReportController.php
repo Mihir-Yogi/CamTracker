@@ -50,7 +50,7 @@ class StatusReportController extends Controller
         ->when($endDate, function ($query, $endDate) {
             return $query->where('created_at', '<=', $endDate . ' 23:59:59'); // Include end of the day
         })
-        ->with(['depot', 'location', 'nvr', 'dvr', 'hdd', 'cctv']) // eager load relationships for display
+        ->with(['depot', 'location', 'nvr.sublocation', 'dvr.sublocation', 'hdd.sublocation', 'cctv']) // eager load relationships for display
         ->paginate(5);
 
     return view('admin.REPORTS.index', compact('reports', 'depots', 'depotId', 'locationId', 'startDate', 'endDate'));

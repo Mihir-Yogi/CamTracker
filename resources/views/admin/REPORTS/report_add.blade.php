@@ -213,7 +213,7 @@ $('#location_id').change(function() {
                                     </select>
                                 </td>
                                 <td>
-                                    <textarea name="off_reason[nvr_${nvr.id}]" class="remarks" placeholder="Reason for OFF" style="${nvr.status === 'OFF' ? 'display:block;' : 'display:none;'}">${nvr.reason}</textarea>
+                                    <textarea name="off_reason[nvr_${nvr.id}]" class="remarks" placeholder="Reason for OFF" >${nvr.reason ?? ''}</textarea>
                                 </td>
                             </tr>`;
                             devicesHTML += `<input type="hidden" name="nvr_id" value="${nvr.id}">`;
@@ -234,7 +234,7 @@ $('#location_id').change(function() {
                                     </select>
                                 </td>
                                 <td>
-                                    <textarea name="off_reason[dvr_${dvr.id}]" class="remarks" placeholder="Reason for OFF" style="${dvr.status === 'OFF' ? 'display:block;' : 'display:none;'}">${dvr.reason}</textarea>
+                                    <textarea name="off_reason[dvr_${dvr.id}]" class="remarks" placeholder="Reason for OFF" >${dvr.reason ?? ''}</textarea>
                                 </td>
                             </tr>`;
                             devicesHTML += `<input type="hidden" name="dvr_id" value="${dvr.id}">`;
@@ -254,7 +254,7 @@ $('#location_id').change(function() {
                                     </select>
                                 </td>
                                 <td>
-                                    <textarea name="off_reason[hdd_${hdd.id}]" class="remarks" placeholder="Reason for OFF" style="${hdd.status === 'OFF' ? 'display:block;' : 'display:none;'}">${hdd.reason}</textarea>
+                                    <textarea name="off_reason[hdd_${hdd.id}]" class="remarks" placeholder="Reason for OFF" >${hdd.reason ?? ''} </textarea>
                                 </td>
                             </tr>`;
                             devicesHTML += `<input type="hidden" name="hdd_id" value="${hdd.id}">`;
@@ -275,7 +275,7 @@ $('#location_id').change(function() {
                                     </select>
                                 </td>
                                 <td>
-                                    <textarea name="cctv_reason[${cctv.id}]" class="remarks" placeholder="Reason for OFF" style="${cctv.status === 'OFF' ? 'display:block;' : 'display:none;'}">${cctv.reason}</textarea>
+                                    <textarea name="cctv_reason[${cctv.id}]" class="remarks" placeholder="Reason for OFF" >${cctv.reason ?? ''}</textarea>
                                 </td>
                             </tr>`;
                     });
@@ -283,34 +283,6 @@ $('#location_id').change(function() {
                     devicesHTML += '</tbody></table>';
                     $('#devicesContainer').html(devicesHTML);
                     
-                    let formValid = true; // Flag to track form validity
-
-                    // Loop through each visible textarea (those with 'display:block' style)
-                    $('textarea.remarks').each(function () {
-                        if ($(this).is(':visible') && $(this).val().trim() === '') {
-                            formValid = false; // Set form as invalid if any required field is empty
-                            $(this).css('border-color', 'red'); // Highlight empty field in red
-                        } else {
-                            $(this).css('border-color', ''); // Reset the border color if filled
-                        }
-                    });
-
-                    // If any required textarea is empty, prevent form submission
-                    if (!formValid) {
-                        event.preventDefault(); // Prevent form from being submitted
-                        alert('Please fill in all required off reason fields.');
-                    }
-
-                    // Show or hide remarks based on selected status
-                    $('.status-select').change(function() {
-                        const selectedValue = $(this).val();
-                        const remarksField = $(this).closest('tr').find('.remarks');
-                        if (selectedValue === 'OFF') {
-                            remarksField.show();
-                        } else {
-                            remarksField.hide().val(''); // Hide and clear the field
-                        }
-                    });
                 },
                 error: function(xhr) {
                     $('#devicesContainer').html('<p>An error occurred while loading devices. Please try again.</p>');
