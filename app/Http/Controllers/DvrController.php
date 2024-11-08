@@ -101,7 +101,7 @@ class DvrController extends Controller
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
-            'sublocation' => 'required|string|max:255'
+            'sublocation_id' => 'required|string|max:255'
         ]);
 
         // Only allow updating fields that are editable by the user
@@ -112,7 +112,7 @@ class DvrController extends Controller
             'purchase_date' => $request->input('purchase_date'),
             'installation_date' => $request->input('installation_date'),
             'warranty_expiration' => $request->input('warranty_expiration'),
-            'sublocation' => $request->input('sublocation')
+            'sublocation_id' => $request->input('sublocation_id')
         ]);
 
         return redirect()->route('admin.dvrs.index')->with('status', 'DVR updated successfully!');
@@ -137,8 +137,8 @@ class DvrController extends Controller
 
     public function showReplaceForm(Dvr $dvr)
     {
-        // Pass the selected DVR with its depot and location to the view
-        return view('admin.DVRs.dvr_replace', compact('dvr'));
+        $sublocations = Sublocation::all();
+        return view('admin.DVRs.dvr_replace', compact('dvr','sublocations'));
     }
 
     public function replace(Request $request, Dvr $dvr)
@@ -152,7 +152,7 @@ class DvrController extends Controller
             'installation_date' => 'required|date',
             'warranty_expiration' => 'required|date',
             'replace_image' => 'required|image|max:2048',
-            'sublocation' => 'required|string|max:255',
+            'sublocation_id' => 'required|string|max:255',
         ]);
 
         // Check if the request has a file
@@ -186,7 +186,7 @@ class DvrController extends Controller
             'warranty_expiration' => $request->input('warranty_expiration'),
             'depot_id' => $dvr->depot_id,    // Use the same depot as the old DVR
             'location_id' => $dvr->location_id,
-            'sublocation' => $dvr->sublocation,
+            'sublocation_id' => $dvr->sublocation_id,
         ]);
 
         $dvr->combo()->update(['dvr_id' => $newDvr->id]);

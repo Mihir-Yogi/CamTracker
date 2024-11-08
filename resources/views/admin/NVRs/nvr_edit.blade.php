@@ -47,83 +47,91 @@
         
         <!-- Edit NVR Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.nvrs.update', $nvr->id) }}" method="POST">
+            <form class="form-new-product form-style-2" style="gap: 20px;" action="{{ route('admin.nvrs.update', $nvr->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
-                <!-- Model Field -->
-                <fieldset class="name">
-                    <div class="body-title">Model <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $nvr->model) }}" required>
+                <fieldset>
+                    <div class="block">
+                        <div class="body-title">Depot</div>
+                        <input class="flex-grow depot-location-text" type="text" value="{{ $nvr->depot->name }} " disabled>
+                        <input type="hidden" name="depot_id" value="{{ $nvr->depot_id }}">
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Location</div>
+                        <input class="flex-grow depot-location-text" type="text" value="{{ $nvr->location->name }}" disabled>
+                        <input type="hidden" name="location_id" value="{{ $nvr->location_id }}">
+                    </div>
                 </fieldset>
-                @error('model')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
                 <fieldset>
-                    <div class="body-title">nvr Sub-Location <span class="tf-color-1">*</span></div>
-                    <div class="select flex-grow">
-                        <select name="nvr_sublocation" id="nvr_sublocation" >
-                            <option value="">Select a Sub-location</option>
-                            <option value="Deasal Station" {{ (old('nvr_sublocation', $nvr->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
-                            <option value="Washing Station" {{ (old('nvr_sublocation', $nvr->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
-                        </select>
+                    <div class="blok" style="width: 100%;">
+                        <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="sublocation_id" id="sublocation_id" >
+                                <option value="">Select a Sub-Location</option>
+                                @foreach($sublocations as $sublocation)
+                                    <option  {{ $nvr->sublocation->name == $sublocation->name ? 'selected' : '' }} value="{{ $sublocation->id }}" >{{ $sublocation->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    @error('nvr_sublocation')
+                </fieldset>
+                @error('sublocation_id')
+                    <span class="alert alert-danger">{{ $message }}</span>
+                @enderror
+                <!-- Model Field -->
+                <fieldset class="name">
+                    <div class="block">
+                        <div class="body-title">Model <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $nvr->model) }}" required>
+                        @error('model')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Serial Number <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="text" placeholder="Enter serial number" name="serial_number" value="{{ old('serial_number', $nvr->serial_number) }}" required>
+                    </div>
+                    @error('serial_number')
                         <span class="alert alert-danger">{{ $message }}</span>
                     @enderror
                 </fieldset>
 
-                <!-- Serial Number Field -->
                 <fieldset class="name">
-                    <div class="body-title">Serial Number <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter serial number" name="serial_number" value="{{ old('serial_number', $nvr->serial_number) }}" required>
+                    <div class="block">
+                        <div class="body-title">Installation Date</div>
+                        <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $nvr->installation_date ? $nvr->installation_date : '') }}">
+                        @error('installation_date')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Purchase Date</div>
+                        <input type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date',$nvr->purchase_date) }}">  
+                        @error('purchase_date')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </fieldset>
-                @error('serial_number')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
-                <!-- Depot Field (Non-Editable) -->
                 <fieldset>
-                    <div class="body-title">Depot</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $nvr->depot->name }} " disabled>
-                    <input type="hidden" name="depot_id" value="{{ $nvr->depot_id }}">
-                </fieldset>
-
-                <!-- Location Field (Non-Editable) -->
-                <fieldset>
-                    <div class="body-title">Location</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $nvr->location->name }}" disabled>
-                    <input type="hidden" name="location_id" value="{{ $nvr->location_id }}">
-                </fieldset>
-
-                <!-- Purchase Date Field -->
-                <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $nvr->purchase_date ? $nvr->purchase_date : '') }}">
-                </fieldset>
-                @error('purchase_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Installation Date Field -->
-                <fieldset class="name">
-                    <div class="body-title">Installation Date</div>
-                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $nvr->installation_date ? $nvr->installation_date : '') }}">
-                </fieldset>
-                @error('installation_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Warranty Expiration Field -->
-                <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $nvr->warranty_expiration ? $nvr->warranty_expiration : '') }}">
-                </fieldset>
-                @error('warranty_expiration')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
+                            
+                            <div class="block">
+                                <div class="body-title">Warranty Duration (Years)</div>
+                                <select name="warranty_duration" id="warranty_duration">
+                                    <option value="1">1 Year</option>
+                                    <option value="2">2 Years</option>
+                                    <option value="3">3 Years</option>
+                                </select>
+                            </div>
+                            <div class="block">
+                                <div class="body-title">Warranty Expiration</div>
+                                <input type="date" name="warranty_expiration" id="warranty_expiration" value="{{ old('warranty_expiration',$nvr->warranty_expiration) }}" readonly>
+                                @error('warranty_expiration')
+                                    <span class="alert alert-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </fieldset>
                 <!-- Save Button -->
                 <div class="bot">
                     <div></div>
@@ -134,4 +142,31 @@
         </div>
     </div>
 </div>
+
+<style>
+    .block{
+        display: inline-block;
+        width: 50%;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    
+
+    $('#purchase_date, #warranty_duration').change(function() {
+        var purchaseDate = $('#purchase_date').val();
+        var warrantyDuration = parseInt($('#warranty_duration').val());
+
+        if (purchaseDate && warrantyDuration) {
+            var date = new Date(purchaseDate);
+            date.setFullYear(date.getFullYear() + warrantyDuration);
+            var expirationDate = date.toISOString().split('T')[0];
+            $('#warranty_expiration').val(expirationDate);
+        } else {
+            $('#warranty_expiration').val('');
+        }
+    });
+});
+</script>
 @endsection

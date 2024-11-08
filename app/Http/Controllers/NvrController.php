@@ -8,7 +8,7 @@ use App\Models\Location;
 use App\Models\Combo;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
-
+use App\Models\Sublocation;
 
 
 class NvrController extends Controller
@@ -82,12 +82,14 @@ class NvrController extends Controller
 
     public function show(Nvr $nvr)
     {
-        return view('admin.NVRs.show', compact('nvr'));
+        $sublocations = Sublocation::all();
+        return view('admin.NVRs.show', compact('nvr','sublocations'));
     }
 
     public function edit(Nvr $nvr)
     {
-        return view('admin.NVRs.nvr_edit', compact('nvr'));
+        $sublocations = Sublocation::all();
+        return view('admin.NVRs.nvr_edit', compact('nvr','sublocations'));
     }
 
     public function update(Request $request, Nvr $nvr)
@@ -100,7 +102,7 @@ class NvrController extends Controller
             'purchase_date' => 'nullable|date',
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
-            'nvr_sublocation' => 'required|string|max:255'
+            'sublocation_id' => 'required|string|max:255'
         ]);
     
         // Only allow updating fields that are editable by the user
@@ -111,7 +113,7 @@ class NvrController extends Controller
             'purchase_date' => $request->input('purchase_date'),
             'installation_date' => $request->input('installation_date'),
             'warranty_expiration' => $request->input('warranty_expiration'),
-            'sublocation' => $request->input('nvr_sublocation')
+            'sublocation_id' => $request->input('sublocation_id')
         ]);
     
         // Redirect to the NVR index page with a success message
@@ -145,8 +147,9 @@ class NvrController extends Controller
     */
     public function showReplaceForm(Nvr $nvr)
     {
+        $sublocations = Sublocation::all();
         // Pass the selected NVR with its depot and location to the view
-        return view('admin.NVRs.nvr_replace', compact('nvr'));
+        return view('admin.NVRs.nvr_replace', compact('nvr','sublocations'));
     }
 
     /**
@@ -167,7 +170,7 @@ class NvrController extends Controller
             'installation_date' => 'required|date',
             'warranty_expiration' => 'required|date',
             'replace_image' => 'required|image|max:2048',
-            'sublocation' => 'required|string|max:255'
+            'sublocation_id' => 'required|string|max:255'
         ]);
 
          // Check if the request has a file
@@ -188,7 +191,7 @@ class NvrController extends Controller
         }
         
 
-        $nvr->status = 'failed';
+        $nvr->status = 'NOT WORKING';
         $nvr->failure_reason = $request->failure_reason;
         $nvr->save();
 
@@ -202,7 +205,7 @@ class NvrController extends Controller
             'warranty_expiration' => $request->input('warranty_expiration'),
             'depot_id' => $nvr->depot_id,    // Use the same depot as the old NVR
             'location_id' => $nvr->location_id,  // Use the same location as the old NVR
-            'sublocation' => $nvr->sublocation,
+            'sublocation_id' => $nvr->sublocation_id,
         ]);
 
         $nvr->combo()->update(['nvr_id' => $newNvr->id]);

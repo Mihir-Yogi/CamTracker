@@ -8,34 +8,36 @@
         <h3>NVR List</h3>
         <!-- NVR Table -->
         <div class="wg-box">
-        <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+        <div>
         <form action="#" method="GET">
-                <fieldset>
-                    <div class="body-title">Select Depot</div>
-                    <div class="select flex-grow" style="width: 500px;">
-                        <select name="depot_id" id="depot_id">
-                            <option value="">Select a depot</option>
-                            @foreach($depots as $depot)
-                                <option value="{{ $depot->id }}" @if($depotId == $depot->id) selected @endif>
-                                    {{ $depot->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <div class="body-title">Select Location</div>
-                    <div class="select flex-grow">
-                        <select name="location_id" id="location_id">
-                            <option value="">Select a location</option>
-                            @if ($depotId)
-                                @foreach ($depots->find($depotId)->locations as $location)
-                                    <option value="{{ $location->id }}" @if($locationId == $location->id) selected @endif>
-                                        {{ $location->name }}
+                <fieldset style="display: flex;">
+                    <div class="block">
+                        <div class="body-title">Select Depot</div>
+                        <div class="select flex-grow" style="width: 500px;">
+                            <select name="depot_id" id="depot_id">
+                                <option value="">Select a depot</option>
+                                @foreach($depots as $depot)
+                                    <option value="{{ $depot->id }}" @if($depotId == $depot->id) selected @endif>
+                                        {{ $depot->name }}
                                     </option>
                                 @endforeach
-                            @endif
-                        </select>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Select Location</div>
+                        <div class="select flex-grow">
+                            <select name="location_id" id="location_id">
+                                <option value="">Select a location</option>
+                                @if ($depotId)
+                                    @foreach ($depots->find($depotId)->locations as $location)
+                                        <option value="{{ $location->id }}" @if($locationId == $location->id) selected @endif>
+                                            {{ $location->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
                     </div>
                 </fieldset>
                 <button type="submit" style="width: 120px; height: 40px; margin-top: 20px;" class="tf-button style-1 ">Filter</button>
@@ -120,6 +122,13 @@
     </div>
 </div>
 
+
+<style>
+    .block{
+        display: inline-block;
+        width: 50%;
+    }
+</style>
 @endsection
 
 @push('scripts')
