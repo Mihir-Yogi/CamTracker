@@ -22,41 +22,46 @@
 
         <!-- Search and Add Button -->
         <div class="wg-box">
-            <div class="flex items-center justify-between gap10 flex-wrap">
+            <div>
             <form action="#" method="GET">
-                <fieldset>
-                    <div class="body-title">Select Depot</div>
-                    <div class="select flex-grow" style="width: 500px;">
-                        <select name="depot_id" id="depot_id">
-                            <option value="">Select a depot</option>
-                            @foreach($depots as $depot)
-                                <option value="{{ $depot->id }}" @if($depotId == $depot->id) selected @endif>
-                                    {{ $depot->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <div class="body-title">Select Location</div>
-                    <div class="select flex-grow">
-                        <select name="location_id" id="location_id">
-                            <option value="">Select a location</option>
-                            @if ($depotId)
-                                @foreach ($depots->find($depotId)->locations as $location)
-                                    <option value="{{ $location->id }}" @if($locationId == $location->id) selected @endif>
-                                        {{ $location->name }}
+                <fieldset style="display: flex; gap: 15px;">
+                    <div class="block">
+                        <div class="body-title">Select Depot</div>
+                        <div class="select flex-grow" >
+                            <select name="depot_id" id="depot_id">
+                                <option value="">Select a depot</option>
+                                @foreach($depots as $depot)
+                                    <option value="{{ $depot->id }}" @if($depotId == $depot->id) selected @endif>
+                                        {{ $depot->name }}
                                     </option>
                                 @endforeach
-                            @endif
-                        </select>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Select Location</div>
+                        <div class="select flex-grow">
+                            <select name="location_id" id="location_id">
+                                <option value="">Select a location</option>
+                                @if ($depotId)
+                                    @foreach ($depots->find($depotId)->locations as $location)
+                                        <option value="{{ $location->id }}" @if($locationId == $location->id) selected @endif>
+                                            {{ $location->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
                     </div>
                 </fieldset>
-                <button type="submit" style="width: 120px; height: 40px; margin-top: 20px;" class="tf-button style-1">Filter</button>
+                <div style="display: flex; gap: 20px; align-items: center; margin-top: 15px;">
+                        <button type="submit" style="width: 120px; height: 40px; " class="tf-button style-1">Filter</button>
+                        <a class="tf-button style-1 w208" style="width: 160px; height: 40px; font-size: 12px;" href="{{ route('admin.combos.create') }}">
+                            Create New Combo
+                        </a>
+                </div>
+
             </form>
-                <a class="tf-button style-1 w208" href="{{ route('admin.combos.create') }}">
-                    <i class="icon-plus"></i>Add New Combo
-                </a>
             </div>
 
             <!-- Session Status Message -->
@@ -65,8 +70,7 @@
             @endif
 
             <!-- Combos Table -->
-            <div class="wg-table table-all-user">
-                <div class="table-responsive">
+                <div class="table-responsive" >
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -84,15 +88,15 @@
                         <tbody>
                             @forelse($combos as $index => $combo)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ optional($combo->location->depot)->name ?? 'N/A' }}</td>
-                                    <td>{{ optional($combo->location)->name ?? 'N/A' }}</td>
-                                    <td>{{ optional($combo->nvr)->model ?? 'N/A' }}</td>
-                                    <td>{{ optional($combo->dvr)->model ?? 'N/A' }}</td>
-                                    <td>{{ optional($combo->hdd)->model ?? 'N/A' }}</td>
-                                    <td>{{ $combo->camera_capacity }}</td>
-                                    <td>{{ $combo->current_cctv_count }}</td>
-                                    <td colspan="2">
+                                    <td class="td-space" style="text-align: center;" >{{ $index + 1 }}</td>
+                                    <td class="td-space">{{ optional($combo->location->depot)->name ?? 'N/A' }}</td>
+                                    <td class="td-space">{{ optional($combo->location)->name ?? 'N/A' }}</td>
+                                    <td class="td-space">{{ optional($combo->nvr)->model ?? 'N/A' }}</td>
+                                    <td class="td-space">{{ optional($combo->dvr)->model ?? 'N/A' }}</td>
+                                    <td class="td-space">{{ optional($combo->hdd)->model ?? 'N/A' }}</td>
+                                    <td class="td-space">{{ $combo->camera_capacity }}</td>
+                                    <td class="td-space">{{ $combo->current_cctv_count }}</td>
+                                    <td class="td-space" colspan="2">
                                         <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
                                             <a href="{{ route('admin.combos.show', ['id' => $combo->id]) }}" style="margin-left: 15px;">
                                                 <div class="list-icon-function view-icon">
@@ -118,7 +122,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9" class="text-center">No combos found.</td>
+                                    <td class="td-space" colspan="9" class="text-center">No combos found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -132,9 +136,74 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
+<style>
+    .block{
+        display: inline-block;
+        width: 50%;
+    }
+.td-space{
+    font-size: 12px !important;
+    padding: 0 !important;
+}
+.table {
+    width: 100%;
+    font-size: 0.85em; /* Smaller font size for a professional, compact look */
+    table-layout: auto;
+    border-collapse: collapse; /* Remove double borders */
+    white-space: wrap; /* Prevent text from wrapping */
+}
+
+/* Depot column specifically sized to fit content */
+th:nth-child(2), td:nth-child(2) {
+    width: 50px !important;
+    white-space: nowrap; /* Prevents wrapping in the Depot column */
+    width: 1%; /* Forces the column to be as narrow as its content */
+}
+
+th {
+    background-color: #f8f9fa; /* Light grey background for headers */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #dee2e6; /* Subtle border for header separation */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light background for alternate rows */
+}
+
+tr:hover {
+    background-color: #e9ecef; /* Highlight row on hover for better readability */
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Small screen adjustments */
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.75em; /* Slightly smaller font for small screens */
+    }
+    .block {
+        width: 100%;
+    }
+    .body-title {
+        font-size: 0.9em;
+    }
+    .td-space {
+        font-size: 0.8em;
+    }
+
+    #filter {
+        flex-direction: column;
+    }
+}
+
+</style>
 @endsection
 
 @push('scripts')

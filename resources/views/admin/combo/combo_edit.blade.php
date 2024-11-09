@@ -79,7 +79,7 @@
                         <div class="body-title">NVR Sub-Location <span class="tf-color-1">*</span></div>
                         <div class="select flex-grow">
                             <select name="nvr_sublocation" id="nvr_sublocation" >
-                                <option value="">Select a Sub-location</option>
+                                <option value="">Select a Sub-location <span class="tf-color-1">*</span></option>
                                 @foreach($sublocations as $sublocation)
                                     <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
                                 @endforeach
@@ -90,9 +90,9 @@
                         @enderror
                     </fieldset>
                     <fieldset><div class="body-title">NVR Serial Number <span class="tf-color-1">*</span></div><input type="text" name="nvr_serial_number" value="{{ old('nvr_serial_number', $combo->nvr->serial_number ?? '') }}"></fieldset>
-                    <fieldset><div class="body-title">NVR Purchase Date</div><input type="date" name="nvr_purchase_date" value="{{ old('nvr_purchase_date', $combo->nvr->purchase_date ?? '') }}"></fieldset>
-                    <fieldset><div class="body-title">NVR Installation Date</div><input type="date" name="nvr_installation_date" value="{{ old('nvr_installation_date', $combo->nvr->installation_date ?? '') }}"></fieldset>
-                    <fieldset><div class="body-title">NVR Warranty Expiration</div><input type="date" name="nvr_warranty_expiration" value="{{ old('nvr_warranty_expiration', $combo->nvr->warranty_expiration ?? '') }}"></fieldset>
+                    <fieldset><div class="body-title">NVR Purchase Date <span class="tf-color-1">*</span></div><input type="date" name="nvr_purchase_date" value="{{ old('nvr_purchase_date', $combo->nvr->purchase_date ?? '') }}"></fieldset>
+                    <fieldset><div class="body-title">NVR Installation Date <span class="tf-color-1">*</span></div><input type="date" name="nvr_installation_date" value="{{ old('nvr_installation_date', $combo->nvr->installation_date ?? '') }}"></fieldset>
+                    <fieldset><div class="body-title">NVR Warranty Expiration <span class="tf-color-1">*</span></div><input type="date" name="nvr_warranty_expiration" value="{{ old('nvr_warranty_expiration', $combo->nvr->warranty_expiration ?? '') }}"></fieldset>
                 </div>
 
                 <!-- Conditional DVR Fields -->
@@ -114,9 +114,9 @@
                         @enderror
                     </fieldset>
                     <fieldset><div class="body-title">DVR Serial Number <span class="tf-color-1">*</span></div><input type="text" name="dvr_serial_number" value="{{ old('dvr_serial_number', $combo->dvr->serial_number ?? '') }}"></fieldset>
-                    <fieldset><div class="body-title">DVR Purchase Date</div><input type="date" name="dvr_purchase_date" value="{{ old('dvr_purchase_date', $combo->dvr->purchase_date ?? '') }}"></fieldset>
-                    <fieldset><div class="body-title">DVR Installation Date</div><input type="date" name="dvr_installation_date" value="{{ old('dvr_installation_date', $combo->dvr->installation_date ?? '') }}"></fieldset>
-                    <fieldset><div class="body-title">DVR Warranty Expiration</div><input type="date" name="dvr_warranty_expiration" value="{{ old('dvr_warranty_expiration', $combo->dvr->warranty_expiration ?? '') }}"></fieldset>
+                    <fieldset><div class="body-title">DVR Purchase Date <span class="tf-color-1">*</span></div><input type="date" name="dvr_purchase_date" value="{{ old('dvr_purchase_date', $combo->dvr->purchase_date ?? '') }}"></fieldset>
+                    <fieldset><div class="body-title">DVR Installation Date <span class="tf-color-1">*</span></div><input type="date" name="dvr_installation_date" value="{{ old('dvr_installation_date', $combo->dvr->installation_date ?? '') }}"></fieldset>
+                    <fieldset><div class="body-title">DVR Warranty Expiration <span class="tf-color-1">*</span></div><input type="date" name="dvr_warranty_expiration" value="{{ old('dvr_warranty_expiration', $combo->dvr->warranty_expiration ?? '') }}"></fieldset>
                 </div>
 
                 <!-- HDD Fields -->

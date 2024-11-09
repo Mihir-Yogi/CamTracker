@@ -30,7 +30,7 @@
 
         <!-- Replace CCTV Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-2" action="{{ route('admin.cctvs.replace', $cctv->id) }}" enctype="multipart/form-data" method="POST">
+            <form class="form-new-product form-style-2" style="gap: 15px;" action="{{ route('admin.cctvs.replace', $cctv->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
 
                 <!-- Depot Field (Read-Only) -->
@@ -43,24 +43,21 @@
                         <div class="body-title">Location</div>
                         <input class="flex-grow" type="text" name="location" value="{{ $cctv->combo->location->name }}" disabled style="color: #6c757d;">
                     </div>
-                </fieldset>
-
-                <!-- Select sub-Location Field -->
-                <fieldset>
-                    <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
-                    <div class="select flex-grow">
-                        <select name="sublocation_id" id="sublocation_id" >
-                            <option value="">Select a Sub-Location</option>
-                            @foreach($sublocations as $sublocation)
-                                <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="block">
+                        <div class="body-title">Select Sub-Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="sublocation_id" id="sublocation_id" >
+                                <option value="">Select a Sub-Location</option>
+                                @foreach($sublocations as $sublocation)
+                                    <option value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('sublocation_id')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </fieldset>
-                @error('sublocation_id')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-                
                 <!-- New Model Field -->
                 <fieldset class="name">
                     <div class="block">
@@ -78,11 +75,6 @@
                             <span class="alert alert-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </fieldset>
-
-                
-                <!-- New megapixel Field -->
-                <fieldset class="name">
                     <div class="block">
                         <div class="body-title">New Megapixel<span class="tf-color-1">*</span></div>
                         <input class="flex-grow" type="number" placeholder="Enter Megapixel" name="megapixel" value="{{ old('megapixel') }}" required>
@@ -90,6 +82,11 @@
                             <span class="alert alert-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                </fieldset>
+
+                
+                    <fieldset>
+                        
                     <div class="block">
                         <div class="body-title">Installation Date</div>
                         <input class="flex-grow" type="date" name="installed_date" value="{{ old('installed_date') }}">
@@ -97,44 +94,40 @@
                             <span class="alert alert-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                        <div class="block">
+                            <div class="body-title">Purchase Date</div>
+                            <input type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date') }}">
+                            @error('purchase_date')
+                                <span class="alert alert-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="block">
+                            <div class="body-title">Warranty Duration (Years)</div>
+                            <select name="warranty_duration" id="warranty_duration">
+                                <option value="1">1 Year</option>
+                                <option value="2">2 Years</option>
+                                <option value="3">3 Years</option>
+                            </select>
+                        </div>
                     </fieldset>
+                    
+                    
                     <fieldset>
-                            
-                            <div class="block">
-                                <div class="body-title">Purchase Date</div>
-                                <input type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date') }}">
-                                @error('purchase_date')
-                                    <span class="alert alert-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="block">
-                                <div class="body-title">Warranty Duration (Years)</div>
-                                <select name="warranty_duration" id="warranty_duration">
-                                    <option value="1">1 Year</option>
-                                    <option value="2">2 Years</option>
-                                    <option value="3">3 Years</option>
-                                </select>
-                            </div>
-                        </fieldset>
-
-                        
-                        <fieldset>
-                            
-                            <div class="block">
-                                <div class="body-title">Warranty Expiration</div>
-                                <input type="date" name="warranty_expiration" id="warranty_expiration" value="{{ old('warranty_expiration') }}" readonly>
-                                @error('warranty_expiration')
-                                    <span class="alert alert-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </fieldset>
-                <fieldset>
-                    <div class="body-title">Reason for Replacement <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter reason for replacing" name="failure_reason" value="{{ old('failure_reason') }}" required>
-                    @error('failure_reason')
-                        <span class="alert alert-danger">{{ $message }}</span>
-                    @enderror
-                </fieldset>
+                        <div class="block">
+                            <div class="body-title">Warranty Expiration</div>
+                            <input type="date" name="warranty_expiration" id="warranty_expiration" value="{{ old('warranty_expiration') }}" readonly>
+                            @error('warranty_expiration')
+                                <span class="alert alert-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="block">
+                            <div class="body-title">Reason for Replacement <span class="tf-color-1">*</span></div>
+                            <input class="flex-grow" type="text" placeholder="Enter reason for replacing" name="failure_reason" value="{{ old('failure_reason') }}" required>
+                            @error('failure_reason')
+                                <span class="alert alert-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </fieldset>
                     
                     <!-- Replace Image Field with Preview -->
                 <fieldset class="name">

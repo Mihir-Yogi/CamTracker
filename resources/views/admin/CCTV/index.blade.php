@@ -62,24 +62,24 @@
                             <th>Purchase Date</th>
                             <th>Installation Date</th>
                             <th>Warranty Expiration</th>
-                            <th colspan="3" style="text-align:center; ">Actions</th>
+                            <th colspan="2" style="text-align:center; ">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($cctvs as $cctv)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $cctv->location->depot->name }}</td>
-                                <td>{{ $cctv->location->name }}</td>
-                                <td>{{  $cctv->sublocation->name ?? 'N/A' }}</td>
-                                <td>{{ $cctv->model }}</td>
-                                <td>{{ ucfirst($cctv->status) }}</td>
-                                <td>{{ $cctv->combo->depot->name ?? 'N/A' }} - {{ $cctv->combo->location->name ?? 'N/A' }}</td>
-                                <td>{{ $cctv->purchase_date ?? 'N/A' }}</td>
-                                <td>{{ $cctv->installation_date ?? 'N/A' }}</td>
-                                <td>{{ $cctv->warranty_expiration ?? 'N/A' }}</td>
+                                <td class="td-space" style="text-align: center;">{{ $loop->iteration }}</td>
+                                <td class="td-space">{{ $cctv->location->depot->name }}</td>
+                                <td class="td-space">{{ $cctv->location->name }}</td>
+                                <td class="td-space">{{  $cctv->sublocation->name ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $cctv->model }}</td>
+                                <td class="td-space">{{ ucfirst($cctv->status) }}</td>
+                                <td class="td-space">{{ $cctv->combo->depot->name ?? 'N/A' }} - {{ $cctv->combo->location->name ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $cctv->purchase_date ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $cctv->installation_date ?? 'N/A' }}</td>
+                                <td class="td-space">{{ $cctv->warranty_expiration ?? 'N/A' }}</td>
 
-                                <td colspan="3">
+                                <td class="td-space" colspan="2">
                                     <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
                                         <!-- View Button -->
                                         <a href="{{ route('admin.cctvs.show', $cctv->id) }}" style="margin-left: 15px;">
@@ -116,7 +116,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="10" class="text-center">No CCTV Cameras found.</td>
+                                <td class="td-space" colspan="10" class="text-center">No CCTV Cameras found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -126,6 +126,68 @@
     </div>
 </div>
 
+<style>
+    .block{
+        display: inline-block;
+        width: 50%;
+    }
+.td-space{
+    height: 20px !important;
+    font-size: 12px !important;
+    padding: 0 !important;
+}
+.table {
+    width: 100%;
+    font-size: 0.85em; /* Smaller font size for a professional, compact look */
+    table-layout: auto;
+    border-collapse: collapse; /* Remove double borders */
+    white-space: wrap; /* Prevent text from wrapping */
+}
+/* Depot column specifically sized to fit content */
+th:nth-child(2), td:nth-child(2) {
+    width: 50px !important;
+    white-space: nowrap; /* Prevents wrapping in the Depot column */
+    width: 1%; /* Forces the column to be as narrow as its content */
+}
+
+th {
+    background-color: #f8f9fa; /* Light grey background for headers */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #dee2e6; /* Subtle border for header separation */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light background for alternate rows */
+}
+
+tr:hover {
+    background-color: #e9ecef; /* Highlight row on hover for better readability */
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Small screen adjustments */
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.75em; /* Slightly smaller font for small screens */
+    }
+    .block {
+        width: 100%;
+    }
+    .body-title {
+        font-size: 0.9em;
+    }
+    .td-space {
+        font-size: 0.8em;
+    }
+}
+
+</style>
 @endsection
 
 @push('scripts')

@@ -59,51 +59,69 @@
     min-width: 500px; /* Adjust minimum width for each dropdown */
 }
 
+.dropdown-item:hover{
+    background-color: transparent;
+}
+
 .body-title {
     margin-bottom: 8px; /* Space between title and select box */
-}/* Table Styling */
-.details-table {
+}
+.table {
     width: 100%;
-    border-collapse: collapse;
-    margin: 15px 0;
-    font-size: 16px;
-    table-layout: fixed; /* Forces cells to obey width constraints */
+    font-size: 0.85em; /* Smaller font size for a professional, compact look */
+    table-layout: auto;
+    border-collapse: collapse; /* Remove double borders */
+    white-space: wrap; /* Prevent text from wrapping */
 }
 
-.details-table th,
-.details-table td {
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    overflow: hidden; /* Hides any overflowed text */
-    white-space: normal; /* Allows text to wrap */
-    text-overflow: ellipsis; /* Adds an ellipsis to clipped text */
-    word-wrap: break-word; /* Breaks long words to fit within the cell */
-    word-wrap: break-word; /* Breaks words if too long */
-    word-break: break-all; /* Forces breaks within very long, unbroken strings */
+/* Depot column specifically sized to fit content */
+th:nth-child(2), td:nth-child(2) {
+    width: 50px !important;
+    white-space: nowrap; /* Prevents wrapping in the Depot column */
+    width: 1%; /* Forces the column to be as narrow as its content */
 }
 
-.details-table th {
-    background-color: #f5f5f5;
+th {
+    background-color: #f8f9fa; /* Light grey background for headers */
     font-weight: bold;
-    color: #333;
-    text-align: left;
-    font-size: 18px;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #dee2e6; /* Subtle border for header separation */
 }
 
-.details-table td {
-    color: #333;
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light background for alternate rows */
 }
 
-/* Optional: Set a max-width for certain cells to prevent them from becoming too wide */
-.details-table th,
-.details-table td {
-    max-width: 300px; /* Ensures cells don’t become too wide */
+tr:hover {
+    background-color: #e9ecef; /* Highlight row on hover for better readability */
 }
 
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Small screen adjustments */
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.75em; /* Slightly smaller font for small screens */
+    }
+    .block {
+        width: 100%;
+    }
+    .body-title {
+        font-size: 0.9em;
+    }
+    .td-space {
+        font-size: 0.8em;
+    }
+}
 .td-space{
     padding: 0 !important;
+    font-size: 12px !important;
+    width: 500px;
 }
-    
 </style>
 
 <div class="main-content-inner">
@@ -120,7 +138,7 @@
                 </ul>
             </div>
         @endif
-<div class="wg-box">
+<div class="wg-box" style="gap: 2px;">
         <div class="flex items-center flex-wrap justify-between gap20 mb-27">
             <!-- Filter Form -->
             <form action="#" method="GET">
@@ -170,28 +188,31 @@
         </div>
     </div>
 </fieldset>
-
-                <button type="submit" style="width: 120px; height: 40px; margin-top: 20px;" class="tf-button style-1 ">Filter</button>
+<div style="display: flex; gap: 20px; align-items: center; margin-top: 15px;">
+                        <button type="submit" style="width: 120px; height: 40px; " class="tf-button style-1">Filter</button>
+                        <a class="tf-button style-1 w208" style="width: 200px; height: 40px; font-size: 12px;" href="{{ route('status_reports.create') }}">
+                            Create New Transcation
+                        </a>
+                </div>
             </form>
-            <a href="{{ route('status_reports.create') }}" class="tf-button style-1 w208">Create New Transcation</a>
         </div>
 
         <!-- Status Reports Table -->
         <div class="wg-table table-all-user">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered ">
                     <thead>
                         <tr>
-                            <th style="width: 40px;">#</th>
-                            <th style="width: 120px;">Depot</th>
-                            <th>Location</th>
-                            <th>Device Type</th>
-                            <th>Sub-Location</th>
-                            <th>Status</th>
-                            <th>Remark</th>
-                            <th>Expiry Date</th>
-                            <th>Created At</th>
-                            <th colspan="2" style="text-align: center;">Actions</th>
+                            <th class="th-space" style="width: 40px !important;">#</th>
+                            <th class="th-space">Depot</th>
+                            <th class="th-space" >Location</th>
+                            <th class="th-space" >Device Type</th>
+                            <th class="th-space" >Sub-Location</th>
+                            <th class="th-space" >Status</th>
+                            <th class="th-space" >Remark</th>
+                            <th class="th-space" >Expiry Date</th>
+                            <th class="th-space" >Created At</th>
+                            <th class="th-space"  colspan="2" style="text-align: center;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -222,7 +243,7 @@
                                 <td class="td-space">{{ $report->dvr->warranty_expiration ?? 'N/A' }}</td>
                                 @endif
                                 <td class="td-space"  rowspan="{{ $rowSpan }}">{{ $report->created_at->format('Y-m-d H:i:s') }}</td>
-                                <td class="td-space" colspan="2"  rowspan="{{ $rowSpan }}" style="text-align: center;">
+                                <td class="td-space" colspan="2"  rowspan="{{ $rowSpan }}" style="text-align: center; width: 100px;">
                                     <a href="{{ route('status_reports.show', ['id' => $report->id]) }}" class="item edit" style="margin-right: 15px;" >
                                         <i class="icon-eye"></i> View
                                     </a>

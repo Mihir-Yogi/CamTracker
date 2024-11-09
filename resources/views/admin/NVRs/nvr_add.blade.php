@@ -91,7 +91,7 @@
 
                 <!-- Purchase Date Field -->
                 <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
+                    <div class="body-title">Purchase Date <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date') }}">
                 </fieldset>
                 @error('purchase_date')
@@ -100,7 +100,7 @@
 
                 <!-- Installation Date Field -->
                 <fieldset class="name">
-                    <div class="body-title">Installation Date</div>
+                    <div class="body-title">Installation Date <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date') }}">
                 </fieldset>
                 @error('installation_date')
@@ -109,7 +109,7 @@
 
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
+                    <div class="body-title">Warranty Expiration <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration') }}">
                 </fieldset>
                 @error('warranty_expiration')

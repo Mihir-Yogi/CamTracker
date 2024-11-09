@@ -9,6 +9,7 @@ use App\Models\Combo;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 use App\Models\Hdd;
+use App\Models\Sublocation;
 
 
 class HddController extends Controller
@@ -89,7 +90,8 @@ class HddController extends Controller
 
     public function edit(Hdd $hdd)
     {
-        return view('admin.HDDs.hdd_edit', compact('hdd'));
+        $sublocations = Sublocation::all();
+        return view('admin.HDDs.hdd_edit', compact('hdd','sublocations'));
     }
 
     public function update(Request $request, Hdd $hdd)
@@ -103,7 +105,7 @@ class HddController extends Controller
             'installation_date' => 'nullable|date',
             'warranty_expiration' => 'nullable|date',
             'capacity' => 'nullable|integer|min:0',
-            'hdd_sublocation' => 'reuired|string|max:255'
+            'sublocation_id' => 'required|string|max:255'
         ]);
 
         // Only allow updating fields that are editable by the user
@@ -115,7 +117,7 @@ class HddController extends Controller
             'installation_date' => $request->input('installation_date'),
             'warranty_expiration' => $request->input('warranty_expiration'),
             'capacity' => $request->input('capacity'),
-            'sublocation' => $request->input('hdd_sublocation')            
+            'sublocation_id' => $request->input('sublocation_id')            
         ]);
 
         return redirect()->route('admin.hdds.index')->with('status', 'HDD updated successfully!');
@@ -140,8 +142,9 @@ class HddController extends Controller
 
     public function showReplaceForm(Hdd $hdd)
     {
+        $sublocations = Sublocation::all();
         // Pass the selected HDD with its depot and location to the view
-        return view('admin.HDDs.hdd_replace', compact('hdd'));
+        return view('admin.HDDs.hdd_replace', compact('hdd','sublocations'));
     }
 
     public function replace(Request $request, Hdd $hdd)
@@ -156,7 +159,7 @@ class HddController extends Controller
             'warranty_expiration' => 'required|date',
             'replace_image' => 'required|image|max:2048',
             'capacity' => 'required|integer|min:0',
-            'sublocation' => 'required|string|max:255',
+            'sublocation_id' => 'required|string|max:255',
         ]);
 
         // Check if the request has a file
@@ -191,7 +194,7 @@ class HddController extends Controller
             'depot_id' => $hdd->depot_id,    // Use the same depot as the old HDD
             'location_id' => $hdd->location_id,  // Use the same location as the old HDD
             'capacity' => $hdd->capacity,
-            'sublocation' => $hdd->sublocation,
+            'sublocation_id' => $hdd->sublocation_id,
         ]);
 
         $hdd->combo()->update(['hdd_id' => $newHdd->id]);

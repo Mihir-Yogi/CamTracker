@@ -47,91 +47,103 @@
         
         <!-- Edit hdd Form -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.hdds.update', $hdd->id) }}" method="POST">
+            <form class="form-new-product form-style-2" style="gap: 18px;" action="{{ route('admin.hdds.update', $hdd->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 
-                <!-- Model Field -->
-                <fieldset class="name">
-                    <div class="body-title">Model <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $hdd->model) }}" required>
-                </fieldset>
-                @error('model')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <fieldset>
-                    <div class="body-title">HDD Sub-Location <span class="tf-color-1">*</span></div>
-                    <div class="select flex-grow">
-                        <select name="hdd_sublocation" id="hdd_sublocation" >
-                            <option value="">Select a Sub-location</option>
-                            <option value="Deasal Station" {{ (old('hdd_sublocation', $hdd->sublocation ?? '') == 'Deasal Station') ? 'selected' : '' }}>DEASAL STATION</option>
-                            <option value="Washing Station" {{ (old('hdd_sublocation', $hdd->sublocation ?? '') == 'Washing Station') ? 'selected' : '' }}>WASHING STATION</option>
-                        </select>
-                    </div>
-                    @error('dvr_sublocation')
-                        <span class="alert alert-danger">{{ $message }}</span>
-                    @enderror
-                </fieldset>
-                <!-- Capacity Field -->
-                <fieldset class="name">
-                    <div class="body-title">Capacity <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter Capacity" name="capacity" value="{{ old('capacity', $hdd->capacity) }}" required>
-                </fieldset>
-                @error('model')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
-                <!-- Serial Number Field -->
-                <fieldset class="name">
-                    <div class="body-title">Serial Number <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Enter serial number" name="serial_number" value="{{ old('serial_number', $hdd->serial_number) }}" required>
-                </fieldset>
-                @error('serial_number')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
-
                 <!-- Depot Field (Non-Editable) -->
                 <fieldset>
-                    <div class="body-title">Depot</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $hdd->depot->name }} " disabled>
-                    <input type="hidden" name="depot_id" value="{{ $hdd->depot_id }}">
+                    <div class="block">
+                        <div class="body-title">Depot</div>
+                        <input class="flex-grow depot-location-text" type="text" value="{{ $hdd->depot->name }} " disabled>
+                        <input type="hidden" name="depot_id" value="{{ $hdd->depot_id }}">
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Location</div>
+                        <input class="flex-grow depot-location-text" type="text" value="{{ $hdd->location->name }}" disabled>
+                        <input type="hidden" name="location_id" value="{{ $hdd->location_id }}">
+                    </div>
                 </fieldset>
 
-                <!-- Location Field (Non-Editable) -->
                 <fieldset>
-                    <div class="body-title">Location</div>
-                    <input class="flex-grow depot-location-text" type="text" value="{{ $hdd->location->name }}" disabled>
-                    <input type="hidden" name="location_id" value="{{ $hdd->location_id }}">
+                    <div class="block" style="width: 100%;">
+                        <div class="body-title">Dvr Sub-Location <span class="tf-color-1">*</span></div>
+                        <div class="select flex-grow">
+                            <select name="sublocation_id" id="sublocation_id" >
+                                <option value="">Select a Sub-location</option>
+                                @foreach($sublocations as $sublocation)
+                                    <option  {{ $hdd->sublocation->name == $sublocation->name ? 'selected' : '' }}  value="{{ $sublocation->id }}">{{ $sublocation->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('sublocation_id')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </fieldset>
 
-                <!-- Purchase Date Field -->
+                <!-- Model Field -->
                 <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
-                    <input class="flex-grow" type="date" name="purchase_date" value="{{ old('purchase_date', $hdd->purchase_date ? $hdd->purchase_date : '') }}">
+                    <div class="block">
+                        <div class="body-title">Model <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="text" placeholder="Enter model" name="model" value="{{ old('model', $hdd->model) }}" required>
+                        @error('model')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Serial Number <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="text" placeholder="Enter serial number" name="serial_number" value="{{ old('serial_number', $hdd->serial_number) }}" required>
+                        @error('serial_number')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </fieldset>
-                @error('purchase_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
-                <!-- Installation Date Field -->
                 <fieldset class="name">
-                    <div class="body-title">Installation Date</div>
-                    <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $hdd->installation_date ? $hdd->installation_date : '') }}">
+                    <div class="block" style="width: 100%;">
+                        <div class="body-title">Capacity <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="text" placeholder="Enter Capacity" name="capacity" value="{{ old('capacity', $hdd->capacity) }}" required>
+                        @error('model')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </fieldset>
-                @error('installation_date')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
-                <!-- Warranty Expiration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
-                    <input class="flex-grow" type="date" name="warranty_expiration" value="{{ old('warranty_expiration', $hdd->warranty_expiration ? $hdd->warranty_expiration : '') }}">
+                    <div class="block">
+                        <div class="body-title">Installation Date <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $hdd->installation_date ? $hdd->installation_date : '') }}">
+                        @error('installation_date')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Purchase Date <span class="tf-color-1">*</span></div>
+                        <input type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date',$hdd->purchase_date) }}">  
+                        @error('purchase_date')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </fieldset>
-                @error('warranty_expiration')
-                    <span class="alert alert-danger">{{ $message }}</span>
-                @enderror
 
+                <fieldset>
+                    <div class="block">
+                        <div class="body-title">Warranty Duration (Years) <span class="tf-color-1">*</span></div>
+                        <select name="warranty_duration" id="warranty_duration">
+                            <option value="1">1 Year</option>
+                            <option value="2">2 Years</option>
+                            <option value="3">3 Years</option>
+                        </select>
+                    </div>
+                    <div class="block">
+                        <div class="body-title">Warranty Expiration <span class="tf-color-1">*</span></div>
+                        <input type="date" name="warranty_expiration" id="warranty_expiration" value="{{ old('warranty_expiration',$hdd->warranty_expiration) }}" readonly>
+                        @error('warranty_expiration')
+                            <span class="alert alert-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </fieldset>
                 <!-- Save Button -->
                 <div class="bot">
                     <div></div>
@@ -142,4 +154,29 @@
         </div>
     </div>
 </div>
+<style>
+    .block{
+        display: inline-block;
+        width: 50%;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    $('#purchase_date, #warranty_duration').change(function() {
+        var purchaseDate = $('#purchase_date').val();
+        var warrantyDuration = parseInt($('#warranty_duration').val());
+
+        if (purchaseDate && warrantyDuration) {
+            var date = new Date(purchaseDate);
+            date.setFullYear(date.getFullYear() + warrantyDuration);
+            var expirationDate = date.toISOString().split('T')[0];
+            $('#warranty_expiration').val(expirationDate);
+        } else {
+            $('#warranty_expiration').val('');
+        }
+    });
+});
+</script>
 @endsection

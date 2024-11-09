@@ -105,7 +105,7 @@
 
                 <!-- Installation Date Field -->
                 <fieldset class="name">
-                    <div class="body-title">Installation Date</div>
+                    <div class="body-title">Installation Date <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="installation_date" value="{{ old('installation_date', $cctv->installation_date) }}">
                 </fieldset>
                 @error('installation_date')
@@ -115,14 +115,14 @@
                 <fieldset>
                             
                             <div class="block">
-                                <div class="body-title">Purchase Date</div>
+                                <div class="body-title">Purchase Date <span class="tf-color-1">*</span></div>
                                 <input type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date') }}">
                                 @error('purchase_date')
                                     <span class="alert alert-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="block">
-                                <div class="body-title">Warranty Duration (Years)</div>
+                                <div class="body-title">Warranty Duration (Years) <span class="tf-color-1">*</span></div>
                                 <select name="warranty_duration" id="warranty_duration">
                                     <option value="1">1 Year</option>
                                     <option value="2">2 Years</option>
@@ -133,7 +133,7 @@
                         <fieldset>
                             
                             <div class="block">
-                                <div class="body-title">Warranty Expiration</div>
+                                <div class="body-title">Warranty Expiration <span class="tf-color-1">*</span></div>
                                 <input type="date" name="warranty_expiration" id="warranty_expiration" value="{{ old('warranty_expiration') }}" readonly>
                                 @error('warranty_expiration')
                                     <span class="alert alert-danger">{{ $message }}</span>

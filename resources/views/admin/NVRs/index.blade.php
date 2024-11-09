@@ -10,10 +10,10 @@
         <div class="wg-box">
         <div>
         <form action="#" method="GET">
-                <fieldset style="display: flex;">
+                <fieldset style="display: flex; gap: 15px;">
                     <div class="block">
                         <div class="body-title">Select Depot</div>
-                        <div class="select flex-grow" style="width: 500px;">
+                        <div class="select flex-grow">
                             <select name="depot_id" id="depot_id">
                                 <option value="">Select a depot</option>
                                 @foreach($depots as $depot)
@@ -54,32 +54,32 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <td>Depot</td>
-                            <td>Location</td>
-                            <td>Sub-Location</td>
+                            <th style="width: 80px;">Depot</th>
+                            <th>Location</th>
+                            <th>Sub-Location</th>
                             <th>Model</th>
                             <th>Serial Number</th>
                             <th>Status</th>
                             <th>Purchase Date</th>
                             <th>Installation Date</th>
                             <th>Warranty Expiration</th>
-                            <th colspan="3" style="text-align:center;">Actions</th>
+                            <th colspan="2" style="text-align:center;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($nvrs as $nvr)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $nvr->location->depot->name }}</td>
-                                <td>{{ $nvr->location->name }}</td>
-                                <td>{{ optional($nvr->sublocation)->name }}</td>
-                                <td>{{ $nvr->model }}</td>
-                                <td>{{ $nvr->serial_number }}</td>
-                                <td>{{ ucfirst($nvr->status) }}</td>
-                                <td>{{ $nvr->purchase_date ? $nvr->purchase_date : 'N/A' }}</td>
-                                <td>{{ $nvr->installation_date ? $nvr->installation_date : 'N/A' }}</td>
-                                <td>{{ $nvr->warranty_expiration ? $nvr->warranty_expiration : 'N/A' }}</td>
-                                <td colspan="3">
+                                <td class="td-space" style="text-align: center;">{{ $loop->iteration }}</td>
+                                <td class="td-space" style="width: 80px;">{{ $nvr->location->depot->name }}</td>
+                                <td class="td-space">{{ $nvr->location->name }}</td>
+                                <td class="td-space">{{ optional($nvr->sublocation)->name }}</td>
+                                <td class="td-space">{{ $nvr->model }}</td>
+                                <td class="td-space">{{ $nvr->serial_number }}</td>
+                                <td class="td-space">{{ ucfirst($nvr->status) }}</td>
+                                <td class="td-space">{{ $nvr->purchase_date ? $nvr->purchase_date : 'N/A' }}</td>
+                                <td class="td-space">{{ $nvr->installation_date ? $nvr->installation_date : 'N/A' }}</td>
+                                <td class="td-space">{{ $nvr->warranty_expiration ? $nvr->warranty_expiration : 'N/A' }}</td>
+                                <td class="td-space" colspan="2">
                                     <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
                                         <a href="{{ route('admin.nvrs.show', $nvr->id) }}" style="margin-left: 15px;">
                                             <div class="list-icon-function view-icon">
@@ -108,7 +108,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center">No NVRs found.</td>
+                                <td class="td-space" colspan="8" class="text-center">No NVRs found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -128,6 +128,62 @@
         display: inline-block;
         width: 50%;
     }
+.td-space{
+    padding: 0 !important;
+}
+.table {
+    width: 100%;
+    font-size: 0.85em; /* Smaller font size for a professional, compact look */
+    table-layout: auto;
+    border-collapse: collapse; /* Remove double borders */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.td-space {
+    padding: 6px 10px; /* Adds padding to make cells more readable without taking too much space */
+    font-size: 12px !important;
+}
+
+th {
+    background-color: #f8f9fa; /* Light grey background for headers */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #dee2e6; /* Subtle border for header separation */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light background for alternate rows */
+}
+
+tr:hover {
+    background-color: #e9ecef; /* Highlight row on hover for better readability */
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Small screen adjustments */
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.75em; /* Slightly smaller font for small screens */
+    }
+    .block {
+        width: 100%;
+    }
+    .body-title {
+        font-size: 0.9em;
+    }
+    .td-space {
+        font-size: 0.8em;
+    }
+    #filter{
+        flex-direction: column;
+    }
+}
+
 </style>
 @endsection
 

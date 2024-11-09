@@ -10,10 +10,10 @@
         <div>
             <!-- Filter Form -->
             <form action="#" method="GET">
-                <fieldset  style="display: flex;">
+                <fieldset id="filter" style="display: flex; gap: 15px;">
                     <div class="block">
                         <div class="body-title">Select Depot</div>
-                        <div class="select flex-grow" style="width: 500px;">
+                        <div class="select flex-grow" >
                             <select name="depot_id" id="depot_id">
                                 <option value="">Select a depot</option>
                                 @foreach($depots as $depot)
@@ -55,8 +55,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Depot</th>
-                            <th>Location</th>
+                            <th style="width: 80px !important;">Depot</th>
+                            <th >Location</th>
                             <th>Sub-Location</th>
                             <th>Model</th>
                             <th>Serial Number</th>
@@ -70,17 +70,17 @@
                     <tbody>
                         @forelse($dvrs as $dvr)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $dvr->location->depot->name }}</td>
-                                <td>{{ $dvr->location->name }}</td>
-                                <td>{{ optional($dvr->sublocation)->name }}</td>
-                                <td>{{ $dvr->model }}</td>
-                                <td>{{ $dvr->serial_number }}</td>
-                                <td>{{ ucfirst($dvr->status) }}</td>
-                                <td>{{ $dvr->purchase_date ? $dvr->purchase_date : 'N/A' }}</td>
-                                <td>{{ $dvr->installation_date ? $dvr->installation_date : 'N/A' }}</td>
-                                <td>{{ $dvr->warranty_expiration ? $dvr->warranty_expiration : 'N/A' }}</td>
-                                <td colspan="3">
+                                <td class="td-space" style="text-align: center;">{{ $loop->iteration }}</td>
+                                <td class="td-space" style="width: 80px;">{{ $dvr->location->depot->name }}</td>
+                                <td class="td-space">{{ $dvr->location->name }}</td>
+                                <td class="td-space">{{ optional($dvr->sublocation)->name }}</td>
+                                <td class="td-space">{{ $dvr->model }}</td>
+                                <td class="td-space">{{ $dvr->serial_number }}</td>
+                                <td class="td-space">{{ ucfirst($dvr->status) }}</td>
+                                <td class="td-space">{{ $dvr->purchase_date ? $dvr->purchase_date : 'N/A' }}</td>
+                                <td class="td-space">{{ $dvr->installation_date ? $dvr->installation_date : 'N/A' }}</td>
+                                <td class="td-space">{{ $dvr->warranty_expiration ? $dvr->warranty_expiration : 'N/A' }}</td>
+                                <td class="td-space" colspan="3">
                                     <div class="list-icon-function" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
                                         <a href="{{ route('admin.dvrs.show', $dvr->id) }}" style="margin-left: 15px;">
                                             <div class="list-icon-function view-icon">
@@ -108,7 +108,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center">No DVRs found.</td>
+                                <td class="td-space" colspan="8" class="text-center">No DVRs found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -122,11 +122,71 @@
     </div>
 </div>
 
+
 <style>
     .block{
         display: inline-block;
         width: 50%;
     }
+.td-space{
+    font-size: 12px !important;
+    padding: 0 !important;
+}
+.table {
+    width: 100%;
+    font-size: 0.85em; /* Smaller font size for a professional, compact look */
+    table-layout: auto;
+    border-collapse: collapse; /* Remove double borders */
+    white-space: wrap; /* Prevent text from wrapping */
+}
+
+/* Depot column specifically sized to fit content */
+th:nth-child(2), td:nth-child(2) {
+    white-space: nowrap; /* Prevents wrapping in the Depot column */
+    width: 1%; /* Forces the column to be as narrow as its content */
+}
+
+th {
+    background-color: #f8f9fa; /* Light grey background for headers */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #dee2e6; /* Subtle border for header separation */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light background for alternate rows */
+}
+
+tr:hover {
+    background-color: #e9ecef; /* Highlight row on hover for better readability */
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Small screen adjustments */
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.75em; /* Slightly smaller font for small screens */
+    }
+    .block {
+        width: 100%;
+    }
+    .body-title {
+        font-size: 0.9em;
+    }
+    .td-space {
+        font-size: 0.8em;
+    }
+    
+    #filter {
+        flex-direction: column;
+    }
+}
+
 </style>
 @endsection
 

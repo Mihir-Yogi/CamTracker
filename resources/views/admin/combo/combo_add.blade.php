@@ -83,7 +83,7 @@
 
 <div class="form-block">
     
-    <div class="block">
+    <div class="block " id="hdd_fields" style="display: none;">
                 <!-- HDD Fields -->
                 <h4>HDD Details</h4>
                 <!-- Select Sublocation Field -->
@@ -112,7 +112,7 @@
 
                     
                     <fieldset>
-                        <div class="body-title">HDD Installation Date</div>
+                        <div class="body-title">HDD Installation Date <span class="tf-color-1">*</span></div>
                         <input type="date" name="hdd_installation_date" value="{{ old('hdd_installation_date') }}">
                         @error('hdd_installation_date')
                             <div class="text-danger">{{ $message }}</div>
@@ -122,7 +122,7 @@
 
                 <!-- Purchase Date Field -->
                 <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
+                    <div class="body-title">Purchase Date <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="hdd_purchase_date" id="hdd_purchase_date" value="{{ old('hdd_purchase_date') }}">
                 </fieldset>
                 @error('hdd_purchase_date')
@@ -131,7 +131,7 @@
 
                 <!-- Warranty Duration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Warranty Duration (Years)</div>
+                    <div class="body-title">Warranty Duration (Years) <span class="tf-color-1">*</span></div>
                     <select class="flex-grow" name="hdd_warranty_duration" id="hdd_warranty_duration">
                         <option value="1">1 Year</option>
                         <option value="2">2 Years</option>
@@ -141,7 +141,7 @@
 
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
+                    <div class="body-title">Warranty Expiration <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="hdd_warranty_expiration" id="hdd_warranty_expiration" value="{{ old('hdd_warranty_expiration') }}" readonly>
                 </fieldset>
                 @error('hdd_warranty_expiration')
@@ -153,22 +153,18 @@
                 
         </div>
                 
-
-</div>
-                
-                <!-- Combo Fields -->
+    </div>
                 <h4>Combo Details</h4>
                 <div class="fom-new-product form-style-1 tow-column-form">
                 <fieldset>
-                    
                     <div class="body-title">Camera Capacity <span class="tf-color-1">*</span></div>
-                    <input type="number" name="camera_capacity" value="{{ old('camera_capacity') }}" required>
+                    <input type="number" name="camera_capacity value="{{ old('camera_capacity') }}" required>
                     @error('camera_capacity')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </fieldset>
                 </div>
-
+                
                 <!-- Submit Button -->
                 <div class="form-footer">
                     <button class="tf-button w208" type="submit">Submit</button>
@@ -189,7 +185,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="new_location_name" style="margin-bottom: 10px;">Location Name <span class="text-danger">*</span></label>
+                    <label for="new_location_name" style="margin-bottom: 10px;">Location Name  <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="new_location_name" id="new_location_name" required>
                 </div>
             </div>
@@ -329,6 +325,8 @@ $(document).ready(function() {
             
             // Clear the container div before adding new content
             $('.device_block').empty();
+            if (deviceType === 'nvr' || deviceType === 'dvr') {
+            $('#hdd_fields').show();  // Show HDD fields
 
             if (deviceType === 'nvr') {
                 // Dynamically create and append NVR fields
@@ -367,7 +365,7 @@ $(document).ready(function() {
                     </fieldset>
 
                     <fieldset>
-                        <div class="body-title">NVR Installation Date</div>
+                        <div class="body-title">NVR Installation Date <span class="tf-color-1">*</span></div>
                         <input type="date" name="nvr_installation_date" value="{{ old('nvr_installation_date') }}">
                         @error('nvr_installation_date')
                             <div class="text-danger">{{ $message }}</div>
@@ -375,7 +373,7 @@ $(document).ready(function() {
                     </fieldset>
                     <!-- Purchase Date Field -->
                 <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
+                    <div class="body-title">Purchase Date <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="nvr_purchase_date" id="nvr_purchase_date" value="{{ old('nvr_purchase_date') }}">
                 </fieldset>
                 @error('nvr_purchase_date')
@@ -384,7 +382,7 @@ $(document).ready(function() {
 
                 <!-- Warranty Duration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Warranty Duration (Years)</div>
+                    <div class="body-title">Warranty Duration (Years) <span class="tf-color-1">*</span></div>
                     <select class="flex-grow" name="nvr_warranty_duration" id="nvr_warranty_duration">
                         <option value="1">1 Year</option>
                         <option value="2">2 Years</option>
@@ -394,7 +392,7 @@ $(document).ready(function() {
 
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
+                    <div class="body-title">Warranty Expiration <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="nvr_warranty_expiration" id="nvr_warranty_expiration" value="{{ old('nvr_warranty_expiration') }}" readonly>
                 </fieldset>
                 @error('nvr_warranty_expiration')
@@ -442,7 +440,7 @@ $(document).ready(function() {
                     </fieldset>
                     
                     <fieldset>
-                        <div class="body-title">DVR Installation Date</div>
+                        <div class="body-title">DVR Installation Date <span class="tf-color-1">*</span></div>
                         <input type="date" name="dvr_installation_date" value="{{ old('dvr_installation_date') }}">
                         @error('dvr_installation_date')
                             <div class="text-danger">{{ $message }}</div>
@@ -450,7 +448,7 @@ $(document).ready(function() {
                     </fieldset>
                     <!-- Purchase Date Field -->
                 <fieldset class="name">
-                    <div class="body-title">Purchase Date</div>
+                    <div class="body-title">Purchase Date <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="dvr_purchase_date" id="dvr_purchase_date" value="{{ old('dvr_purchase_date') }}">
                 </fieldset>
                 @error('dvr_purchase_date')
@@ -459,7 +457,7 @@ $(document).ready(function() {
 
                 <!-- Warranty Duration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Warranty Duration (Years)</div>
+                    <div class="body-title">Warranty Duration (Years) <span class="tf-color-1">*</span></div>
                     <select class="flex-grow" name="dvr_warranty_duration" id="dvr_warranty_duration">
                         <option value="1">1 Year</option>
                         <option value="2">2 Years</option>
@@ -469,7 +467,7 @@ $(document).ready(function() {
 
                 <!-- Warranty Expiration Field -->
                 <fieldset class="name">
-                    <div class="body-title">Warranty Expiration</div>
+                    <div class="body-title">Warranty Expiration <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" name="dvr_warranty_expiration" id="dvr_warranty_expiration" value="{{ old('dvr_warranty_expiration') }}" readonly>
                 </fieldset>
                 @error('dvr_warranty_expiration')
@@ -480,8 +478,11 @@ $(document).ready(function() {
                 `;
                 $('.device_block').append(dvrFields);
             }
+        }else{
+            $('#hdd_fields').hide(); 
+        }
         });
-    // Load locations by depot
+        
     $('#depot_id').change(function() {
         if (this.value === 'new') {
             $('#addDepotModal').modal('show'); // Show the modal for adding a new depot
