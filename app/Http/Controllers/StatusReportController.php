@@ -19,10 +19,46 @@ use App\Models\Nvr;
 use App\Models\Dvr;
 use App\Models\Hdd;
 use App\Models\Cctv;
-
+use Symfony\Contracts\Service\Attribute\Required;
 
 class StatusReportController extends Controller
 {
+    
+    public function pdf_generator_get(Request $request){
+        
+    // Initialize variables for depot, location, start date, and end date
+    $depotId = $request->input('depot_id');
+    $locationId = $request->input('location_id');
+    $startDate = $request->input('start_date');
+    $endDate = $request->input('end_date');
+
+    // Log the received filter values for debugging
+    Log::info('Filtering reports with:', compact('depotId', 'locationId', 'startDate', 'endDate'));
+
+    // Prepare the query to fetch reports based on the selected filters
+    $reports = StatusReport::when($depotId, function ($query, $depotId) {
+            return $query->where('depot_id', $depotId);
+        })
+        ->when($locationId, function ($query, $locationId) {
+            return $query->where('location_id', $locationId);
+        })
+        ->when($startDate, function ($query, $startDate) {
+            return $query->where('created_at', '>=', $startDate . ' 00:00:00'); // Include start of the day
+        })
+        ->when($endDate, function ($query, $endDate) {
+            return $query->where('created_at', '<=', $endDate . ' 23:59:59'); // Include end of the day
+        })
+        ->with(['depot', 'location', 'nvr.sublocation', 'dvr.sublocation', 'hdd.sublocation', 'cctv']) // eager load relationships for display
+        ->get();
+    
+        $data=[
+            'title' => 'PDF DOWNLOAD',
+            'date' => date('d/m/y'),
+            'reports' => $reports
+        ];
+        $pdf = PDF::loadView('myPDF',$data);
+        return $pdf->download('Report.pdf');
+    }
     public function index(Request $request)
 {
     // Get all depots for the dropdown
@@ -166,6 +202,7 @@ class StatusReportController extends Controller
     return redirect()->back()->with('success', 'Status report created successfully.');
 }
 
+
 // Helper methods to retrieve the NVR, DVR, and HDD if necessary
 private function getNvrById($nvrId)
 {
@@ -181,6 +218,7 @@ private function getHddById($hddId)
 {
     return Hdd::find($hddId); // Returns null if not found
 }
+
 
     public function getDevices(Request $request)
 {

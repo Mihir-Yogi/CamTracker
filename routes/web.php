@@ -14,6 +14,8 @@ use App\Http\Controllers\DvrController;
 use App\Http\Controllers\HddController;
 use App\Http\Controllers\CCTVController;
 use App\Http\Controllers\StatusReportController;
+use App\Exports\StatusReportsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 Route::get('/', function () {
@@ -125,7 +127,11 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::post('/devices-by-depot-location', [StatusReportController::class, 'getDevices'])->name('status_report.devices');
 
     Route::get('/admin/failed-devices', [FailureController::class, 'index'])->name('failed.devices');
+    
 
+    //PDF generator
+
+    Route::get('pdf_generator',[StatusReportController::class, 'pdf_generator_get']);
 });
 
 

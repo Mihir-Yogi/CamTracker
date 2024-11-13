@@ -189,10 +189,13 @@ tr:hover {
     </div>
 </fieldset>
 <div style="display: flex; gap: 20px; align-items: center; margin-top: 15px;">
-                        <button type="submit" style="width: 120px; height: 40px; " class="tf-button style-1">Filter</button>
+                        <button type="submit" style="width: 120px; height: 40px; " id="filter" class="tf-button style-1">Filter</button>
+                        <button type="button" id="clearFilterBtn" style="width: 120px; height: 40px;" class="tf-button style-1">Clear Filter</button>
                         <a class="tf-button style-1 w208" style="width: 200px; height: 40px; font-size: 12px;" href="{{ route('status_reports.create') }}">
                             Create New Transcation
                         </a>
+                        <a href="{{ url('pdf_generator') }}?depot_id={{ request('depot_id') }}&location_id={{ request('location_id') }}&start_date={{ request('start_date') }}&end_date={{ request('end_date') }}"
+   class="tf-button style-1 w208" style="width: 200px; height: 40px; font-size: 12px;"> PDF Download </a>
                 </div>
             </form>
         </div>
@@ -315,6 +318,12 @@ tr:hover {
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('#clearFilterBtn').on('click', function() {
+            // Clear all input fields in the form
+            $('form').find('select, input[type="date"]').val('');
+            $('#filter').click();
+        });
+
         $('#depot_id').change(function() {
             var selectedDepotId = $(this).val();
             if (selectedDepotId) {
